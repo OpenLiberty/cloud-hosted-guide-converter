@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class GuideConverterV2 {
+public class CloudHostedGuideConverter {
 
     //asks user for the guide name
     public static void main(String[] args) throws Exception {
