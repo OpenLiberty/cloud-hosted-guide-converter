@@ -499,7 +499,7 @@ public class Functions {
                 if (listOfLines.get(i).indexOf("https") != -1) {
                     String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https:"), listOfLines.get(i).indexOf("["));
                     String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") +1, listOfLines.get(i).indexOf("^"));
-                    String fullLink = "[" + link + "]" + "(" + linkDesc + ")";
+                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
                     if (listOfLines.get(i).indexOf("https:") != -1){
                         if (listOfLines.get(i).indexOf("[https:") == -1){
                             String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
@@ -536,6 +536,8 @@ public class Functions {
             if (listOfLines.get(i).startsWith("Add the")) {
                 listOfLines.set(i, "");
             }
+
+            if(listOfLines.get(i).)
 
             if (listOfLines.get(i).startsWith("mvn")) {
                 if (!listOfLines.get(i + 2).startsWith("{: codeblock}")) {
