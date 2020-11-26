@@ -197,7 +197,7 @@ public class Functions {
         listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 3, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
     }
@@ -210,7 +210,7 @@ public class Functions {
         listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         listOfLines.add(i, "\n");
-        codeSnippet(listOfLines, guideName, branch, i + 3, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
     }
@@ -221,7 +221,7 @@ public class Functions {
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
         listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + str + "\n\n\n");
         listOfLines.add(i, "\n");
-        codeSnippet(listOfLines, guideName, branch, i + 3, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
     }
