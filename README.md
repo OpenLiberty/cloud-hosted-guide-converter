@@ -36,8 +36,8 @@ When updating/maintaing the Cloud-hosted-guide-converter:
   
    * `java CloudHostedGuideConverter GUIDE_NAME BRANCH_NAME` (e.g - `java CloudHostedGuideConverter guide-microprofile-reactive-messaging master`) 
   
-   * Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
+2. Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
   
-   * If there is something that hasn't converted properly, Look within the `ConditionMethods` in `Functions.java` to see if a method to convert this already      exists. If it does exists looks for reason as to why it might have not converted, this could potentially be something like the CloudHostedGuideConverter has not been set to take under consideration the extra space in the text, majority of the reasons behind incorrect the conversions are very simple. If there is bigger bug then it is recommened to have a look at the original guides `.adoc` file and checking out the text around the part that has not been converted properly. If it is something to do with the `guides-common` please look in `ImportFunctions.java`.
+3. If there is something that hasn't converted properly, Look within the `ConditionMethods` in `Functions.java` to see if a method to convert this already      exists. If it does exists looks for reason as to why it might have not converted, this could potentially be something like the CloudHostedGuideConverter has not been set to take under consideration the extra space in the text, majority of the reasons behind incorrect the conversions are very simple. If there is bigger bug then it is recommened to have a look at the original guides `.adoc` file and checking out the text around the part that has not been converted properly. If it is something to do with the `guides-common` please look in `ImportFunctions.java`.
    
-  2. After the changes to CloudHostedGuideConverter have been tested locally and everything is in working order, create a PR to this repositories `main` branch.
+4. After the changes to CloudHostedGuideConverter have been tested locally and everything is in working order, create a PR to this repositories `main` branch.
