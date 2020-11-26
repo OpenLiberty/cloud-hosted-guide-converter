@@ -24,7 +24,7 @@ The CloudHostedGuideConverter has 4 classes:
  
  3\. This class reads in `guides-commons` files from github. This is because the original guides use `guides-common` to get pre set parts of guides imported. This means that the SN guides will stay up to date with the original guides.
  
- 4\. This function allows us to over ride the `.equals()` method of java.
+ 4\. This function allows us to over ride the `.equals()` method of java. When trying to use `.equals()` on a Array List it allows you to compare if a line equals a different line in that list, however we are trying to do `.equals(STRING||INTEGER)`. Because we have over ridden the original function we are now capable of doing so. 
  
  
 
