@@ -20,11 +20,11 @@ The CloudHostedGuideConverter has 4 classes:
    
    * `writeToFile` - this function writes the built array list into a file.
   
- 2. This function is where all the functionality is. In this class the Array list gets converted using different methods to create a .md format of the Guide. Each functions name is self explainatory (there are also comments to explain each method if the name isn't enough).
+ 2\. This function is where all the functionality is. In this class the Array list gets converted using different methods to create a .md format of the Guide. Each functions name is self explainatory (there are also comments to explain each method if the name isn't enough).
  
- 3. This class reads in `guides-commons` files from github. This is because the original guides use `guides-common` to get pre set parts of guides imported. This means that the SN guides will stay up to date with the original guides.
+ 3\. This class reads in `guides-commons` files from github. This is because the original guides use `guides-common` to get pre set parts of guides imported. This means that the SN guides will stay up to date with the original guides.
  
- 4. This function allows us to over ride the `.equals()` method of java.
+ 4\. This function allows us to over ride the `.equals()` method of java.
  
  
 
