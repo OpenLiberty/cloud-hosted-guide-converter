@@ -537,8 +537,6 @@ public class Functions {
                 listOfLines.set(i, "");
             }
 
-            if(listOfLines.get(i).)
-
             if (listOfLines.get(i).startsWith("mvn")) {
                 if (!listOfLines.get(i + 2).startsWith("{: codeblock}")) {
                     if (!listOfLines.get(i + 3).startsWith("{: codeblock}")) {
