@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class OverridingEquals {
 
@@ -245,7 +247,6 @@ public class Functions {
         if (link.contains("localhost")) {
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
-                System.out.println(localhostSplit[0]);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
                     listOfLines.set(i, localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
@@ -371,6 +372,16 @@ public class Functions {
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
 
+            String pattern2 = "`(.*?)`";
+
+            Pattern r2 = Pattern.compile(pattern2);
+
+            Matcher m2 = r2.matcher(listOfLines.get(i));
+
+            if (m2.find() && !listOfLines.get(i).startsWith("```")) {
+                listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
+            }
+
 
             OverridingEquals c1 = new OverridingEquals(listOfLines.get(i));
             OverridingEquals c2 = new OverridingEquals(codes);
@@ -390,12 +401,19 @@ public class Functions {
                 listOfLines.set(i + 5, "");
             }
 
-            // removes code examples
-            if (listOfLines.get(i).startsWith("[source, Java, linenums") || listOfLines.get(i).startsWith("[source,java,linenums") || listOfLines.get(i).startsWith("[source, java, linenums,") || listOfLines.get(i).startsWith("[source, xml, linenums,") || listOfLines.get(i).startsWith("[source , xml, linenums,")|| listOfLines.get(i).startsWith("[source,xml,linenums")|| listOfLines.get(i).startsWith("[source, XML, linenums,") || listOfLines.get(i).startsWith("[source, Text, linenums") || listOfLines.get(i).startsWith("[source, text, linenums,") || listOfLines.get(i).startsWith("[source, json, linenums,") || listOfLines.get(i).startsWith("[source, JSON, linenums,")) {
+            String pattern = "\\[source(.*?)linenums";
 
-                        listOfLines.set(i - 1, "");
-                        listOfLines.set(i + 1, "");
-                        listOfLines.set(i + 3, "");
+            Pattern r = Pattern.compile(pattern);
+
+            Matcher m = r.matcher(listOfLines.get(i));
+
+            // removes code examples
+//            if (listOfLines.get(i).startsWith("[source, Java, linenums") || listOfLines.get(i).startsWith("[source,java,linenums") || listOfLines.get(i).startsWith("[source, java, linenums,") || listOfLines.get(i).startsWith("[source, xml, linenums,") || listOfLines.get(i).startsWith("[source , xml, linenums,")|| listOfLines.get(i).startsWith("[source,xml,linenums")|| listOfLines.get(i).startsWith("[source, XML, linenums,") || listOfLines.get(i).startsWith("[source, Text, linenums") || listOfLines.get(i).startsWith("[source, text, linenums,") || listOfLines.get(i).startsWith("[source, json, linenums,") || listOfLines.get(i).startsWith("[source, JSON, linenums,")) {
+
+            if (m.find()) {
+                listOfLines.set(i - 1, "");
+                listOfLines.set(i + 1, "");
+                listOfLines.set(i + 3, "");
             }
 
             // Replaces left over ----
@@ -422,16 +440,15 @@ public class Functions {
             }
 
             if (listOfLines.get(i).startsWith("image::")) {
-                if (listOfLines.get(i+1).startsWith("*")){
-                    listOfLines.remove(i+1);
-                }
-                else if (listOfLines.get(i+2).startsWith("*")){
-                    listOfLines.remove(i+2);
+                if (listOfLines.get(i + 1).startsWith("*")) {
+                    listOfLines.remove(i + 1);
+                } else if (listOfLines.get(i + 2).startsWith("*")) {
+                    listOfLines.remove(i + 2);
                 }
             }
 
             //Removes Additional prerequisites section
-            if (listOfLines.get(i).startsWith("## Additional prerequisites")||listOfLines.get(i).startsWith("# Additional prerequisites")) {
+            if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
                 removeAdditionalpres(listOfLines, i);
             }
 
@@ -469,12 +486,6 @@ public class Functions {
                 position = "table";
             }
 
-            if (listOfLines.get(i).startsWith("- ")) {
-                if (listOfLines.get(i + 1).isBlank()) {
-                    listOfLines.set(i,"");
-                }
-            }
-
             //Finds title so we skip over irrelevant lines
             if (listOfLines.get(i).startsWith("= ")) {
                 listOfLines.set(i, listOfLines.get(i).replaceAll("=", "#"));
@@ -493,22 +504,27 @@ public class Functions {
                 removeLast(guideName);
             }
 
-
-            //Identifies a link in the file line and configures it
             if (listOfLines.get(i).contains("^]")) {
-                if (listOfLines.get(i).indexOf("https") != -1) {
-                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https:"), listOfLines.get(i).indexOf("["));
-                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") +1, listOfLines.get(i).indexOf("^"));
-                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                    if (listOfLines.get(i).indexOf("https:") != -1){
-                        if (listOfLines.get(i).indexOf("[https:") == -1){
-                            String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
-                            System.out.println(check);
-                            listOfLines.set(i,check);
-                        }
-                    }
+                listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                if (listOfLines.get(i).startsWith("* ")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
                 link(listOfLines, i);
+            }
+
+
+//            Identifies a link in the file line and configures it
+            if (listOfLines.get(i).contains("^]")) {
+                if (listOfLines.get(i).indexOf("http://") != -1) {
+                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http:"), listOfLines.get(i).indexOf("["));
+                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                    if (listOfLines.get(i).indexOf("http://") != -1) {
+                        String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
+                        listOfLines.set(i, check);
+                    }
+                }
+//                link(listOfLines, i);
             }
 
 
@@ -535,6 +551,12 @@ public class Functions {
 
             if (listOfLines.get(i).startsWith("Add the")) {
                 listOfLines.set(i, "");
+            }
+
+            if (listOfLines.get(i).startsWith("- ")) {
+                if (listOfLines.get(i + 1).isBlank()) {
+                    listOfLines.set(i, "");
+                }
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
