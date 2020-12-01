@@ -176,7 +176,16 @@ public class Functions {
             ImportFunctions.clone(listOfLines, guideName, i, CommonURL);
         }
 
-        if (listOfLines.get(i).startsWith("include::{common-includes}/") && !listOfLines.get(i).startsWith("include::{common-includes}/attribution.adoc[subs=\"attributes\"]") && !listOfLines.get(i).startsWith("include::{common-includes}/gitclone.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/os-tabs.adoc[]")) {
+        if (listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]")|| listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
+
+            GuidesCommon = listOfLines.get(i).substring(27, listOfLines.get(i).length() - 3);
+
+            CommonURL = CommonURL + GuidesCommon;
+
+            ImportFunctions.KubeStart(listOfLines, guideName, i, CommonURL);
+        }
+
+        if (listOfLines.get(i).startsWith("include::{common-includes}/") && !listOfLines.get(i).startsWith("include::{common-includes}/attribution.adoc[subs=\"attributes\"]") && !listOfLines.get(i).startsWith("include::{common-includes}/gitclone.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/os-tabs.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-prereq.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]")&& !listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
 
             GuidesCommon = listOfLines.get(i).substring(27, listOfLines.get(i).length() - 3);
 
@@ -560,8 +569,9 @@ public class Functions {
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
-                if (!listOfLines.get(i + 2).startsWith("{: codeblock}")) {
-                    if (!listOfLines.get(i + 3).startsWith("{: codeblock}")) {
+                if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i +2).isBlank()) {
+                    if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i +2).isBlank()) {
+                        listOfLines.add(i + 2,"");
                         listOfLines.set(i + 1, "```\n{: codeblock)\n\n\n");
                     }
                 }

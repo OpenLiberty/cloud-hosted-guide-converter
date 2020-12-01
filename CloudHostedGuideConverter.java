@@ -57,7 +57,17 @@ public class CloudHostedGuideConverter {
 
 //          write each line into the file
             while (s.hasNextLine()) {
-                listOfLines.add(s.nextLine() + "\n");
+                String inputLine = s.nextLine() + "\n";
+
+                if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
+
+                    while (!s.nextLine().startsWith("[.tab_content.linux_section]")) {
+                        continue;
+                    }
+                }
+
+
+                listOfLines.add(inputLine);
             }
 
 

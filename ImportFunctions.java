@@ -9,9 +9,11 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 class ImportFunctions {
@@ -34,6 +36,7 @@ class ImportFunctions {
                 }
                 if (counter == 2) {
                     inputLine = inputLine.replaceAll("----", "```\n{: codeblock}\n");
+                    counter = 0;
                 }
                 inputLine = inputLine.replace("guide-{projectid}", guideName);
                 temp.add(inputLine);
@@ -47,6 +50,61 @@ class ImportFunctions {
         }
     }
 
+    public static void KubeStart(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
+        ArrayList<String> temp = new ArrayList<>();
+        FileInputStream ips = null;
+        try {
+            ips = new FileInputStream("replacements.properties");
+
+            Properties props = new Properties();
+
+            props.load(ips);
+            URL url = new URL(CommonURL);
+            Scanner s = new Scanner(url.openStream());
+            String inputLine = null;
+            int counter = 0;
+
+            while (s.hasNextLine()) {
+                inputLine = s.nextLine() + "\n";
+
+                boolean remove = false;
+
+                if (inputLine.startsWith("////")){
+                    continue;
+                }
+
+                if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
+                    remove = true;
+                    while (!s.nextLine().startsWith("[.tab")) {
+                            continue;
+                    }
+                }
+
+                if (inputLine.startsWith("[.") || inputLine.startsWith("`*") || inputLine.startsWith("[subs=\"") || inputLine.startsWith("ifdef::") || inputLine.startsWith("{") || inputLine.startsWith("endif::") || inputLine.startsWith("ifndef::")) {
+                    continue;
+                }
+
+//                inputLine = inputLine.replace("guide-{projectid}", guideName);
+                temp.add(inputLine);
+            }
+
+            for (int n = 0; n < temp.size(); n++) {
+                if (temp.get(n).startsWith("```")){
+                    if (temp.get(n-1).isBlank()){
+                        temp.set(n-1, "[role='command']");
+                    }
+                }
+            }
+            temp.subList(0, 7).clear();
+            listOfLines.addAll(i + 1, temp);
+
+            s.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+
     //inserts try what you build-intro from  https://github.com/OpenLiberty/guides-common
     public static void OtherGuidesCommon(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
@@ -59,7 +117,7 @@ class ImportFunctions {
 
                 temp.add(inputLine);
             }
-            listOfLines.addAll(i + 1 , temp);
+            listOfLines.addAll(i + 1, temp);
             s.close();
         } catch (IOException ex) {
             System.out.println(ex);
