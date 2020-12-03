@@ -11,6 +11,7 @@
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.Guard;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
@@ -51,7 +52,6 @@ class OverridingEquals {
 public class Functions {
 
     public static final String codes = "----";
-
 
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
         listOfLines.get(i).replaceAll("----", "```");
@@ -176,7 +176,7 @@ public class Functions {
             ImportFunctions.clone(listOfLines, guideName, i, CommonURL);
         }
 
-        if (listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]")|| listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
+        if (listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]") || listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
 
             GuidesCommon = listOfLines.get(i).substring(27, listOfLines.get(i).length() - 3);
 
@@ -185,7 +185,7 @@ public class Functions {
             ImportFunctions.KubeStart(listOfLines, guideName, i, CommonURL);
         }
 
-        if (listOfLines.get(i).startsWith("include::{common-includes}/") && !listOfLines.get(i).startsWith("include::{common-includes}/attribution.adoc[subs=\"attributes\"]") && !listOfLines.get(i).startsWith("include::{common-includes}/gitclone.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/os-tabs.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-prereq.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]")&& !listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
+        if (listOfLines.get(i).startsWith("include::{common-includes}/") && !listOfLines.get(i).startsWith("include::{common-includes}/attribution.adoc[subs=\"attributes\"]") && !listOfLines.get(i).startsWith("include::{common-includes}/gitclone.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/os-tabs.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-prereq.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]") && !listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
 
             GuidesCommon = listOfLines.get(i).substring(27, listOfLines.get(i).length() - 3);
 
@@ -344,9 +344,30 @@ public class Functions {
     }
 
 
-    // Configures tables
-    public static String table(ArrayList<String> listOfLines, int i) {
+    //    // Configures tables
+    public static String table(ArrayList<String> listOfLines, int i, Properties props) {
         if (listOfLines.get(i).startsWith("|===")) {
+            listOfLines.set(i, "");
+            int counter = 0;
+            String line = listOfLines.get(i + 1);
+            for (int n = 0; n < line.length(); n++) {
+                if (line.charAt(n) == '|') {
+                    counter++;
+                    System.out.println(counter);
+                }
+            }
+            if (counter == 2) {
+                listOfLines.set(i + 1, line + props.getProperty("2") + "\n");
+            }
+            else if (counter == 3) {
+                listOfLines.set(i + 1, line + props.getProperty("3") + "\n");
+            }
+            else if (counter == 4) {
+                listOfLines.set(i + 1, line + props.getProperty("4") + "\n");
+            }
+            else if (counter == 5) {
+                listOfLines.set(i + 1, line + props.getProperty("5") + "\n");
+            }
             return "main";
         }
         if (listOfLines.get(i).startsWith("     ")) {
@@ -357,10 +378,9 @@ public class Functions {
             int count = 0;
             for (int x = 0; x < listOfLines.get(i).length(); x++) {
                 if (listOfLines.get(i).charAt(i) == '*') {
-                    count += 1;
+                    count++;
                 }
             }
-            listOfLines.set(i, listOfLines.get(i));
             String split = "";
             for (int j = 0; j < count / 2; j++) {
                 split = split + "|---";
@@ -368,7 +388,6 @@ public class Functions {
             listOfLines.set(i, split);
             return "table";
         }
-        listOfLines.set(i, listOfLines.get(i));
         return "table";
     }
 
@@ -461,11 +480,6 @@ public class Functions {
                 removeAdditionalpres(listOfLines, i);
             }
 
-            //configure table
-            if (position.equals("table")) {
-                table(listOfLines, i);
-            }
-
 
             //Current line is an example output of a mvn test
 //            if (position.equals("testBlock")) {
@@ -490,9 +504,10 @@ public class Functions {
 //            }
 
 
-            //Identifies that line is the start of a table
+//            //Identifies that line is the start of a table
             if (listOfLines.get(i).startsWith("|===")) {
-                position = "table";
+                table(listOfLines, i, props);
+                listOfLines.set(i + 1, listOfLines.get(i+1).replaceAll("\\*",""));
             }
 
             //Finds title so we skip over irrelevant lines
@@ -502,6 +517,13 @@ public class Functions {
 
             if (listOfLines.get(i).startsWith("[.h")) {
                 listOfLines.set(i, "");
+                if (!listOfLines.get(i + 1).isBlank()) {
+                    listOfLines.set(i + 1, "");
+                    if (!listOfLines.get(i + 2).isBlank()) {
+                        listOfLines.set(i + 2, "");
+                    }
+                }
+
             }
 
             //Identifies another heading after the intro so we stop skipping over lines
@@ -537,9 +559,9 @@ public class Functions {
             }
 
 
-            //Identifies the start of a table
+//            //Identifies the start of a table
             if (listOfLines.get(i).startsWith("[cols")) {
-                position = "table";
+                listOfLines.set(i, "");
             }
 
             //compares line with the irrelevant ones in startingPhrases
@@ -569,9 +591,9 @@ public class Functions {
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
-                if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i +2).isBlank()) {
-                    if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i +2).isBlank()) {
-                        listOfLines.add(i + 2,"");
+                if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                    if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                        listOfLines.add(i + 2, "");
                         listOfLines.set(i + 1, "```\n{: codeblock)\n\n\n");
                     }
                 }
