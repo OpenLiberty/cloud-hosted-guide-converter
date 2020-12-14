@@ -11,7 +11,6 @@
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.Guard;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
@@ -196,7 +195,7 @@ public class Functions {
     }
 
     public static void finish(ArrayList<String> listOfLines, String guideName, int i) {
-        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd ../..\nrm -r -f " + guideName + "\nrmdir " + guideName + "\n```\n{: codeblock}\n\n\n" + "## Great work! You're done!\n\n";
+        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr cloud-hosted" + guideName + "\n```\n{: codeblock}\n\n\n" + "## Nice work!\n\n";
         listOfLines.set(i, finish);
     }
 
@@ -230,7 +229,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> New File]" + guideName + "/start/" + str + "\n\n\n");
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -273,7 +272,7 @@ public class Functions {
     }
 
     // general text configuration
-    public static void mains(ArrayList<String> listOfLines, Properties prop, Properties props) {
+    public static ArrayList<String> mains(ArrayList<String> listOfLines, Properties prop, Properties props) {
 
         for (int i = 0; i < listOfLines.size(); i++) {
             if (!listOfLines.get(i).startsWith("[.hidden]")) {
@@ -310,6 +309,7 @@ public class Functions {
                 }
             }
         }
+        return listOfLines;
     }
 
 
@@ -399,6 +399,20 @@ public class Functions {
         final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "image::", "start/", "finish/", "system/", "inventory/"};
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
+
+            // Function to add related Guides. (Not Completed)
+//            if (listOfLines.get(i).startsWith(":page-related-guides:")) {
+//                String line = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[")+1,listOfLines.get(i).indexOf("]"));
+//                String[] relatedGuides = line.trim().split("\\s*,\\s*");
+//                for (String e:relatedGuides){
+//                    String relatedGuidesName = e.substring(1, e.length()-1);
+//                    String[] fullLinks = {"https://openliberty.io/guides/" + relatedGuidesName + ".html"};
+//                    System.out.println(Arrays.toString(fullLinks));
+//                    if (i == listOfLines.size()) {
+//
+//                    }
+//                }
+//            }
 
             String pattern2 = "`(.*?)`";
 
@@ -536,7 +550,6 @@ public class Functions {
             }
 
             if (listOfLines.get(i).contains("^]")) {
-                listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
