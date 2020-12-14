@@ -195,7 +195,7 @@ public class Functions {
     }
 
     public static void finish(ArrayList<String> listOfLines, String guideName, int i) {
-        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr cloud-hosted" + guideName + "\n```\n{: codeblock}\n\n\n" + "## Nice work!\n\n";
+        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n\n" + "## Nice work!\n\n";
         listOfLines.set(i, finish);
     }
 
@@ -204,7 +204,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]\n" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -217,7 +217,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open]" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]\n" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -229,7 +229,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> [File -> New File]" + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> New File]\n" + guideName + "/start/" + str + "\n\n\n");
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -358,14 +358,11 @@ public class Functions {
             }
             if (counter == 2) {
                 listOfLines.set(i + 1, line + props.getProperty("2") + "\n");
-            }
-            else if (counter == 3) {
+            } else if (counter == 3) {
                 listOfLines.set(i + 1, line + props.getProperty("3") + "\n");
-            }
-            else if (counter == 4) {
+            } else if (counter == 4) {
                 listOfLines.set(i + 1, line + props.getProperty("4") + "\n");
-            }
-            else if (counter == 5) {
+            } else if (counter == 5) {
                 listOfLines.set(i + 1, line + props.getProperty("5") + "\n");
             }
             return "main";
@@ -521,7 +518,7 @@ public class Functions {
 //            //Identifies that line is the start of a table
             if (listOfLines.get(i).startsWith("|===")) {
                 table(listOfLines, i, props);
-                listOfLines.set(i + 1, listOfLines.get(i+1).replaceAll("\\*",""));
+                listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("\\*", ""));
             }
 
             //Finds title so we skip over irrelevant lines
@@ -550,6 +547,18 @@ public class Functions {
             }
 
             if (listOfLines.get(i).contains("^]")) {
+                if (listOfLines.get(i).contains("https://")) {
+                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https://"), listOfLines.get(i).indexOf("["));
+                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                    if (listOfLines.get(i).indexOf("https://") != -1) {
+                        String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
+                        listOfLines.set(i, check);
+                    }
+                }
+            }
+
+            if (listOfLines.get(i).contains("^]")) {
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
@@ -568,7 +577,6 @@ public class Functions {
                         listOfLines.set(i, check);
                     }
                 }
-//                link(listOfLines, i);
             }
 
 
@@ -601,6 +609,13 @@ public class Functions {
                 if (listOfLines.get(i + 1).isBlank()) {
                     listOfLines.set(i, "");
                 }
+            }
+
+            if (listOfLines.get(i).contains("^]")) {
+                String desc = null;
+                String link = null;
+
+
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
