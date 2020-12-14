@@ -204,7 +204,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]\n" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]\n\n>" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -217,7 +217,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]\n" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]\n\n>" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -229,7 +229,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> [File -> New File]\n" + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> New File]\n\n>" + guideName + "/start/" + str + "\n\n\n");
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
