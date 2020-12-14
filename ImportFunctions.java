@@ -9,9 +9,9 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
@@ -22,8 +22,10 @@ class ImportFunctions {
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            URL url = new URL(CommonURL);
-            Scanner s = new Scanner(url.openStream());
+            File common = new File("Guides-common/" + CommonURL);
+//            URL url = new URL(CommonURL);
+//            Scanner s = new Scanner(url.openStream());
+            Scanner s = new Scanner(common);
             String inputLine = null;
             int counter = 0;
             while (s.hasNextLine()) {
@@ -59,8 +61,10 @@ class ImportFunctions {
             Properties props = new Properties();
 
             props.load(ips);
-            URL url = new URL(CommonURL);
-            Scanner s = new Scanner(url.openStream());
+            File common = new File("Guides-common/" + CommonURL);
+//            URL url = new URL(CommonURL);
+//            Scanner s = new Scanner(url.openStream());
+            Scanner s = new Scanner(common);
             String inputLine = null;
             int counter = 0;
 
@@ -109,8 +113,10 @@ class ImportFunctions {
     public static void OtherGuidesCommon(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            URL url = new URL(CommonURL);
-            Scanner s = new Scanner(url.openStream());
+            File common = new File("Guides-common/" + CommonURL);
+//            URL url = new URL(CommonURL);
+//            Scanner s = new Scanner(url.openStream());
+            Scanner s = new Scanner(common);
             String inputLine = null;
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";

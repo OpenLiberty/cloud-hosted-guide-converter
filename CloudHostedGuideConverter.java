@@ -10,11 +10,7 @@
  *******************************************************************************/
 
 
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
@@ -40,8 +36,9 @@ public class CloudHostedGuideConverter {
 
         try {
             //read adoc file from the open liberty guide
-            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
-            s = new Scanner(url.openStream());
+            File guide = new File("Guide-repo/README.adoc");
+//            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
+            s = new Scanner(guide);
 //          ArrayList for whole text file
             ArrayList<String> listOfLines = new ArrayList<>();
 
