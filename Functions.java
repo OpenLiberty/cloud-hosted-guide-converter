@@ -622,7 +622,7 @@ public class Functions {
                 if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                     if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                         listOfLines.add(i + 2, "");
-                        listOfLines.set(i + 1, "```\n{: codeblock)\n\n\n");
+                        listOfLines.set(i + 1, "```\n{: codeblock}\n\n\n");
                     }
                 }
             }
