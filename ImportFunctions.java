@@ -17,12 +17,12 @@ import java.util.Properties;
 import java.util.Scanner;
 
 class ImportFunctions {
-
+    
     // inserts gitclone.aoc from https://github.com/OpenLiberty/guides-common
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            File common = new File("Guides-common/" + CommonURL);
+            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
 //            URL url = new URL(CommonURL);
 //            Scanner s = new Scanner(url.openStream());
             Scanner s = new Scanner(common);
@@ -80,7 +80,7 @@ class ImportFunctions {
                 if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
                     remove = true;
                     while (!s.nextLine().startsWith("[.tab")) {
-                            continue;
+                        continue;
                     }
                 }
 
