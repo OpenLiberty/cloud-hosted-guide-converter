@@ -195,7 +195,7 @@ public class Functions {
     }
 
     public static void finish(ArrayList<String> listOfLines, String guideName, int i) {
-        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n\n" + "## Nice work!\n\n";
+        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n" + "## Nice work!\n\n";
         listOfLines.set(i, finish);
     }
 
