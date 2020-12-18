@@ -214,7 +214,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]  \n>" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
