@@ -52,11 +52,13 @@ public class Functions {
 
     public static final String codes = "----";
 
+    // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
         listOfLines.get(i).replaceAll("----", "```");
 //        listOfLines.set(i,"```\n");
     }
 
+    // This function uses a for loop to remove pre-set lines/words from the guide
     public static void removingIrrelevant(ArrayList<String> listOfLines, int i, String[] str, int h) {
 
         if (listOfLines.get(i).startsWith(str[h])) {
@@ -64,6 +66,7 @@ public class Functions {
         }
     }
 
+    // This function removes the reference to any diagrams that were in the guide. This is becasue we do not convert images/diagrams, we remove them.
     public static void removeDiagramReference(ArrayList<String> listOfLines, int i) {
         ArrayList<String> list = new ArrayList<String>();
         for (int x = 0; x <= 7; x++) {
@@ -83,6 +86,7 @@ public class Functions {
         }
     }
 
+    // This is a function that inserts {: cdodeblock} after a codeblock
     public static void insertCopyButton(ArrayList<String> listOfLines, int i) {
         ArrayList<String> check = new ArrayList<>();
         int y = 0;
@@ -97,6 +101,7 @@ public class Functions {
         }
     }
 
+    // This removes any windows commands that are use in the guides. This is because we use a pre installed environment given to the users online. This environment is a linux OS so there for windwows commands are not required.
     public static void removeWindowsCommand(ArrayList<String> listOfLines, int i) {
         int counter = 0;
         for (int x = 0; x < 6; x++) {
@@ -111,12 +116,14 @@ public class Functions {
         }
     }
 
+    // This line replaces any dashes as long as they are not part of the testblock.
     public static void replaceDashes(ArrayList<String> listOfLines, int i) {
         if (!listOfLines.get(i).startsWith("--------")) {
             listOfLines.set(i, "```\n");
         }
     }
 
+    // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         for (int x = 0; x < 10; x++) {
@@ -136,6 +143,7 @@ public class Functions {
         }
     }
 
+    // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
         while (!listOfLines.get(i).startsWith("[role='command']")) {
             listOfLines.remove(i);
@@ -160,6 +168,7 @@ public class Functions {
         }
     }
 
+    // Inserts all the Guides-common
     public static void commons(ArrayList<String> listOfLines, String guideName, int i) {
         // The 2 following if statements are used to get from Guides-Common
         String CommonURL = "https://raw.githubusercontent.com/OpenLiberty/guides-common/dev/";
@@ -194,9 +203,10 @@ public class Functions {
         }
     }
 
-    public static void finish(ArrayList<String> listOfLines, String guideName, int i) {
-        String finish = "\n# Summary\n\n## Clean up your environment\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n" + "## Nice work!\n\n";
-        listOfLines.set(i, finish);
+    // This function adds in the last steps of a guide.
+    public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
+        String finish = "## Nice work!\n\n" + lastLine + "\n# Summary\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n";
+        listOfLines.set(i,finish);
     }
 
     //configures instructions to replace file
@@ -204,7 +214,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...] \n>\n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]  \n>" + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -217,7 +227,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...] \n>\n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
@@ -229,7 +239,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> [File -> New File] \n>\n> " + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> [File -> New File]  \n> " + guideName + "/start/" + str + "\n\n\n");
         listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -261,7 +271,6 @@ public class Functions {
                 } else {
                     listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
-//                    writeToFile(element, guideName);
                 return;
             } else {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
@@ -579,6 +588,12 @@ public class Functions {
                 }
             }
 
+            // end of guide
+            if (listOfLines.get(i).startsWith("# Great work! You're done!")) {
+                String lastLine = listOfLines.get(i + 2);
+                listOfLines.set(i + 2, "");
+                finish(listOfLines, lastLine, guideName, i);
+            }
 
 //            //Identifies the start of a table
             if (listOfLines.get(i).startsWith("[cols")) {
@@ -589,11 +604,6 @@ public class Functions {
             for (int h = 0; h < startingPhrases.length; h++) {
                 removingIrrelevant(listOfLines, i, startingPhrases, h);
                 position = "main";
-            }
-
-            // end of guide
-            if (listOfLines.get(i).startsWith("# Great work!")) {
-                finish(listOfLines, guideName, i);
             }
 
             // element contains info that needs general configuration and is not a special case
@@ -614,8 +624,6 @@ public class Functions {
             if (listOfLines.get(i).contains("^]")) {
                 String desc = null;
                 String link = null;
-
-
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
