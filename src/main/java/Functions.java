@@ -181,7 +181,7 @@ public class Functions {
 
             CommonURL = CommonURL + GuidesCommon;
 
-            ImportFunctions.clone(listOfLines, guideName, i, GuidesCommon);
+           ImportFunctions.clone(listOfLines, guideName, i, GuidesCommon);
         }
 
         if (listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]") || listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
@@ -205,7 +205,7 @@ public class Functions {
 
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
-        String finish = "## Nice work!\n\n" + lastLine + "\n# Summary\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n";
+        String finish = "## Clean up your environment\n\n" + lastLine + "\n# Summary\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n";
         listOfLines.set(i,finish);
     }
 
@@ -512,7 +512,7 @@ public class Functions {
 //            }
 
             //Identifies an instruction for windows only and skips the current line
-            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]")) {
+            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]")||listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
                 removeWindowsCommand(listOfLines, i);
             }
 
@@ -619,11 +619,6 @@ public class Functions {
                 if (listOfLines.get(i + 1).isBlank()) {
                     listOfLines.set(i, "");
                 }
-            }
-
-            if (listOfLines.get(i).contains("^]")) {
-                String desc = null;
-                String link = null;
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {

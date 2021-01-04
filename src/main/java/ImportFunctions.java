@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
-class ImportFunctions {
+public class ImportFunctions {
     
     // inserts gitclone.aoc from https://github.com/OpenLiberty/guides-common
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
