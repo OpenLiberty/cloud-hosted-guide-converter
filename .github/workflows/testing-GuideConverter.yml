@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: OpenLiberty/guide-getting-started
-          path: guide-getting-started
+          path: Guide-repo
 
       - name: Checkout guide-microprofile-reactive-messaging-acknowledgment
         uses: actions/checkout@v2
