@@ -13,7 +13,7 @@ public class TestMain {
     @Test
     public void testCompareGuide() throws Exception {
 
-        String[] guide = {"~/guide-getting-started", "master"};
+        String[] guide = {"guide-getting-started", "master"};
 
         CloudHostedGuideConverter.main(guide);
 
