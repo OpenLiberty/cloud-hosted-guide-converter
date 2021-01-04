@@ -17,7 +17,7 @@ public class TestMain {
 
         CloudHostedGuideConverter.main(guide);
 
-        File newGuide = new File("~/guide-getting-started.md");
+        File newGuide = new File("guide-getting-started.md");
         File testingGuide = new File("testing-file.md");
 
 
