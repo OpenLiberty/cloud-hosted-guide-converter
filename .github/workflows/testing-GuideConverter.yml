@@ -33,10 +33,10 @@ jobs:
           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
           architecture: x64 # (x64 or x86) - defaults to x64
 
-  test:
-    runs-on: ubuntu-latest
+    test:
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Testing with Maven
-        run: mvn package
+      steps:
+        - uses: actions/checkout@v2
+        - name: Testing with Maven
+          run: mvn package
