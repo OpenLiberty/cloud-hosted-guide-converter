@@ -4,6 +4,10 @@ on: [push]
 
 jobs:
 
+  prerequisite:
+    name: Pre reqs for testing
+    runs-on: ubuntu-latest
+  
     steps:
 
       # Any prerequisite steps
@@ -25,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: OpenLiberty/guides-common
-          path: guides-common
+          path: uides-common
 
       - uses: actions/setup-java@v1
         with:
@@ -33,10 +37,14 @@ jobs:
           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
           architecture: x64 # (x64 or x86) - defaults to x64
 
-    test:
-      runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v2
-        - name: Testing with Maven
-          run: mvn package
+    steps:
+       uses: actions/setup-java@v1
+        with:
+          java-version: '11' # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+      - name: Testing with Maven
+        run: mvn package
