@@ -36,7 +36,7 @@ public class CloudHostedGuideConverter {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("Guide-repo/README.adoc");
+            File guide = new File(guideName + "/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file

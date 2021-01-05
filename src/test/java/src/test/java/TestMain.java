@@ -251,40 +251,15 @@ public class TestMain {
             File newGuide = new File("testing-clone-method.md");
             File testingGuide = new File("clone.md");
 
-            String CommonURL = "https://raw.githubusercontent.com/OpenLiberty/guides-common/master/cloud-hosted/gitclone.adoc";
+            String CommonURL = "include::{common-includes}/gitclone.adoc[]";
 
+            String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 2);
 
-            URL url = new URL(CommonURL);
-            Scanner s = new Scanner(url.openStream());
             ArrayList<String> listOfLines = new ArrayList<>();
 
-            ArrayList<String> temp = new ArrayList<>();
-            try {
-                File common = new File("Guides-common/cloud-hosted/" + CommonURL);
-                String inputLine = null;
-                int counter = 0;
-                while (s.hasNextLine()) {
-                    inputLine = s.nextLine() + "\n";
-                    if (inputLine.startsWith("----")) {
-                        counter++;
-                    }
-                    if (counter == 1) {
-                        inputLine = inputLine.replaceAll("----", "```");
-                    }
-                    if (counter == 2) {
-                        inputLine = inputLine.replaceAll("----", "```\n{: codeblock}\n");
-                        counter = 0;
-                    }
-                    inputLine = inputLine.replace("guide-{projectid}", "guide-getting-started");
-                    temp.add(inputLine);
-                }
-                temp.subList(0, 7).clear();
-                listOfLines.addAll(temp);
+            listOfLines.add("");
 
-                s.close();
-
-
-                ImportFunctions.clone(listOfLines, "guide-getting-started", 0, CommonURL);
+                ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
 
                 StringBuilder builder = new StringBuilder();
                 for (String value : listOfLines) {
@@ -303,11 +278,7 @@ public class TestMain {
                     IOException e) {
                 e.printStackTrace();
             }
-        } catch (
-                IOException e) {
-            e.printStackTrace();
         }
-    }
 
     public static void writeToFile(String str, String guideName)
             throws IOException {
