@@ -255,7 +255,7 @@ public class TestMain {
 
             String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 3);
 
-            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+            File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
 
             Scanner s = new Scanner(common);
             ArrayList<String> listOfLines = new ArrayList<>();
