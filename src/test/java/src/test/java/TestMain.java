@@ -251,15 +251,15 @@ public class TestMain {
             File newGuide = new File("testing-clone-method.md");
             File testingGuide = new File("clone.md");
 
-            String CommonURL = "https://raw.githubusercontent.com/OpenLiberty/guides-common/master/cloud-hosted/gitclone.adoc";
+            String commonTag = "include::{common-includes}/gitclone.adoc[]";
 
+            String GuidesCommon = commonTag.substring(27, listOfLines.get(i).length() - 3);
 
-            URL url = new URL(CommonURL);
-            Scanner s = new Scanner(url.openStream());
             ArrayList<String> listOfLines = new ArrayList<>();
 
             ArrayList<String> temp = new ArrayList<>();
             try {
+                File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
                 String inputLine = null;
                 int counter = 0;
                 while (s.hasNextLine()) {
