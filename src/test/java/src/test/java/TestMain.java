@@ -255,7 +255,12 @@ public class TestMain {
 
             String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 2);
 
+            System.out.println(GuidesCommon);
+
             File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
+
+            System.out.println(common);
+
 
             Scanner s = new Scanner(common);
             ArrayList<String> listOfLines = new ArrayList<>();
@@ -285,7 +290,7 @@ public class TestMain {
                 s.close();
 
 
-                ImportFunctions.clone(listOfLines, "guide-getting-started", 0, CommonURL);
+                ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
 
                 StringBuilder builder = new StringBuilder();
                 for (String value : listOfLines) {
