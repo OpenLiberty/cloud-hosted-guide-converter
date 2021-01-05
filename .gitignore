@@ -1,6 +1,11 @@
 # Compiled class file
 *.class
-.DS
+.DS_Store
+.classpath
+.project
+*.lst
+*.iml
+*.prefs
 
 # Log file
 *.log
