@@ -251,15 +251,17 @@ public class TestMain {
             File newGuide = new File("testing-clone-method.md");
             File testingGuide = new File("clone.md");
 
-            String commonTag = "include::{common-includes}/gitclone.adoc[]";
+            String CommonURL = "include::{common-includes}/gitclone.adoc[]";
 
-            String GuidesCommon = commonTag.substring(27, listOfLines.get(i).length() - 3);
+            String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 3);
 
+            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+
+            Scanner s = new Scanner(common);
             ArrayList<String> listOfLines = new ArrayList<>();
 
             ArrayList<String> temp = new ArrayList<>();
             try {
-                File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
                 String inputLine = null;
                 int counter = 0;
                 while (s.hasNextLine()) {
