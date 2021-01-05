@@ -260,7 +260,7 @@ public class TestMain {
 
             ArrayList<String> temp = new ArrayList<>();
             try {
-                File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+                File common = new File(CommonURL);
                 String inputLine = null;
                 int counter = 0;
                 while (s.hasNextLine()) {
