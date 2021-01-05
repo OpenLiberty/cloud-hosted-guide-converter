@@ -253,7 +253,7 @@ public class TestMain {
 
             String CommonURL = "include::{common-includes}/gitclone.adoc[]";
 
-            String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 3);
+            String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 2);
 
             File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
 
