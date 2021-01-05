@@ -38,4 +38,4 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
 
       - name: Testing with Maven
-        run: mvn package
+        run: mvn test
