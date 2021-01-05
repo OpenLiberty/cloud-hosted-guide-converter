@@ -36,7 +36,7 @@ public class TestMain {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("/guide-getting-started/README.adoc");
+            File guide = new File("guide-getting-started/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
@@ -90,7 +90,7 @@ public class TestMain {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("/guide-getting-started/README.adoc");
+            File guide = new File("guide-getting-started/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
@@ -145,7 +145,7 @@ public class TestMain {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("/guide-getting-started/README.adoc");
+            File guide = new File("guide-getting-started/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
@@ -198,7 +198,7 @@ public class TestMain {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("/guide-microprofile-reactive-messaging-acknowledgment/README.adoc");
+            File guide = new File("guide-microprofile-reactive-messaging-acknowledgment/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
@@ -341,7 +341,7 @@ public class TestMain {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("/guide-microprofile-reactive-messaging-acknowledgment/README.adoc");
+            File guide = new File("guide-microprofile-reactive-messaging-acknowledgment/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
