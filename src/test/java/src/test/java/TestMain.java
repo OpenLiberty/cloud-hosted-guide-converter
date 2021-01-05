@@ -255,40 +255,9 @@ public class TestMain {
 
             String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 2);
 
-            System.out.println(GuidesCommon);
-
-            File common = new File("Guides-common/cloud-hosted/" + GuidesCommon);
-
-            System.out.println(common);
-
-
-            Scanner s = new Scanner(common);
             ArrayList<String> listOfLines = new ArrayList<>();
 
-            ArrayList<String> temp = new ArrayList<>();
-            try {
-                String inputLine = null;
-                int counter = 0;
-                while (s.hasNextLine()) {
-                    inputLine = s.nextLine() + "\n";
-                    if (inputLine.startsWith("----")) {
-                        counter++;
-                    }
-                    if (counter == 1) {
-                        inputLine = inputLine.replaceAll("----", "```");
-                    }
-                    if (counter == 2) {
-                        inputLine = inputLine.replaceAll("----", "```\n{: codeblock}\n");
-                        counter = 0;
-                    }
-                    inputLine = inputLine.replace("guide-{projectid}", "guide-getting-started");
-                    temp.add(inputLine);
-                }
-                temp.subList(0, 7).clear();
-                listOfLines.addAll(temp);
-
-                s.close();
-
+            listOfLines.add("");
 
                 ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
 
@@ -309,11 +278,7 @@ public class TestMain {
                     IOException e) {
                 e.printStackTrace();
             }
-        } catch (
-                IOException e) {
-            e.printStackTrace();
         }
-    }
 
     public static void writeToFile(String str, String guideName)
             throws IOException {
