@@ -1,4 +1,4 @@
-/*******************************************************************************
+ /*******************************************************************************
  * Copyright (c) 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,7 @@ public class CloudHostedGuideConverter {
 
         try {
             //read adoc file from the open liberty guide
-            File guide = new File("Guide-repo/README.adoc");
+            File guide = new File(guideName + "/README.adoc");
 //            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
             s = new Scanner(guide);
 //          ArrayList for whole text file
@@ -68,7 +68,7 @@ public class CloudHostedGuideConverter {
             }
 
 
-            // Runs the Functions.class
+            // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
 
             //String builder to format the arraylist
