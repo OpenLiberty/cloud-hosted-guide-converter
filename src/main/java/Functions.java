@@ -280,6 +280,9 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
             }
         }
+        if (description.isEmpty()) {
+            description = link;
+        }
         formattedLink = "[" + description + "](" + link + ")";
         listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", formattedLink));
     }
@@ -583,6 +586,10 @@ public class Functions {
                 if (listOfLines.get(i).indexOf("http://") != -1) {
                     String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http:"), listOfLines.get(i).indexOf("["));
                     String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                    if (linkDesc.isEmpty()) {
+                        linkDesc = link;
+                    }
+                    System.out.println(linkDesc);
                     String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
                     if (listOfLines.get(i).indexOf("http://") != -1) {
                         String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
