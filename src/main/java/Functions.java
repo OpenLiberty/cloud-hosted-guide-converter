@@ -205,8 +205,12 @@ public class Functions {
 
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
-        String finish = "## Clean up your environment\n\n" + lastLine + "\n# Summary\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n";
-        listOfLines.set(i,finish);
+        String Summery = "# Summary\n\n## Nice Work!\n\n" + lastLine;
+        listOfLines.set(i,Summery);
+    }
+
+    public static void end(ArrayList<String> listOfLines, String guideName) {
+        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n");
     }
 
     //configures instructions to replace file
@@ -362,7 +366,6 @@ public class Functions {
             for (int n = 0; n < line.length(); n++) {
                 if (line.charAt(n) == '|') {
                     counter++;
-                    System.out.println(counter);
                 }
             }
             if (counter == 2) {
