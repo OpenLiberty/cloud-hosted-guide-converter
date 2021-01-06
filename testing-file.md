@@ -20,7 +20,7 @@ Foundry.
 Maven is an automation build tool that provides an efficient way to develop Java applications.
 Using Maven, you will build a simple microservice, called **system**, that collects basic
 system properties from your laptop and displays them on an endpoint that you can access
-in your web browser.
+in your web browser. 
 
 You'll also explore how to package your application
 with the server runtime so that it can be deployed anywhere in one go. You will then make server configuration and code changes and see how
@@ -100,14 +100,14 @@ for the following message, which indicates that the server startup is complete:
 [INFO] [AUDIT] CWWKF0011I: The server defaultServer is ready to run a smarter planet.
 ```
 
-To access the **system** microservice, see the
+To access the **system** microservice, see the 
 ```
 curl http://localhost:9080/system/properties
 ```
 {: codeblock}
 
 
-URL,
+ URL,
 and you see a list of the various system properties of your JVM:
 
 ```
@@ -148,7 +148,7 @@ mvn liberty:stop
 
 # Updating the server configuration without restarting the server
 
-The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project,
+The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project, 
 including application source code or configuration. The Open Liberty server automatically reloads the configuration without restarting. This goal allows for quicker turnarounds and an improved developer experience.
 
 Stop the Open Liberty server if it is running, and start it in development mode by running the **liberty:dev** goal in the **start** directory:
@@ -173,14 +173,14 @@ curl http://localhost:9080/system/properties
 Now try updating the server configuration while the server is running in development mode.
 The **system** microservice does not currently include health monitoring to report whether the server and the microservice that it runs are healthy.
 You can add health reports with the MicroProfile Health feature, which adds a **/health** endpoint to your application.
-If you try to access this endpoint now at the
+If you try to access this endpoint now at the 
 ```
 curl http://localhost:9080/health/
 ```
 {: codeblock}
 
 
-URL, you see a 404 error because the **/health** endpoint does not yet exist:
+ URL, you see a 404 error because the **/health** endpoint does not yet exist:
 
 ```
 Error 404: java.io.FileNotFoundException: SRVE0190E: File not found: /health
@@ -330,7 +330,7 @@ public class SystemReadinessCheck implements HealthCheck {
 
 
 
-The **SystemReadinessCheck** class verifies that the
+The **SystemReadinessCheck** class verifies that the 
 **system** microservice is not in maintenance by checking a config property.
 
 Create the **SystemLivenessCheck** class.
@@ -376,7 +376,7 @@ public class SystemLivenessCheck implements HealthCheck {
 
 
 
-The **SystemLivenessCheck** class reports a status of
+The **SystemLivenessCheck** class reports a status of 
 **DOWN** if the microservice uses over 90% of the maximum amount of memory.
 
 After you make the file changes, Open Liberty automatically reloads its configuration and the **system** application.
@@ -450,7 +450,7 @@ While the server is running in the foreground, it displays various console messa
 the command-line session. These messages are also logged to the **target/liberty/wlp/usr/servers/defaultServer/logs/console.log**
 file. You can find the complete server logs in the **target/liberty/wlp/usr/servers/defaultServer/logs**
 directory. The **console.log** and **messages.log** files are the primary log files that contain
-console output of the running application and the server. More logs are created when runtime errors
+console output of the running application and the server. More logs are created when runtime errors 
 occur or whenever tracing is enabled. You can find the error logs in the
 **ffdc** directory and the tracing logs in the **trace.log** file.
 
@@ -642,8 +642,8 @@ extracted onto an Open Liberty installation.
 
 Instead of creating a server package, you can generate a runnable JAR file that contains
 the application along with a server runtime. This JAR file can then be run anywhere and deploy
-your application and server at the same time. To generate a runnable JAR file, override the
-**include** property:
+your application and server at the same time. To generate a runnable JAR file, override the 
+**include** property: 
 ```
 mvn liberty:package -Dinclude=runnable
 ```
@@ -668,14 +668,14 @@ java -jar guide-getting-started.jar
 {: codeblock}
 
 
-When the server starts, go to the
+When the server starts, go to the 
 ```
 curl http://localhost:9080/system/properties
 ```
 {: codeblock}
 
 
-URL to access
+ URL to access
 your application that is now running out of the minimal runnable JAR file.
 
 You can stop the server by pressing **CTRL+C** in the command-line session that the server runs in.
@@ -708,7 +708,7 @@ rm -fr guide-getting-started
 ```
 {: codeblock}
 
-Now Log out by navigating to:
+Now Log out by navigating to: 
 
 > [Account -> Logout]
 
