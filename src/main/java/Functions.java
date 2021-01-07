@@ -123,6 +123,10 @@ public class Functions {
         }
     }
 
+    public static void updateUnderscores(ArrayList<String> listOfLines, int i) {
+
+    }
+
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
@@ -181,7 +185,7 @@ public class Functions {
 
             CommonURL = CommonURL + GuidesCommon;
 
-           ImportFunctions.clone(listOfLines, guideName, i, GuidesCommon);
+            ImportFunctions.clone(listOfLines, guideName, i, GuidesCommon);
         }
 
         if (listOfLines.get(i).startsWith("include::{common-includes}/kube-start.adoc[]") || listOfLines.get(i).startsWith("include::{common-includes}/kube-minikube-teardown.adoc[]")) {
@@ -206,7 +210,7 @@ public class Functions {
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
         String Summery = "# Summary\n\n## Nice Work!\n\n" + lastLine;
-        listOfLines.set(i,Summery);
+        listOfLines.set(i, Summery);
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
@@ -343,8 +347,10 @@ public class Functions {
                     if (!inputLine.startsWith("*")) {
                         if (!inputLine.startsWith(" *")) {
                             if (!inputLine.startsWith("#")) {
+                                if (!inputLine.startsWith("<!--") || !inputLine.startsWith("// tag::") || !inputLine.startsWith("// end::")) {
 
-                                code.add(inputLine);
+                                    code.add(inputLine);
+                                }
                             }
                         }
                     }
@@ -518,7 +524,7 @@ public class Functions {
 //            }
 
             //Identifies an instruction for windows only and skips the current line
-            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]")||listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
+            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
                 removeWindowsCommand(listOfLines, i);
             }
 
@@ -628,6 +634,39 @@ public class Functions {
             if (listOfLines.get(i).startsWith("- ")) {
                 if (listOfLines.get(i + 1).isBlank()) {
                     listOfLines.set(i, "");
+                }
+            }
+
+            String pattern3 = "\\*\\*(.*?)_(.*?)\\*\\*";
+            String pattern4 = "\\*\\*io_(.*?)\\*\\*";
+
+            Pattern r3 = Pattern.compile(pattern3);
+            Pattern r4 = Pattern.compile(pattern4);
+
+            Matcher m3 = r3.matcher(listOfLines.get(i));
+
+            if (m3.find()) {
+                if (m3.group().contains("_")) {
+                    String s = m3.group();
+
+                    Matcher m4 = r4.matcher(s);
+                    String s2 = null;
+
+                        if (s.length() < 70) {
+                            s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                            s = "**'" + s + "'**";
+                            System.out.println(s);
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*(.*?)_(.*?)\\*\\*", s));
+                        }
+                        else {}
+
+                    if (m4.find()) {
+                        s2 = m4.group();
+                        s2 = s2.substring(s2.indexOf("**") + 2, s2.lastIndexOf("**"));
+                        s2 = "**'" + s2 + "'**";
+//                        System.out.println(s2);
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*io_(.*?)\\*\\*", s2));
+                    }
                 }
             }
 
