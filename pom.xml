@@ -30,11 +30,27 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <classpathScope>test</classpathScope>
+                    <mainClass>TestConversion</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-selenium</id>
+                        <phase>integration-test</phase>
+                        <goals><goal>java</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
                     <mainClass>CloudHostedGuideConverter</mainClass>
                     <arguments>
-                        <argument>guide-microprofile-reactive-messaging-acknowledgment</argument>
+                        <argument>guide-getting-started</argument>
                         <argument>master</argument>
                     </arguments>
                 </configuration>
@@ -52,8 +68,8 @@
     </build>
 
     <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
 

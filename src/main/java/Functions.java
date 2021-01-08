@@ -123,10 +123,6 @@ public class Functions {
         }
     }
 
-    public static void updateUnderscores(ArrayList<String> listOfLines, int i) {
-
-    }
-
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
@@ -275,7 +271,8 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    System.out.println(localhostSplit[0]);
+                    listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
                     listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
@@ -305,8 +302,9 @@ public class Functions {
                         listOfLines.set(i, listOfLines.get(i).replaceAll(key, value));
                     }
 
+
                     // Removes --
-                    if (listOfLines.get(i).startsWith("--")) {
+                    if (listOfLines.get(i).startsWith("--\n")) {
                         listOfLines.set(i, "");
                     }
 
@@ -347,9 +345,23 @@ public class Functions {
                     if (!inputLine.startsWith("*")) {
                         if (!inputLine.startsWith(" *")) {
                             if (!inputLine.startsWith("#")) {
-                                if (!inputLine.startsWith("<!--") || !inputLine.startsWith("// tag::") || !inputLine.startsWith("// end::")) {
 
-                                    code.add(inputLine);
+                                String pattern5 = "(.*?)<!--(.*?)-->";
+                                String pattern6 = "//(.*?)::";
+
+                                Pattern r5 = Pattern.compile(pattern5);
+                                Pattern r6 = Pattern.compile(pattern6);
+
+                                Matcher m5 = r5.matcher(listOfLines.get(i));
+                                Matcher m6 = r6.matcher(listOfLines.get(i));
+
+                                if (m5.find() || m6.find()) {
+                                    inputLine = "";
+
+
+                                    if (!inputLine.startsWith("")){
+                                        code.add(inputLine);
+                                    }
                                 }
                             }
                         }
@@ -652,13 +664,12 @@ public class Functions {
                     Matcher m4 = r4.matcher(s);
                     String s2 = null;
 
-                        if (s.length() < 70) {
-                            s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                            s = "**'" + s + "'**";
-                            System.out.println(s);
-                            listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*(.*?)_(.*?)\\*\\*", s));
-                        }
-                        else {}
+                    if (s.length() < 70) {
+                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                        s = "**'" + s + "'**";
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*(.*?)_(.*?)\\*\\*", s));
+                    } else {
+                    }
 
                     if (m4.find()) {
                         s2 = m4.group();
@@ -667,6 +678,13 @@ public class Functions {
 //                        System.out.println(s2);
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*io_(.*?)\\*\\*", s2));
                     }
+                }
+            }
+
+            if (listOfLines.get(i).startsWith("docker")) {
+                if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                    listOfLines.add(i + 2, "");
+                    listOfLines.set(i + 2, "{: codeblock}\n\n\n");
                 }
             }
 
