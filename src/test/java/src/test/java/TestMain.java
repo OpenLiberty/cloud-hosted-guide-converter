@@ -3,7 +3,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
