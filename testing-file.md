@@ -162,11 +162,11 @@ mvn liberty:dev
 Development mode automatically picks up changes that you make to your application and allows you to run tests by pressing the **enter/return** key in the active command-line session. When you’re working on your application, rather than rerunning Maven commands, press the **enter/return** key to verify your change.
 
 As before, you can see that the application is running by going to the [http://localhost:9080/system/properties](http://localhost:9080/system/properties) URL
-
 ```
 curl http://localhost:9080/system/properties
 ```
 {: codeblock}
+
 
 
 
@@ -198,18 +198,14 @@ Replace the server configuration file.
 
 ```
 <server description="Sample Liberty server">
-    <!-- tag::features[] -->
     <featureManager>
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
         <feature>cdi-2.0</feature>
         <feature>mpMetrics-2.3</feature>
-        <!-- tag::mpHealth[] -->
         <feature>mpHealth-2.2</feature>
-        <!-- end::mpHealth[] -->
         <feature>mpConfig-1.4</feature>
     </featureManager>
-    <!-- end::features[] -->
 
     <variable name="default.http.port" defaultValue="9080"/>
     <variable name="default.https.port" defaultValue="9443"/>
@@ -217,9 +213,7 @@ Replace the server configuration file.
     <webApplication location="guide-getting-started.war" contextRoot="/" />
     <mpMetrics authentication="false"/>
 
-    <!-- tag::logging[] -->
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
-    <!-- end::logging[] -->
 
     <httpEndpoint host="*" httpPort="${default.http.port}" 
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
@@ -248,11 +242,11 @@ You can see the server being updated in the server log displayed in your command
 ```
 
 Try to access the **/health** endpoint again by visiting the [http://localhost:9080/health](http://localhost:9080/health) URL
-
 ```
 curl http://localhost:9080/health
 ```
 {: codeblock}
+
 
 
 You see the following JSON:
@@ -391,11 +385,11 @@ The following messages display in your first command-line session:
 ```
 
 Access the **/health** endpoint again by going to the [http://localhost:9080/health](http://localhost:9080/health) URL
-
 ```
 curl http://localhost:9080/health
 ```
 {: codeblock}
+
 
 
 This time you see the overall status of your server and the aggregated data of the liveness and readiness checks for the **system** microservice:
@@ -422,19 +416,19 @@ This time you see the overall status of your server and the aggregated data of t
 ```
 
 You can also access the **/health/ready** endpoint by going to the [http://localhost:9080/health/ready](http://localhost:9080/health/ready) URL to view the data from the readiness health check
-
 ```
 curl http://localhost:9080/health/ready
 ```
 {: codeblock}
 
 
-Similarly, access the **/health/live** endpoint by going to the [http://localhost:9080/health/live](http://localhost:9080/health/live) URL to view the data from the liveness health check
 
+Similarly, access the **/health/live** endpoint by going to the [http://localhost:9080/health/live](http://localhost:9080/health/live) URL to view the data from the liveness health check
 ```
 curl http://localhost:9080/health/live
 ```
 {: codeblock}
+
 
 
 
@@ -478,18 +472,14 @@ Replace the server configuration file.
 
 ```
 <server description="Sample Liberty server">
-    <!-- tag::features[] -->
     <featureManager>
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
         <feature>cdi-2.0</feature>
         <feature>mpMetrics-2.3</feature>
-        <!-- tag::mpHealth[] -->
         <feature>mpHealth-2.2</feature>
-        <!-- end::mpHealth[] -->
         <feature>mpConfig-1.4</feature>
     </featureManager>
-    <!-- end::features[] -->
 
     <variable name="default.http.port" defaultValue="9080"/>
     <variable name="default.https.port" defaultValue="9443"/>
@@ -497,9 +487,7 @@ Replace the server configuration file.
     <webApplication location="guide-getting-started.war" contextRoot="/" />
     <mpMetrics authentication="false"/>
 
-    <!-- tag::logging[] -->
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
-    <!-- end::logging[] -->
 
     <httpEndpoint host="*" httpPort="${default.http.port}" 
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
@@ -605,11 +593,11 @@ CONTAINER ID    IMAGE                         CREATED          STATUS           
 ```
 
 To access the application, go to the [http://localhost:9080/system/properties](http://localhost:9080/system/properties) URL
-
 ```
 curl http://localhost:9080/system/properties
 ```
 {: codeblock}
+
 
 
 

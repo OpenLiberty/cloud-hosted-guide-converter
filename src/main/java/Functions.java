@@ -271,7 +271,6 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    System.out.println(localhostSplit[0]);
                     listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
                     listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
@@ -345,29 +344,27 @@ public class Functions {
                     if (!inputLine.startsWith("*")) {
                         if (!inputLine.startsWith(" *")) {
                             if (!inputLine.startsWith("#")) {
-
-                                String pattern5 = "(.*?)<!--(.*?)-->";
-                                String pattern6 = "//(.*?)::";
-
-                                Pattern r5 = Pattern.compile(pattern5);
-                                Pattern r6 = Pattern.compile(pattern6);
-
-                                Matcher m5 = r5.matcher(listOfLines.get(i));
-                                Matcher m6 = r6.matcher(listOfLines.get(i));
-
-                                if (m5.find() || m6.find()) {
-                                    inputLine = "";
-
-
-                                    if (!inputLine.startsWith("")){
                                         code.add(inputLine);
-                                    }
-                                }
                             }
                         }
                     }
                 }
             }
+
+            for (int x = 0; x < code.size(); x++) {
+                String pattern5 = "(.*?)<!--(.*?)-->";
+                String pattern6 = "//(.*?)::";
+
+                Pattern r5 = Pattern.compile(pattern5);
+                Pattern r6 = Pattern.compile(pattern6);
+
+                Matcher m5 = r5.matcher(code.get(x));
+                Matcher m6 = r6.matcher(code.get(x));
+                if (m5.find() || m6.find()) {
+                    code.remove(x);
+                }
+            }
+
             code.add("```\n{: codeblock}\n\n\n");
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
@@ -607,7 +604,6 @@ public class Functions {
                     if (linkDesc.isEmpty()) {
                         linkDesc = link;
                     }
-                    System.out.println(linkDesc);
                     String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
                     if (listOfLines.get(i).indexOf("http://") != -1) {
                         String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
