@@ -276,13 +276,14 @@ public class Functions {
                     listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
-            } else {
-                listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
             }
+//            else {
+//                listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+//            }
         }
-        if (description.isEmpty()) {
-            description = link;
-        }
+//        if (description.isEmpty()) {
+//            description = link;
+//        }
         formattedLink = "[" + description + "](" + link + ")";
         listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", formattedLink));
     }
@@ -344,7 +345,7 @@ public class Functions {
                     if (!inputLine.startsWith("*")) {
                         if (!inputLine.startsWith(" *")) {
                             if (!inputLine.startsWith("#")) {
-                                        code.add(inputLine);
+                                code.add(inputLine);
                             }
                         }
                     }
@@ -577,37 +578,88 @@ public class Functions {
             }
 
             if (listOfLines.get(i).contains("^]")) {
-                if (listOfLines.get(i).contains("https://")) {
-                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https://"), listOfLines.get(i).indexOf("["));
-                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
-                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                    if (listOfLines.get(i).indexOf("https://") != -1) {
-                        String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
-                        listOfLines.set(i, check);
-                    }
-                }
-            }
-
-            if (listOfLines.get(i).contains("^]")) {
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
                 link(listOfLines, i);
             }
 
-
-//            Identifies a link in the file line and configures it
             if (listOfLines.get(i).contains("^]")) {
-                if (listOfLines.get(i).indexOf("http://") != -1) {
-                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http:"), listOfLines.get(i).indexOf("["));
-                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                int counter = 0;
+                char letter = '^';
+                if (listOfLines.get(i).startsWith("* ")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                }
+                for (int x = 0; x < listOfLines.get(i).length(); x++) {
+                    if (listOfLines.get(i).charAt(x) == letter) {
+                        counter++;
+                    }
+                }
+
+
+                String[] moreThen = new String[0];
+                if (counter == 2) {
+                    moreThen = listOfLines.get(i).split("]");
+
+                    moreThen[0] = moreThen[0] + "]";
+                    moreThen[1] = moreThen[1] + "]";
+
+
+//                        if (moreThen.length >= 1) {
+//                            System.out.println(moreThen[1]);
+//                        }
+                }
+
+                if (moreThen.length == 3) {
+                    String link = moreThen[0].substring(moreThen[0].indexOf("http"), moreThen[0].indexOf("["));
+                    String link2 = moreThen[1].substring(moreThen[1].indexOf("http"), moreThen[1].indexOf("["));
+                    String linkDesc = moreThen[0].substring(moreThen[0].indexOf("[") + 1, moreThen[0].indexOf("^"));
                     if (linkDesc.isEmpty()) {
                         linkDesc = link;
                     }
+                    String linkDesc2 = moreThen[1].substring(moreThen[1].indexOf("[") + 1, moreThen[1].indexOf("^"));
+                    if (linkDesc2.isEmpty()) {
+                        linkDesc2 = link2;
+                    }
                     String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                    if (listOfLines.get(i).indexOf("http://") != -1) {
-                        String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
-                        listOfLines.set(i, check);
+                    String fullLink2 = "[" + linkDesc2 + "]" + "(" + link2 + ")";
+                    String wholeLine = listOfLines.get(i);
+                    String begginingOfLine = listOfLines.get(i).substring(0, listOfLines.get(i).indexOf("http"));
+                    wholeLine = wholeLine.replace(begginingOfLine, "");
+                    String endOfLine = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("]") + 1, listOfLines.get(i).length());
+                    wholeLine = wholeLine.replace(endOfLine, "");
+                    wholeLine = wholeLine.replace(link, "");
+                    String middleOfLine = wholeLine.substring(wholeLine.indexOf("]") + 1, wholeLine.indexOf("http"));
+                    String check2 = begginingOfLine + fullLink + middleOfLine + fullLink2 + endOfLine;
+                    listOfLines.set(i, check2);
+
+                } else {
+                    if (listOfLines.get(i).contains("^]")) {
+                        if (listOfLines.get(i).startsWith("* ")) {
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                        }
+//                        if (listOfLines.get(i).contains("https://")) {
+//                            String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https://"), listOfLines.get(i).indexOf("["));
+//                            String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+//                            if (linkDesc.isEmpty()) {
+//                                linkDesc = link;
+//                            }
+//                            String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+//                            if (listOfLines.get(i).indexOf("https://") != -1) {
+//                                String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
+//                                listOfLines.set(i, check);
+//                            }
+//                        }
+                        if (listOfLines.get(i).indexOf("http://") != -1) {
+                            String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
+                            String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                            if (linkDesc.isEmpty()) {
+                                linkDesc = link;
+                            }
+                            String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                            String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
+                            listOfLines.set(i, check);
+                        }
                     }
                 }
             }
@@ -641,7 +693,7 @@ public class Functions {
 
             if (listOfLines.get(i).startsWith("- ")) {
                 if (listOfLines.get(i + 1).isBlank()) {
-                    listOfLines.set(i, "");
+                    listOfLines.set(i, listOfLines.get(i).substring(+1, listOfLines.get(i).length()));
                 }
             }
 
@@ -655,10 +707,10 @@ public class Functions {
                 if (m3.group().contains("_")) {
                     String s = m3.group();
 
-                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                        s = "**'" + s + "'**";
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
-                    }
+                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                    s = "**'" + s + "'**";
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
+                }
             }
 
             if (listOfLines.get(i).startsWith("docker")) {
