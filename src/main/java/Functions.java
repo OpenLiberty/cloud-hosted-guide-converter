@@ -645,11 +645,9 @@ public class Functions {
                 }
             }
 
-            String pattern3 = "\\*\\*(.*?)_(.*?)\\*\\*";
-            String pattern4 = "\\*\\*io_(.*?)\\*\\*";
+            String pattern3 = "\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*";
 
             Pattern r3 = Pattern.compile(pattern3);
-            Pattern r4 = Pattern.compile(pattern4);
 
             Matcher m3 = r3.matcher(listOfLines.get(i));
 
@@ -657,24 +655,10 @@ public class Functions {
                 if (m3.group().contains("_")) {
                     String s = m3.group();
 
-                    Matcher m4 = r4.matcher(s);
-                    String s2 = null;
-
-                    if (s.length() < 70) {
                         s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                         s = "**'" + s + "'**";
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*(.*?)_(.*?)\\*\\*", s));
-                    } else {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                     }
-
-                    if (m4.find()) {
-                        s2 = m4.group();
-                        s2 = s2.substring(s2.indexOf("**") + 2, s2.lastIndexOf("**"));
-                        s2 = "**'" + s2 + "'**";
-//                        System.out.println(s2);
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*io_(.*?)\\*\\*", s2));
-                    }
-                }
             }
 
             if (listOfLines.get(i).startsWith("docker")) {
