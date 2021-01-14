@@ -129,4 +129,25 @@ public class ImportFunctions {
             System.out.println(ex);
         }
     }
+
+    //inserts try what you build-intro from  https://github.com/OpenLiberty/guides-common
+    public static void newTerminal(ArrayList<String> listOfLines, int i, String CommonURL) {
+        ArrayList<String> temp = new ArrayList<>();
+        try {
+            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+            int x = i;
+            Scanner s = new Scanner(common);
+            String inputLine = null;
+            while (s.hasNextLine()) {
+                inputLine = s.nextLine() + "\n";
+                temp.add(inputLine);
+            }
+            temp.add(0, "");
+            listOfLines.addAll(x + 1, temp);
+            temp.add(0, "");
+            s.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
 }

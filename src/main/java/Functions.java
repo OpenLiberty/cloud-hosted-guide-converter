@@ -103,13 +103,13 @@ public class Functions {
 
     // This removes any windows commands that are use in the guides. This is because we use a pre installed environment given to the users online. This environment is a linux OS so there for windwows commands are not required.
     public static void removeWindowsCommand(ArrayList<String> listOfLines, int i) {
-        int counter = 0;
+        int counters = 0;
         for (int x = 0; x < 6; x++) {
             int y = x + i;
             if (listOfLines.get(y).startsWith("--")) {
-                counter++;
+                counters++;
             }
-            if (counter != 2) {
+            if (counters != 2) {
                 listOfLines.set(y, "");
                 listOfLines.set(y + 1, "");
             }
@@ -259,6 +259,10 @@ public class Functions {
         String formattedLink;
         String localhostSplit[];
         String findDescription[];
+        if (listOfLines.get(i).startsWith("-")) {
+            System.out.println("FIND IT ");
+            listOfLines.set(i, listOfLines.get(i).replaceAll("\\-", ""));
+        }
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\{", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\}", ""));
         linkParts = listOfLines.get(i).split("\\[");
@@ -271,19 +275,13 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
-                    listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             }
-//            else {
-//                listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
-//            }
         }
-//        if (description.isEmpty()) {
-//            description = link;
-//        }
         formattedLink = "[" + description + "](" + link + ")";
         listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", formattedLink));
     }
@@ -380,20 +378,20 @@ public class Functions {
     public static String table(ArrayList<String> listOfLines, int i, Properties props) {
         if (listOfLines.get(i).startsWith("|===")) {
             listOfLines.set(i, "");
-            int counter = 0;
+            int counters = 0;
             String line = listOfLines.get(i + 1);
             for (int n = 0; n < line.length(); n++) {
                 if (line.charAt(n) == '|') {
-                    counter++;
+                    counters++;
                 }
             }
-            if (counter == 2) {
+            if (counters == 2) {
                 listOfLines.set(i + 1, line + props.getProperty("2") + "\n");
-            } else if (counter == 3) {
+            } else if (counters == 3) {
                 listOfLines.set(i + 1, line + props.getProperty("3") + "\n");
-            } else if (counter == 4) {
+            } else if (counters == 4) {
                 listOfLines.set(i + 1, line + props.getProperty("4") + "\n");
-            } else if (counter == 5) {
+            } else if (counters == 5) {
                 listOfLines.set(i + 1, line + props.getProperty("5") + "\n");
             }
             return "main";
@@ -423,6 +421,7 @@ public class Functions {
     //Main function that runs all the methods
     public static void ConditionsMethod(ArrayList<String> listOfLines, String guideName, String branch, Properties prop, Properties props) throws IOException {
 
+        int counter = 0;
         String position = "";
         final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "image::", "start/", "finish/", "system/", "inventory/"};
         // Main for loop
@@ -522,28 +521,10 @@ public class Functions {
                 removeAdditionalpres(listOfLines, i);
             }
 
-
-            //Current line is an example output of a mvn test
-//            if (position.equals("testBlock")) {
-//                if (!listOfLines.get(i).startsWith("[INFO]")) {
-//                    listOfLines.set(i, "```\n");
-//                    position = "main";
-//                } else {
-//                    listOfLines.set(i, listOfLines.get(i));
-//                }
-//            }
-
             //Identifies an instruction for windows only and skips the current line
             if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
                 removeWindowsCommand(listOfLines, i);
             }
-
-
-            //Identifies that line is the start of an example output of a mvn test
-//            if (listOfLines.get(i).startsWith("[INFO]")) {
-//                position = "testBlock";
-//                listOfLines.set(i, "```\n" + listOfLines.get(i));
-//            }
 
 
 //            //Identifies that line is the start of a table
@@ -577,37 +558,62 @@ public class Functions {
                 removeLast(guideName);
             }
 
+
+            Boolean flag = false;
+
             if (listOfLines.get(i).contains("^]")) {
+                if (listOfLines.get(i).contains("localhost")) {
+                    counter++;
+                }
+                if (listOfLines.get(i).startsWith("-")) {
+                    System.out.println("FIND IT2 ");
+
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                }
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
-                link(listOfLines, i);
+
+
+                if (counter == 1) {
+                    flag = true;
+                }
+
+                if (flag == true) {
+                    String GuidesCommon = "new-terminal.md";
+
+                    listOfLines.add(i - 1, "");
+                    ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
+                    listOfLines.add(i + 12, "");
+                    flag = false;
+                } else {
+                    link(listOfLines, i);
+                }
             }
 
             if (listOfLines.get(i).contains("^]")) {
-                int counter = 0;
+                int counters = 0;
                 char letter = '^';
+                if (listOfLines.get(i).startsWith("-")) {
+                    System.out.println("FIND IT 3");
+
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                }
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
                 for (int x = 0; x < listOfLines.get(i).length(); x++) {
                     if (listOfLines.get(i).charAt(x) == letter) {
-                        counter++;
+                        counters++;
                     }
                 }
 
-
                 String[] moreThen = new String[0];
-                if (counter == 2) {
+                if (counters == 2) {
                     moreThen = listOfLines.get(i).split("]");
 
                     moreThen[0] = moreThen[0] + "]";
                     moreThen[1] = moreThen[1] + "]";
-
-
-//                        if (moreThen.length >= 1) {
-//                            System.out.println(moreThen[1]);
-//                        }
                 }
 
                 if (moreThen.length == 3) {
@@ -635,21 +641,12 @@ public class Functions {
 
                 } else {
                     if (listOfLines.get(i).contains("^]")) {
+                        if (listOfLines.get(i).startsWith("-")) {
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                        }
                         if (listOfLines.get(i).startsWith("* ")) {
                             listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                         }
-//                        if (listOfLines.get(i).contains("https://")) {
-//                            String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("https://"), listOfLines.get(i).indexOf("["));
-//                            String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
-//                            if (linkDesc.isEmpty()) {
-//                                linkDesc = link;
-//                            }
-//                            String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-//                            if (listOfLines.get(i).indexOf("https://") != -1) {
-//                                String check = listOfLines.get(i).replaceAll("https:(.*?)]", fullLink);
-//                                listOfLines.set(i, check);
-//                            }
-//                        }
                         if (listOfLines.get(i).indexOf("http://") != -1) {
                             String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
                             String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
