@@ -259,10 +259,6 @@ public class Functions {
         String formattedLink;
         String localhostSplit[];
         String findDescription[];
-        if (listOfLines.get(i).startsWith("-")) {
-            System.out.println("FIND IT ");
-            listOfLines.set(i, listOfLines.get(i).replaceAll("\\-", ""));
-        }
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\{", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\}", ""));
         linkParts = listOfLines.get(i).split("\\[");
@@ -283,7 +279,7 @@ public class Functions {
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
-        listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", formattedLink));
+        listOfLines.set(i, listOfLines.get(i).replaceAll("https(.*?)\\^\\]", formattedLink));
     }
 
     // general text configuration
@@ -566,14 +562,11 @@ public class Functions {
                     counter++;
                 }
                 if (listOfLines.get(i).startsWith("-")) {
-                    System.out.println("FIND IT2 ");
-
                     listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                 }
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
-
 
                 if (counter == 1) {
                     flag = true;
@@ -581,6 +574,7 @@ public class Functions {
 
                 if (flag == true) {
                     String GuidesCommon = "new-terminal.md";
+                    link(listOfLines, i);
 
                     listOfLines.add(i - 1, "");
                     ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
@@ -595,8 +589,6 @@ public class Functions {
                 int counters = 0;
                 char letter = '^';
                 if (listOfLines.get(i).startsWith("-")) {
-                    System.out.println("FIND IT 3");
-
                     listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                 }
                 if (listOfLines.get(i).startsWith("* ")) {

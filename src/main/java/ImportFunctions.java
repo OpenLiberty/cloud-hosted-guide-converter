@@ -143,6 +143,8 @@ public class ImportFunctions {
                 temp.add(inputLine);
             }
             temp.add(0, "");
+            temp.add(0, "");
+            temp.add(0, "");
             listOfLines.addAll(x + 1, temp);
             temp.add(0, "");
             s.close();
