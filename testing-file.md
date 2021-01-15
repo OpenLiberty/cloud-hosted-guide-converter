@@ -110,6 +110,7 @@ cd /home/project
 ```
 {: codeblock}
 
+
 To access the **system** microservice, see the 
 ```
 curl http://localhost:9080/system/properties
@@ -171,6 +172,7 @@ mvn liberty:dev
 
 Development mode automatically picks up changes that you make to your application and allows you to run tests by pressing the **enter/return** key in the active command-line session. When you’re working on your application, rather than rerunning Maven commands, press the **enter/return** key to verify your change.
 
+
 As before, you can see that the application is running by going to the [http://localhost:9080/system/properties](http://localhost:9080/system/properties) URL
 
 ```
@@ -183,6 +185,7 @@ curl http://localhost:9080/system/properties
 Now try updating the server configuration while the server is running in development mode.
 The **system** microservice does not currently include health monitoring to report whether the server and the microservice that it runs are healthy.
 You can add health reports with the MicroProfile Health feature, which adds a **/health** endpoint to your application.
+
 If you try to access this endpoint now at the 
 ```
 curl http://localhost:9080/health/
@@ -250,6 +253,7 @@ You can see the server being updated in the server log displayed in your command
 [INFO] [AUDIT] CWWKT0016I: Web application available (default_host): http://foo:9080/
 [INFO] [AUDIT] CWWKZ0003I: The application io.openliberty.guides.getting-started updated in 0.173 seconds.
 ```
+
 
 Try to access the **/health** endpoint again by visiting the [http://localhost:9080/health](http://localhost:9080/health) URL
 
@@ -394,6 +398,7 @@ The following messages display in your first command-line session:
 [INFO] [AUDIT] CWWKZ0003I: The application io.openliberty.guides.getting-started updated in 0.136 seconds.
 ```
 
+
 Access the **/health** endpoint again by going to the [http://localhost:9080/health](http://localhost:9080/health) URL
 
 ```
@@ -425,12 +430,14 @@ This time you see the overall status of your server and the aggregated data of t
 }
 ```
 
+
 You can also access the **/health/ready** endpoint by going to the [http://localhost:9080/health/ready](http://localhost:9080/health/ready) URL to view the data from the readiness health check
 
 ```
 curl http://localhost:9080/health/ready
 ```
 {: codeblock}
+
 
 
 Similarly, access the **/health/live** endpoint by going to the [http://localhost:9080/health/live](http://localhost:9080/health/live) URL to view the data from the liveness health check
@@ -602,6 +609,7 @@ CONTAINER ID    IMAGE                         CREATED          STATUS           
 4294a6bdf41b    openliberty-getting-started   9 seconds ago    Up 11 seconds    gettingstarted-app
 ```
 
+
 To access the application, go to the [http://localhost:9080/system/properties](http://localhost:9080/system/properties) URL
 
 ```
@@ -664,6 +672,7 @@ directory and run the **java -jar** command:
 java -jar guide-getting-started.jar
 ```
 {: codeblock}
+
 
 
 When the server starts, go to the 
