@@ -271,11 +271,15 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    listOfLines.set(i, "\n" + localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 } else {
                     listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
+            } else {
+                if (!listOfLines.get(i).contains("curl")) {
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                }
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
@@ -326,7 +330,8 @@ public class Functions {
 
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
-    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path) {
+    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
+                                                int i, String path) {
         try {
             ArrayList<String> code = new ArrayList<String>();
             URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/finish/" + path);
@@ -415,7 +420,8 @@ public class Functions {
 
 
     //Main function that runs all the methods
-    public static void ConditionsMethod(ArrayList<String> listOfLines, String guideName, String branch, Properties prop, Properties props) throws IOException {
+    public static void ConditionsMethod(ArrayList<String> listOfLines, String guideName, String
+            branch, Properties prop, Properties props) throws IOException {
 
         int counter = 0;
         String position = "";
@@ -437,13 +443,16 @@ public class Functions {
 //                }
 //            }
 
-            String pattern2 = "`(.*?)`";
+            String pattern2 = "`(.*?)(\\w)(.*?)(\\w)(.*?)`";
+            String pattern5 = "(?m)^[```]$";
 
             Pattern r2 = Pattern.compile(pattern2);
+            Pattern r5 = Pattern.compile(pattern5);
 
             Matcher m2 = r2.matcher(listOfLines.get(i));
+            Matcher m5 = r5.matcher(listOfLines.get(i));
 
-            if (m2.find() && !listOfLines.get(i).startsWith("```")) {
+            if (m2.find() && !m5.find()) {
                 listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
             }
 
@@ -558,6 +567,7 @@ public class Functions {
             Boolean flag = false;
 
             if (listOfLines.get(i).contains("^]")) {
+                link(listOfLines, i);
                 if (listOfLines.get(i).contains("localhost")) {
                     counter++;
                 }
@@ -574,16 +584,14 @@ public class Functions {
 
                 if (flag == true) {
                     String GuidesCommon = "new-terminal.md";
-                    link(listOfLines, i);
 
                     listOfLines.add(i - 1, "");
                     ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
                     listOfLines.add(i + 12, "");
                     flag = false;
-                } else {
-                    link(listOfLines, i);
                 }
             }
+
 
             if (listOfLines.get(i).contains("^]")) {
                 int counters = 0;
@@ -706,6 +714,20 @@ public class Functions {
                 if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                     listOfLines.add(i + 2, "");
                     listOfLines.set(i + 2, "{: codeblock}\n\n\n");
+                }
+            }
+
+            if (listOfLines.get(i).contains("codeblock")) {
+                String pattern6 = "(?m)^(.*?)codeblock(.*?)$";
+
+                Pattern r6 = Pattern.compile(pattern6);
+
+                Matcher m6 = r6.matcher(listOfLines.get(i));
+
+                if (m6.find()) {
+                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+                    }
                 }
             }
 

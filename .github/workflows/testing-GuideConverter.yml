@@ -5,7 +5,7 @@ on: [push]
 jobs:
 
   prereqs:
-    name: Getting pre reqs for testing
+    name: Testing GuideConverter
     runs-on: ubuntu-latest
   
     steps:

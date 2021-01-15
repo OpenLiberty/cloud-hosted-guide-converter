@@ -2,7 +2,7 @@
 ////
 == Getting started
 
-Open a terminal window:
+Open a command-line session:
 
 > [Terminal -> New Terminal]
 
