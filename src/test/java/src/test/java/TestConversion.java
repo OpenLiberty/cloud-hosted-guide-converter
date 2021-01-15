@@ -91,5 +91,4 @@ public class TestConversion {
     public void testWindowsCommand() {
         Assert.assertTrue(!inputLine.contains("[.tab_content"));
     }
-
 }
