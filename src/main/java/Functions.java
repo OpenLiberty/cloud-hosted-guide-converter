@@ -273,7 +273,7 @@ public class Functions {
                 if (localhostSplit.length == 2) {
                     listOfLines.set(i, localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 } else {
-                    listOfLines.set(i, localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
@@ -283,7 +283,7 @@ public class Functions {
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
-        listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", formattedLink));
+        listOfLines.set(i, listOfLines.get(i).replaceAll("https(.*?)\\^\\]", formattedLink));
     }
 
     // general text configuration
