@@ -25,6 +25,12 @@ The CloudHostedGuideConverter has 4 classes:
  3\. This class reads in `guides-commons` files from github. This is because the original guides use `guides-common` to get pre set parts of guides imported. This means that the SN guides will stay up to date with the original guides.
  
  4\. This function allows us to over ride the `.equals()` method of java. When trying to use `.equals()` on a Array List it allows you to compare if a line equals a different line in that list, however we are trying to do `.equals(STRING||INTEGER)`. Because we have over ridden the original function we are now capable of doing so. 
+
+There are also 2 Test files: `TestMain` and `TestConversion`.
+
+1\. `TestMain` - This file holds a few simple JUnit tests that are used to test the actual code of the Cloud Hosted Guide Converter. This test file is run every time someone creates a PR to the `main` branch of the converter.
+
+2\. `TestConversion` - This file holds tests to test the converted guide in the `Cloud-Hosted-Guides` repo. It's results can be found in each one of the PRs created by the GuideConverter action. 
  
  
 
@@ -32,9 +38,9 @@ The CloudHostedGuideConverter has 4 classes:
 
 When updating/maintaing the Cloud-hosted-guide-converter:
 1. Pull this repository to your local machine and do the changes there. Once the changes are done, try running the guide converter with some guides. Do this by running the following commands from your terminal (make sure you are in the same directory as the GuideConverter files) :
-   * `javac *.java`
+   * `mvn compiler:compile`
   
-   * `java CloudHostedGuideConverter GUIDE_NAME BRANCH_NAME` (e.g - `java CloudHostedGuideConverter guide-microprofile-reactive-messaging master`) 
+   * `mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" `(e.g - ` mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"`) 
   
 2. Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
   
