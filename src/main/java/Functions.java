@@ -273,7 +273,7 @@ public class Functions {
                 if (localhostSplit.length == 2) {
                     listOfLines.set(i, "\n" + localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
@@ -423,6 +423,7 @@ public class Functions {
     public static void ConditionsMethod(ArrayList<String> listOfLines, String guideName, String
             branch, Properties prop, Properties props) throws IOException {
 
+        Boolean flag = false;
         int counter = 0;
         String position = "";
         final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "image::", "start/", "finish/", "system/", "inventory/"};
@@ -563,9 +564,6 @@ public class Functions {
                 removeLast(guideName);
             }
 
-
-            Boolean flag = false;
-
             if (listOfLines.get(i).contains("^]")) {
                 link(listOfLines, i);
                 if (listOfLines.get(i).contains("localhost")) {
@@ -596,8 +594,8 @@ public class Functions {
             if (listOfLines.get(i).contains("^]")) {
                 int counters = 0;
                 char letter = '^';
-                if (listOfLines.get(i).startsWith("-")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                if (listOfLines.get(i).startsWith("- ")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
                 }
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
@@ -660,6 +658,17 @@ public class Functions {
                     }
                 }
             }
+
+            if (listOfLines.get(i).contains("^]")) {
+                if (listOfLines.get(i).startsWith("-")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                }
+                if (listOfLines.get(i).startsWith("* ")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                }
+                link(listOfLines, i);
+            }
+
 
             // end of guide
             if (listOfLines.get(i).startsWith("# Great work! You're done!")) {
@@ -728,6 +737,27 @@ public class Functions {
                     if (!listOfLines.get(i).startsWith("{: codeblock}")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
                     }
+                }
+            }
+
+            String pattern7 = "(?m)^(.\s)$";
+            String pattern8 = "(?m)^(.)$";
+
+            Pattern r7 = Pattern.compile(pattern7);
+            Pattern r8 = Pattern.compile(pattern8);
+
+            Matcher m7 = r7.matcher(listOfLines.get(i));
+            Matcher m8 = r8.matcher(listOfLines.get(i));
+
+            if (m7.find()) {
+                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}")|| !listOfLines.get(i).contains("(")|| !listOfLines.get(i).contains(")")) {
+                listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^(.\s)$",""));
+                }
+            }
+
+            if (m8.find()) {
+                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}")|| !listOfLines.get(i).contains("(")|| !listOfLines.get(i).contains(")")) {
+                    listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^(.\s)$",""));
                 }
             }
 

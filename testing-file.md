@@ -111,6 +111,19 @@ cd /home/project
 {: codeblock}
 
 
+
+Open a command-line session:
+
+> [Terminal -> New Terminal]
+
+Navigate to the **/home/project** directory:
+
+```
+cd /home/project
+```
+{: codeblock}
+
+
 To access the **system** microservice, see the 
 ```
 curl http://localhost:9080/system/properties
@@ -370,7 +383,7 @@ public class SystemLivenessCheck implements HealthCheck {
         MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
         long memUsed = memBean.getHeapMemoryUsage().getUsed();
         long memMax = memBean.getHeapMemoryUsage().getMax();
-  
+
         return HealthCheckResponse.named(
             SystemResource.class.getSimpleName() + " Liveness Check")
                                   .withData("memory used", memUsed)
