@@ -99,6 +99,8 @@ for the following message, which indicates that the server startup is complete:
 ```
 [INFO] [AUDIT] CWWKF0011I: The server defaultServer is ready to run a smarter planet.
 ```
+
+
 Open a command-line session:
 
 > [Terminal -> New Terminal]
@@ -370,7 +372,7 @@ public class SystemLivenessCheck implements HealthCheck {
         MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
         long memUsed = memBean.getHeapMemoryUsage().getUsed();
         long memMax = memBean.getHeapMemoryUsage().getMax();
-  
+
         return HealthCheckResponse.named(
             SystemResource.class.getSimpleName() + " Liveness Check")
                                   .withData("memory used", memUsed)

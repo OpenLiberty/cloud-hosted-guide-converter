@@ -142,9 +142,8 @@ public class ImportFunctions {
                 inputLine = s.nextLine() + "\n";
                 temp.add(inputLine);
             }
-            temp.add(0, "");
-            temp.add(0, "");
-            temp.add(0, "");
+            temp.add(0, "\n");
+            temp.add(0, "\n");
             listOfLines.addAll(x + 1, temp);
             temp.add(0, "");
             s.close();
