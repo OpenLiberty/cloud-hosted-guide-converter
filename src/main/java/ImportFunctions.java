@@ -144,6 +144,7 @@ public class ImportFunctions {
             }
             temp.add(0, "\n");
             temp.add(0, "\n");
+            temp.add("\n");
             listOfLines.addAll(x + 1, temp);
             temp.add(0, "");
             s.close();
