@@ -271,14 +271,14 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1].trim());
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
                 }
             }
         }
