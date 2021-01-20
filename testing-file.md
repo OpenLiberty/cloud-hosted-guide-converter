@@ -99,17 +99,6 @@ for the following message, which indicates that the server startup is complete:
 ```
 [INFO] [AUDIT] CWWKF0011I: The server defaultServer is ready to run a smarter planet.
 ```
-Open a command-line session:
-
-> [Terminal -> New Terminal]
-
-Navigate to the **/home/project** directory:
-
-```
-cd /home/project
-```
-{: codeblock}
-
 
 
 Open a command-line session:
@@ -122,6 +111,7 @@ Navigate to the **/home/project** directory:
 cd /home/project
 ```
 {: codeblock}
+
 
 
 To access the **system** microservice, see the 

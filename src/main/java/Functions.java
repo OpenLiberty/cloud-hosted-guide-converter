@@ -271,9 +271,9 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, "\n" + localhostSplit[0] + localhostSplit[1] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1].trim());
                 } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
@@ -564,6 +564,10 @@ public class Functions {
                 removeLast(guideName);
             }
 
+            if (listOfLines.get(i).contains("\\http")) {
+                listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
+            }
+
             if (listOfLines.get(i).contains("^]")) {
                 link(listOfLines, i);
                 if (listOfLines.get(i).contains("localhost")) {
@@ -750,14 +754,14 @@ public class Functions {
             Matcher m8 = r8.matcher(listOfLines.get(i));
 
             if (m7.find()) {
-                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}")|| !listOfLines.get(i).contains("(")|| !listOfLines.get(i).contains(")")) {
-                listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^(.\s)$",""));
+                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
                 }
             }
 
             if (m8.find()) {
-                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}")|| !listOfLines.get(i).contains("(")|| !listOfLines.get(i).contains(")")) {
-                    listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^(.\s)$",""));
+                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
                 }
             }
 
