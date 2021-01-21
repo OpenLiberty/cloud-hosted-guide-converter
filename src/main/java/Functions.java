@@ -271,20 +271,23 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    localhostSplit[0] = localhostSplit[0].replaceAll("http(.*?)\\^\\]", "");
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    localhostSplit[0] = localhostSplit[0].replaceAll("http(.*?)\\^\\]", "");
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ("\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
                 }
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
         listOfLines.set(i, listOfLines.get(i).replaceAll("https(.*?)\\^\\]", formattedLink));
     }
+
 
     // general text configuration
     public static ArrayList<String> mains(ArrayList<String> listOfLines, Properties prop, Properties props) {
@@ -340,7 +343,7 @@ public class Functions {
             code.add("```\n");
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-                if (!inputLine.replaceAll(" ", "").startsWith("/")) {
+                if (!inputLine.replaceAll(" ", "").startsWith("//")) {
                     if (!inputLine.startsWith("*")) {
                         if (!inputLine.startsWith(" *")) {
                             if (!inputLine.startsWith("#")) {
@@ -552,7 +555,6 @@ public class Functions {
                         listOfLines.set(i + 2, "");
                     }
                 }
-
             }
 
             //Identifies another heading after the intro so we stop skipping over lines
@@ -604,43 +606,44 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
-                for (int x = 0; x < listOfLines.get(i).length(); x++) {
-                    if (listOfLines.get(i).charAt(x) == letter) {
-                        counters++;
+                if (!listOfLines.get(i).contains("localhost")) {
+                    for (int x = 0; x < listOfLines.get(i).length(); x++) {
+                        if (listOfLines.get(i).charAt(x) == letter) {
+                            counters++;
+                        }
                     }
-                }
 
-                String[] moreThen = new String[0];
-                if (counters == 2) {
-                    moreThen = listOfLines.get(i).split("]");
+                    String[] moreThen = new String[0];
+                    if (counters == 2) {
+                        moreThen = listOfLines.get(i).split("]");
 
-                    moreThen[0] = moreThen[0] + "]";
-                    moreThen[1] = moreThen[1] + "]";
-                }
-
-                if (moreThen.length == 3) {
-                    String link = moreThen[0].substring(moreThen[0].indexOf("http"), moreThen[0].indexOf("["));
-                    String link2 = moreThen[1].substring(moreThen[1].indexOf("http"), moreThen[1].indexOf("["));
-                    String linkDesc = moreThen[0].substring(moreThen[0].indexOf("[") + 1, moreThen[0].indexOf("^"));
-                    if (linkDesc.isEmpty()) {
-                        linkDesc = link;
+                        moreThen[0] = moreThen[0] + "]";
+                        moreThen[1] = moreThen[1] + "]";
                     }
-                    String linkDesc2 = moreThen[1].substring(moreThen[1].indexOf("[") + 1, moreThen[1].indexOf("^"));
-                    if (linkDesc2.isEmpty()) {
-                        linkDesc2 = link2;
-                    }
-                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                    String fullLink2 = "[" + linkDesc2 + "]" + "(" + link2 + ")";
-                    String wholeLine = listOfLines.get(i);
-                    String begginingOfLine = listOfLines.get(i).substring(0, listOfLines.get(i).indexOf("http"));
-                    wholeLine = wholeLine.replace(begginingOfLine, "");
-                    String endOfLine = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("]") + 1, listOfLines.get(i).length());
-                    wholeLine = wholeLine.replace(endOfLine, "");
-                    wholeLine = wholeLine.replace(link, "");
-                    String middleOfLine = wholeLine.substring(wholeLine.indexOf("]") + 1, wholeLine.indexOf("http"));
-                    String check2 = begginingOfLine + fullLink + middleOfLine + fullLink2 + endOfLine;
-                    listOfLines.set(i, check2);
 
+                    if (moreThen.length == 3) {
+                        String link = moreThen[0].substring(moreThen[0].indexOf("http"), moreThen[0].indexOf("["));
+                        String link2 = moreThen[1].substring(moreThen[1].indexOf("http"), moreThen[1].indexOf("["));
+                        String linkDesc = moreThen[0].substring(moreThen[0].indexOf("[") + 1, moreThen[0].indexOf("^"));
+                        if (linkDesc.isEmpty()) {
+                            linkDesc = link;
+                        }
+                        String linkDesc2 = moreThen[1].substring(moreThen[1].indexOf("[") + 1, moreThen[1].indexOf("^"));
+                        if (linkDesc2.isEmpty()) {
+                            linkDesc2 = link2;
+                        }
+                        String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                        String fullLink2 = "[" + linkDesc2 + "]" + "(" + link2 + ")";
+                        String wholeLine = listOfLines.get(i);
+                        String begginingOfLine = listOfLines.get(i).substring(0, listOfLines.get(i).indexOf("http"));
+                        wholeLine = wholeLine.replace(begginingOfLine, "");
+                        String endOfLine = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("]") + 1, listOfLines.get(i).length());
+                        wholeLine = wholeLine.replace(endOfLine, "");
+                        wholeLine = wholeLine.replace(link, "");
+                        String middleOfLine = wholeLine.substring(wholeLine.indexOf("]") + 1, wholeLine.indexOf("http"));
+                        String check2 = begginingOfLine + fullLink + middleOfLine + fullLink2 + endOfLine;
+                        listOfLines.set(i, check2);
+                    }
                 } else {
                     if (listOfLines.get(i).contains("^]")) {
                         if (listOfLines.get(i).startsWith("-")) {
@@ -650,14 +653,16 @@ public class Functions {
                             listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                         }
                         if (listOfLines.get(i).indexOf("http://") != -1) {
-                            String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
-                            String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
-                            if (linkDesc.isEmpty()) {
-                                linkDesc = link;
+                            if (!listOfLines.get(i).contains("localhost")) {
+                                String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
+                                String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                                if (linkDesc.isEmpty()) {
+                                    linkDesc = link;
+                                }
+                                String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                                String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
+                                listOfLines.set(i, check);
                             }
-                            String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                            String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
-                            listOfLines.set(i, check);
                         }
                     }
                 }
@@ -763,6 +768,11 @@ public class Functions {
                 if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
                 }
+            }
+
+            if (listOfLines.get(i).contains("^]")) {
+//                System.out.println(listOfLines.get(i));
+                link(listOfLines,i);
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
