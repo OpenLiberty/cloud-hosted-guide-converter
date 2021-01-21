@@ -271,10 +271,10 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    localhostSplit[0] = localhostSplit[0].replaceAll("http(.*?)\\^\\]", "");
+                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[http(.*?)\\^\\]", "");
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
-                    localhostSplit[0] = localhostSplit[0].replaceAll("http(.*?)\\^\\]", "");
+                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[http(.*?)\\^\\]", "");
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
