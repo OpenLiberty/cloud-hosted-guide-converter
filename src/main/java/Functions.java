@@ -747,7 +747,7 @@ public class Functions {
                     String s = m3.group();
 
                     s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                    s = "**'" + s + "'**";
+                    s = "**`" + s + "`**";
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                 }
             }
