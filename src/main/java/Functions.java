@@ -124,7 +124,7 @@ public class Functions {
 
             if (listOfLines.get(x).startsWith("#Update the `CustomConfigSource` configuration file.#")) {
                 position = "finishUpdate";
-                codeInsert(listOfLines.get(x),listOfLines,guideName,branch,x,position);
+                codeInsert(listOfLines.get(x), listOfLines, guideName, branch, x, position);
             }
         }
     }
@@ -149,11 +149,12 @@ public class Functions {
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
             touch(listOfLines, guideName, branch, g, position);
-        } if (atIndex.startsWith("#Update")&&position != "finishUpdate") {
+        }
+        if (atIndex.startsWith("#Update") && position != "finishUpdate") {
             update(listOfLines, guideName, branch, g, position);
         } else if (atIndex.startsWith("#Replace")) {
             replace(listOfLines, guideName, branch, g, position);
-        } else if (atIndex.startsWith("#Update")&&position == "finishUpdate") {
+        } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
             updateFinish(listOfLines, guideName, branch, g, position);
         }
     }
@@ -251,6 +252,7 @@ public class Functions {
         position = "main";
         return position;
     }
+
     public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
@@ -393,7 +395,7 @@ public class Functions {
             }
 
             code.add("```\n{: codeblock}\n\n\n");
-            listOfLines.addAll(i , code);
+            listOfLines.addAll(i, code);
         } catch (IOException ex) {
 
             System.out.println(ex);
@@ -594,34 +596,8 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
             }
 
-            if (listOfLines.get(i).contains("^]")) {
-                link(listOfLines, i);
-                if (listOfLines.get(i).contains("localhost")) {
-                    counter++;
-                }
-                if (listOfLines.get(i).startsWith("-")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
-                }
-                if (listOfLines.get(i).startsWith("* ")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
-                }
-
-                if (counter == 1) {
-                    flag = true;
-                }
-
-                if (flag == true) {
-                    String GuidesCommon = "new-terminal.md";
-
-                    listOfLines.add(i - 1, "");
-                    ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
-                    listOfLines.add(i + 12, "");
-                    flag = false;
-                }
-            }
-
-
-            if (listOfLines.get(i).contains("^]")) {
+            if (listOfLines.get(i).indexOf("^]") > 1) {
+                System.out.println(listOfLines.get(i));
                 int counters = 0;
                 char letter = '^';
                 if (listOfLines.get(i).startsWith("- ")) {
@@ -693,13 +669,29 @@ public class Functions {
             }
 
             if (listOfLines.get(i).contains("^]")) {
+                link(listOfLines, i);
+                if (listOfLines.get(i).contains("localhost")) {
+                    counter++;
+                }
                 if (listOfLines.get(i).startsWith("-")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                 }
                 if (listOfLines.get(i).startsWith("* ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
                 }
-                link(listOfLines, i);
+
+                if (counter == 1) {
+                    flag = true;
+                }
+
+                if (flag == true) {
+                    String GuidesCommon = "new-terminal.md";
+
+                    listOfLines.add(i - 1, "");
+                    ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
+                    listOfLines.add(i + 12, "");
+                    flag = false;
+                }
             }
 
 
@@ -744,11 +736,13 @@ public class Functions {
 
             if (m3.find()) {
                 if (m3.group().contains("_")) {
-                    String s = m3.group();
+                    if ((m3.group().length() < 70)) {
+                        String s = m3.group();
 
-                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                    s = "**`" + s + "`**";
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
+                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                        s = "**`" + s + "`**";
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
+                    }
                 }
             }
 
@@ -794,11 +788,6 @@ public class Functions {
                 }
             }
 
-            if (listOfLines.get(i).contains("^]")) {
-//                System.out.println(listOfLines.get(i));
-                link(listOfLines, i);
-            }
-
             if (listOfLines.get(i).startsWith("mvn")) {
                 if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                     if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
@@ -807,9 +796,12 @@ public class Functions {
                     }
                 }
             }
-            if (listOfLines.get(i).startsWith("### Try what you'll build")) {
-                int g = i + 1;
-                Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+
+            if (guideName == "guide-microprofile-rest-client") {
+                if (listOfLines.get(i).startsWith("### Try what you'll build")) {
+                    int g = i + 1;
+                    Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+                }
             }
         }
     }
