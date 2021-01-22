@@ -285,7 +285,7 @@ public class Functions {
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
-        listOfLines.set(i, listOfLines.get(i).replaceAll("\\[(.*?)\\^\\]", formattedLink));
+        listOfLines.set(i, listOfLines.get(i).replaceAll("(.*?)\\^\\]", formattedLink));
     }
 
 
