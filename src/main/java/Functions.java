@@ -271,10 +271,10 @@ public class Functions {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
-                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[http(.*?)\\^\\]", "");
+                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                 } else {
-                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[http(.*?)\\^\\]", "");
+                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
@@ -285,7 +285,7 @@ public class Functions {
             }
         }
         formattedLink = "[" + description + "](" + link + ")";
-        listOfLines.set(i, listOfLines.get(i).replaceAll("https(.*?)\\^\\]", formattedLink));
+        listOfLines.set(i, listOfLines.get(i).replaceAll("\\[(.*?)\\^\\]", formattedLink));
     }
 
 
@@ -344,10 +344,12 @@ public class Functions {
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
-                    if (!inputLine.startsWith("*")) {
-                        if (!inputLine.startsWith(" *")) {
-                            if (!inputLine.startsWith("#")) {
-                                code.add(inputLine);
+                    if (!inputLine.startsWith("/******")) {
+                        if (!inputLine.startsWith("*")) {
+                            if (!inputLine.startsWith(" *")) {
+                                if (!inputLine.startsWith("#")) {
+                                    code.add(inputLine);
+                                }
                             }
                         }
                     }
@@ -735,7 +737,7 @@ public class Functions {
                 }
             }
 
-            if (listOfLines.get(i).contains("codeblock")) {
+            if (listOfLines.get(i).contains(": codeblock")) {
                 String pattern6 = "(?m)^(.*?)codeblock(.*?)$";
 
                 Pattern r6 = Pattern.compile(pattern6);
@@ -772,7 +774,7 @@ public class Functions {
 
             if (listOfLines.get(i).contains("^]")) {
 //                System.out.println(listOfLines.get(i));
-                link(listOfLines,i);
+                link(listOfLines, i);
             }
 
             if (listOfLines.get(i).startsWith("mvn")) {
