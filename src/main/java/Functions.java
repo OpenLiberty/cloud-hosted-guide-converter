@@ -116,6 +116,20 @@ public class Functions {
         }
     }
 
+
+    public static void CheckTWYB(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
+        ArrayList<String> tempList = new ArrayList<>();
+        for (int x = i; !listOfLines.get(x).startsWith("# Enabling fault tolerance"); x++) {
+//                System.out.println(x);
+
+            if (listOfLines.get(x).startsWith("#Update the `CustomConfigSource` configuration file.#")) {
+                position = "finishUpdate";
+                codeInsert(listOfLines.get(x),listOfLines,guideName,branch,x,position);
+            }
+        }
+    }
+
+
     // This line replaces any dashes as long as they are not part of the testblock.
     public static void replaceDashes(ArrayList<String> listOfLines, int i) {
         if (!listOfLines.get(i).startsWith("--------")) {
@@ -135,11 +149,12 @@ public class Functions {
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
             touch(listOfLines, guideName, branch, g, position);
-        }
-        if (atIndex.startsWith("#Update")) {
+        } if (atIndex.startsWith("#Update")&&position != "finishUpdate") {
             update(listOfLines, guideName, branch, g, position);
         } else if (atIndex.startsWith("#Replace")) {
             replace(listOfLines, guideName, branch, g, position);
+        } else if (atIndex.startsWith("#Update")&&position == "finishUpdate") {
+            updateFinish(listOfLines, guideName, branch, g, position);
         }
     }
 
@@ -219,7 +234,6 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
-        listOfLines.add(i, "\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -233,7 +247,16 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        listOfLines.add(i, "\n");
+        codeSnippet(listOfLines, guideName, branch, i + 2, str);
+        position = "main";
+        return position;
+    }
+    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
+        String str = listOfLines.get(i).replaceAll("`", "");
+        listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
+        listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
+        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
@@ -244,7 +267,6 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
         listOfLines.set(i, "\n> [File -> New File]  \n> " + guideName + "/start/" + str + "\n\n\n");
-        listOfLines.add(i, "\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
@@ -333,13 +355,13 @@ public class Functions {
 
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
-    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
-                                                int i, String path) {
+    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path) {
         try {
             ArrayList<String> code = new ArrayList<String>();
             URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/finish/" + path);
             Scanner s = new Scanner(url.openStream());
             String inputLine = null;
+            code.add("\n");
             code.add("```\n");
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
@@ -371,7 +393,7 @@ public class Functions {
             }
 
             code.add("```\n{: codeblock}\n\n\n");
-            listOfLines.addAll(i, code);
+            listOfLines.addAll(i , code);
         } catch (IOException ex) {
 
             System.out.println(ex);
@@ -784,6 +806,10 @@ public class Functions {
                         listOfLines.set(i + 1, "```\n{: codeblock}\n\n\n");
                     }
                 }
+            }
+            if (listOfLines.get(i).startsWith("### Try what you'll build")) {
+                int g = i + 1;
+                Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
             }
         }
     }
