@@ -735,11 +735,11 @@ public class Functions {
 
             if (m3.find()) {
                 if (m3.group().contains("_")) {
-                    if ((m3.group().length() < 70)) {
                         String s = m3.group();
-
                         s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                         s = "**`" + s + "`**";
+                    if ((s.length() < 70)) {
+                        System.out.println(s);
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                     } else {
                         listOfLines.set(i, listOfLines.get(i));
