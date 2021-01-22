@@ -565,7 +565,7 @@ public class Functions {
 //            //Identifies that line is the start of a table
             if (listOfLines.get(i).startsWith("|===")) {
                 table(listOfLines, i, props);
-                listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("\\*", ""));
+                listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("^[\\*]", ""));
             }
 
             //Finds title so we skip over irrelevant lines
@@ -597,14 +597,13 @@ public class Functions {
             }
 
             if (listOfLines.get(i).indexOf("^]") > 1) {
-                System.out.println(listOfLines.get(i));
                 int counters = 0;
                 char letter = '^';
                 if (listOfLines.get(i).startsWith("- ")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
                 }
                 if (listOfLines.get(i).startsWith("* ")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                 }
                 if (!listOfLines.get(i).contains("localhost")) {
                     for (int x = 0; x < listOfLines.get(i).length(); x++) {
@@ -650,7 +649,7 @@ public class Functions {
                             listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                         }
                         if (listOfLines.get(i).startsWith("* ")) {
-                            listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                         }
                         if (listOfLines.get(i).indexOf("http://") != -1) {
                             if (!listOfLines.get(i).contains("localhost")) {
@@ -676,8 +675,8 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("-")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                 }
-                if (listOfLines.get(i).startsWith("* ")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*", ""));
+                if (listOfLines.get(i).startsWith("*")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                 }
 
                 if (counter == 1) {
@@ -742,6 +741,8 @@ public class Functions {
                         s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                         s = "**`" + s + "`**";
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
+                    } else {
+                        listOfLines.set(i, listOfLines.get(i));
                     }
                 }
             }
