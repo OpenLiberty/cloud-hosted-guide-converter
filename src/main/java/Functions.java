@@ -119,10 +119,10 @@ public class Functions {
 
     public static void CheckTWYB(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         ArrayList<String> tempList = new ArrayList<>();
-        for (int x = i; !listOfLines.get(x).startsWith("# Enabling fault tolerance"); x++) {
+        for (int x = i; !listOfLines.get(x).startsWith("# "); x++) {
 //                System.out.println(x);
 
-            if (listOfLines.get(x).startsWith("#Update the `CustomConfigSource` configuration file.#")) {
+            if (listOfLines.get(x).startsWith("#Update")) {
                 position = "finishUpdate";
                 codeInsert(listOfLines.get(x), listOfLines, guideName, branch, x, position);
             }
@@ -739,7 +739,6 @@ public class Functions {
                         s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                         s = "**`" + s + "`**";
                     if ((s.length() < 70)) {
-                        System.out.println(s);
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                     } else {
                         listOfLines.set(i, listOfLines.get(i));
@@ -798,11 +797,9 @@ public class Functions {
                 }
             }
 
-            if (guideName == "guide-microprofile-rest-client") {
                 if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                     int g = i + 1;
                     Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
-                }
             }
         }
     }
