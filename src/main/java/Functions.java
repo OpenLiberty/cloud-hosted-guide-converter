@@ -686,7 +686,8 @@ public class Functions {
                 if (flag == true) {
                     String GuidesCommon = "new-terminal.md";
 
-                    listOfLines.add(i - 1, "");
+                    listOfLines.add(i, "");
+                    listOfLines.add(i, "");
                     ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
                     listOfLines.add(i + 12, "");
                     flag = false;
@@ -735,9 +736,9 @@ public class Functions {
 
             if (m3.find()) {
                 if (m3.group().contains("_")) {
-                        String s = m3.group();
-                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                        s = "**`" + s + "`**";
+                    String s = m3.group();
+                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                    s = "**`" + s + "`**";
                     if ((s.length() < 70)) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                     } else {
@@ -797,9 +798,33 @@ public class Functions {
                 }
             }
 
-                if (listOfLines.get(i).startsWith("### Try what you'll build")) {
-                    int g = i + 1;
-                    Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+            String pattern9 = "^mvn(.*?)";
+            String pattern10 = "[A-Za-z]+";
+
+            Pattern r9 = Pattern.compile(pattern9);
+            Pattern r10 = Pattern.compile(pattern10);
+
+            Matcher m9 = r9.matcher(listOfLines.get(i));
+            Matcher m10 = null;
+            if (i < listOfLines.size() -2) {
+                m10 = r10.matcher(listOfLines.get(i + 2));
+            }
+
+            if (m9.find()) {
+                if (m10 != null) {
+                    if (m10.find()) {
+                        if (!m10.group().contains("codeblock")) {
+                            if (!listOfLines.get(i + 2).startsWith("mvn")) {
+                                listOfLines.set(i + 2, "{: codeblock}\n\n" + listOfLines.get(i + 2));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (listOfLines.get(i).startsWith("### Try what you'll build")) {
+                int g = i + 1;
+                Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
             }
         }
     }
