@@ -296,7 +296,13 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+//                    if (localhostSplit[1].contains("http")) {
+//                        String noLinkInLocalHost = localhostSplit[1].replaceAll("http(.*?)\\^\\]","");
+//                        System.out.println(noLinkInLocalHost);
+//                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+//                    } else {
+                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+//                    }
                 } else {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
                     listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
@@ -369,12 +375,12 @@ public class Functions {
                 inputLine = s.nextLine() + "\n";
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
                     if (!inputLine.startsWith("/******")) {
-                        if (!inputLine.startsWith("*")) {
-                            if (!inputLine.startsWith(" *")) {
+//                        if (!inputLine.startsWith("*")) {
+//                            if (!inputLine.startsWith(" *")) {
                                 if (!inputLine.startsWith("#")) {
                                     code.add(inputLine);
-                                }
-                            }
+//                                }
+//                            }
                         }
                     }
                 }
@@ -820,6 +826,10 @@ public class Functions {
                         }
                     }
                 }
+            }
+
+            if ( listOfLines.get(i).contains("^]")) {
+                System.out.println(listOfLines.get(i));
             }
 
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
