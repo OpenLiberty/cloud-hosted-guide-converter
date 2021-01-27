@@ -828,10 +828,6 @@ public class Functions {
                 }
             }
 
-            if ( listOfLines.get(i).contains("^]")) {
-                System.out.println(listOfLines.get(i));
-            }
-
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                 int g = i + 1;
                 Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
