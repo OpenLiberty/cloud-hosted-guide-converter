@@ -301,7 +301,7 @@ public class Functions {
 //                        System.out.println(noLinkInLocalHost);
 //                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
 //                    } else {
-                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
 //                    }
                 } else {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -373,6 +373,12 @@ public class Functions {
             code.add("```\n");
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
+                if (inputLine.contains("// tag::copyright[]")) {
+                    System.out.println(inputLine);
+                    while (!s.nextLine().startsWith("// end::copyright[]")) {
+                        continue;
+                    }
+                }
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
                     if (!inputLine.startsWith("/******")) {
 //                        if (!inputLine.startsWith("*")) {
@@ -399,7 +405,6 @@ public class Functions {
                     code.remove(x);
                 }
             }
-
             code.add("```\n{: codeblock}\n\n\n");
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
@@ -812,7 +817,7 @@ public class Functions {
 
             Matcher m9 = r9.matcher(listOfLines.get(i));
             Matcher m10 = null;
-            if (i < listOfLines.size() -2) {
+            if (i < listOfLines.size() - 2) {
                 m10 = r10.matcher(listOfLines.get(i + 2));
             }
 
