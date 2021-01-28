@@ -74,8 +74,6 @@ public class Functions {
                     link(listOfLines, i);
                     listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^curl(.*?)$","curl -k -u admin " + AdminLink));
                 }
-
-                System.out.println(listOfLines.get(i));
             }
         }
     }
