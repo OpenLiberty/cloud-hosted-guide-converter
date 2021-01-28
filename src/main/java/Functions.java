@@ -238,7 +238,7 @@ public class Functions {
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
-        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide!\n\nYou can clean up the environment by doing the following:\n\nDelete the **" + guideName + "** project by navigating to the **/home/project/** directory\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nNow Log out by navigating to: \n\n> [Account -> Logout]\n\n");
+        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -246,7 +246,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\nFrom the menu of the IDE, select \n\n> File > Open > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -258,7 +258,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\nFrom the menu of the IDE, select \n\n> File > Open > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -269,7 +269,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> [File -> Open...]  \n> " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\nFrom the menu of the IDE, select \n\n> File > Open > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -280,7 +280,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> [File -> New File]  \n> " + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\nFrom the menu of the IDE, select \n\n> File > New File > " + guideName + "/start/" + str + "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
@@ -303,12 +303,12 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
-            if (listOfLines.get(i).contains(".")) {
+            if (listOfLines.get(i).contains(".")|| listOfLines.get(i).contains(",")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
                     ifAdminLink(listOfLines,listOfLines.size(),link);
                 } else if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -317,16 +317,16 @@ public class Functions {
 //                        System.out.println(noLinkInLocalHost);
 //                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
 //                    } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
 //                    }
                 } else {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
                 }
             }
         }
