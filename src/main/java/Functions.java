@@ -66,6 +66,18 @@ public class Functions {
         }
     }
 
+    public static void ifAdminLink(ArrayList<String> listOfLines, int x, String AdminLink) {
+        for (int i = 0; i < x; i++) {
+            if (listOfLines.get(i).contains(AdminLink)) {
+
+                if ( listOfLines.get(i).contains("^]")){
+                    link(listOfLines, i);
+                    listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^curl(.*?)$","curl -k -u admin " + AdminLink));
+                }
+            }
+        }
+    }
+
     // This function removes the reference to any diagrams that were in the guide. This is becasue we do not convert images/diagrams, we remove them.
     public static void removeDiagramReference(ArrayList<String> listOfLines, int i) {
         ArrayList<String> list = new ArrayList<String>();
@@ -294,7 +306,11 @@ public class Functions {
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
-                if (localhostSplit.length == 2) {
+                if (listOfLines.get(i).contains("admin")) {
+                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n") + localhostSplit[1]);
+                    ifAdminLink(listOfLines,listOfLines.size(),link);
+                } else if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
 //                    if (localhostSplit[1].contains("http")) {
 //                        String noLinkInLocalHost = localhostSplit[1].replaceAll("http(.*?)\\^\\]","");
@@ -374,7 +390,6 @@ public class Functions {
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
                 if (inputLine.contains("// tag::copyright[]")) {
-                    System.out.println(inputLine);
                     while (!s.nextLine().startsWith("// end::copyright[]")) {
                         continue;
                     }
@@ -383,8 +398,8 @@ public class Functions {
                     if (!inputLine.startsWith("/******")) {
 //                        if (!inputLine.startsWith("*")) {
 //                            if (!inputLine.startsWith(" *")) {
-                                if (!inputLine.startsWith("#")) {
-                                    code.add(inputLine);
+                        if (!inputLine.startsWith("#")) {
+                            code.add(inputLine);
 //                                }
 //                            }
                         }
