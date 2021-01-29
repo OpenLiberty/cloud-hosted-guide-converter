@@ -17,7 +17,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class ImportFunctions {
-    
+
     // inserts gitclone.aoc from https://github.com/OpenLiberty/guides-common
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
@@ -73,7 +73,7 @@ public class ImportFunctions {
 
                 boolean remove = false;
 
-                if (inputLine.startsWith("////")){
+                if (inputLine.startsWith("////")) {
                     continue;
                 }
 
@@ -93,9 +93,9 @@ public class ImportFunctions {
             }
 
             for (int n = 0; n < temp.size(); n++) {
-                if (temp.get(n).startsWith("```")){
-                    if (temp.get(n-1).isBlank()){
-                        temp.set(n-1, "[role='command']");
+                if (temp.get(n).startsWith("```")) {
+                    if (temp.get(n - 1).isBlank()) {
+                        temp.set(n - 1, "[role='command']");
                     }
                 }
             }
@@ -147,6 +147,26 @@ public class ImportFunctions {
             temp.add("\n");
             listOfLines.addAll(x + 1, temp);
             temp.add(0, "");
+            s.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public static void beforeStart(ArrayList<String> listOfLines, int i, String CommonURL) {
+        ArrayList<String> temp = new ArrayList<>();
+        try {
+            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+            int x = i;
+            Scanner s = new Scanner(common);
+            String inputLine = null;
+            while (s.hasNextLine()) {
+                inputLine = s.nextLine() + "\n";
+                temp.add(inputLine);
+            }
+            temp.add("\n");
+            temp.add("\n");
+            listOfLines.addAll(x + 1, temp);
             s.close();
         } catch (IOException ex) {
             System.out.println(ex);

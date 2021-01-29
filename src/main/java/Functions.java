@@ -196,6 +196,12 @@ public class Functions {
         }
     }
 
+    public static void addPriorStep1(ArrayList<String> listOfLines, int i) {
+        String GuidesCommon = "before-start-information.md";
+
+        ImportFunctions.beforeStart(listOfLines, i, GuidesCommon);
+    }
+
     // Inserts all the Guides-common
     public static void commons(ArrayList<String> listOfLines, String guideName, int i) {
         // The 2 following if statements are used to get from Guides-Common
