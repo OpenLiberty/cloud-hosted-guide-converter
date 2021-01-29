@@ -252,7 +252,7 @@ public class Functions {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\nFrom the menu of the IDE, select \n\n> File > Open > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n>From the menu of the IDE, select \n\n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
@@ -314,7 +314,7 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
                     ifAdminLink(listOfLines,listOfLines.size(),link);
                 } else if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -323,16 +323,16 @@ public class Functions {
 //                        System.out.println(noLinkInLocalHost);
 //                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
 //                    } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
 //                    }
                 } else {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_To see the output for this URL in the IDE, run the following command:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
                 }
             }
         }
