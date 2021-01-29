@@ -68,6 +68,7 @@ public class CloudHostedGuideConverter {
             }
 
 
+            Functions.addPriorStep1(listOfLines, 0);
             // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
             Functions.end(listOfLines, guideName);
