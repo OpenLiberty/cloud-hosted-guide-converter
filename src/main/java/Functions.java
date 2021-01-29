@@ -303,8 +303,8 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
-            if (listOfLines.get(i).contains(".")|| listOfLines.get(i).contains(",")) {
-                localhostSplit = listOfLines.get(i).split("\\.");
+            if (listOfLines.get(i).contains("URL")) {
+                localhostSplit = listOfLines.get(i).split("URL" + 3);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
