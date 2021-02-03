@@ -589,9 +589,9 @@ public class Functions {
             }
 
             //Identifies an instruction for windows only and skips the current line
-            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
-                removeWindowsCommand(listOfLines, i);
-            }
+//             if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
+//                 removeWindowsCommand(listOfLines, i);
+//             }
 
 
 //            //Identifies that line is the start of a table
