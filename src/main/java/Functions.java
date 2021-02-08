@@ -404,16 +404,20 @@ public class Functions {
                         continue;
                     }
                 }
+
+                if (inputLine.startsWith("/******")) {
+                    inputLine = "";
+                    while (!s.nextLine().endsWith("**/")) {
+                        continue;
+                    }
+                }
+
+
+
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
-                    if (!inputLine.startsWith("/******")) {
-//                        if (!inputLine.startsWith("*")) {
-//                            if (!inputLine.startsWith(" *")) {
                         if (!inputLine.startsWith("#")) {
                             code.add(inputLine);
-//                                }
-//                            }
                         }
-                    }
                 }
             }
 
