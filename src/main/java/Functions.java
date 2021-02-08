@@ -70,9 +70,9 @@ public class Functions {
         for (int i = 0; i < x; i++) {
             if (listOfLines.get(i).contains(AdminLink)) {
 
-                if ( listOfLines.get(i).contains("^]")){
+                if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
-                    listOfLines.set(i,listOfLines.get(i).replaceAll("(?m)^curl(.*?)$","curl -k -u admin " + AdminLink));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^curl(.*?)$", "curl -k -u admin " + AdminLink));
                 }
             }
         }
@@ -308,8 +308,8 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
-            if (listOfLines.get(i).contains("URL")) {
-                localhostSplit = listOfLines.get(i).split("URL" + 3);
+            if (listOfLines.get(i).contains(".")) {
+                localhostSplit = listOfLines.get(i).split("\\.");
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -319,7 +319,7 @@ public class Functions {
                         listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
 
                     }
-                    ifAdminLink(listOfLines,listOfLines.size(),link);
+                    ifAdminLink(listOfLines, listOfLines.size(), link);
                 } else if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
 //                    if (localhostSplit[1].contains("http")) {
@@ -342,6 +342,8 @@ public class Functions {
         }
         formattedLink = "[" + description + "](" + link + ")";
         listOfLines.set(i, listOfLines.get(i).replaceAll("http(.*?)\\^\\]", formattedLink));
+                            System.out.println(listOfLines.get(i));
+
     }
 
 
@@ -413,11 +415,10 @@ public class Functions {
                 }
 
 
-
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
-                        if (!inputLine.startsWith("#")) {
-                            code.add(inputLine);
-                        }
+                    if (!inputLine.startsWith("#")) {
+                        code.add(inputLine);
+                    }
                 }
             }
 
