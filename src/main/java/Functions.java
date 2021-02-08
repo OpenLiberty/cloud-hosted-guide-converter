@@ -123,7 +123,6 @@ public class Functions {
             }
             if (counters != 2) {
                 listOfLines.set(y, "");
-                listOfLines.set(y + 1, "");
             }
         }
     }
@@ -314,7 +313,12 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                    if (localhostSplit.length == 2) {
+                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                    } else {
+                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+
+                    }
                     ifAdminLink(listOfLines,listOfLines.size(),link);
                 } else if (localhostSplit.length == 2) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -588,13 +592,13 @@ public class Functions {
                 removeAdditionalpres(listOfLines, i);
             }
 
-            //Identifies an instruction for windows only and skips the current line
+            // Identifies an instruction for windows only and skips the current line
 //             if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
 //                 removeWindowsCommand(listOfLines, i);
 //             }
 
 
-//            //Identifies that line is the start of a table
+            // Identifies that line is the start of a table
             if (listOfLines.get(i).startsWith("|===")) {
                 table(listOfLines, i, props);
                 listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("^[\\*]", ""));

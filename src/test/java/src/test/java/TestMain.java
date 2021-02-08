@@ -77,6 +77,7 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Convertor has been run on Guide-getting-started and compared to a previous correct version, which did not match.");
         }
     }
 
@@ -130,6 +131,7 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("\"--\" Has been found within the guide.");
         }
     }
 
@@ -185,6 +187,7 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("A string within \"startingPhrases[]\" string has been detected. \"startingPhrases[]\" is made out of \"\"//\", \":\", \"[source\", \"NOTE:\", \"include::\", \"[role=\", \"[.tab_\", \"image::\", \"start/\", \"finish/\", \"system/\", \"inventory/\"\".");
         }
     }
 
@@ -239,6 +242,8 @@ public class TestMain {
         } catch (
                 IOException e) {
             e.printStackTrace();
+            System.out.println("The string \"Diagram/diagram\" has been found.");
+
         }
     }
 
@@ -258,26 +263,26 @@ public class TestMain {
 
             listOfLines.add("");
 
-                ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
+            ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
 
-                StringBuilder builder = new StringBuilder();
-                for (String value : listOfLines) {
-                    builder.append(value);
-                }
-
-                String text = builder.toString();
-
-                writeToFile(text, "testing-clone-method");
-
-                Assert.assertEquals("The files differ!",
-                        FileUtils.readFileToString(newGuide, "utf-8"),
-                        FileUtils.readFileToString(testingGuide, "utf-8"));
-
-            } catch (
-                    IOException e) {
-                e.printStackTrace();
+            StringBuilder builder = new StringBuilder();
+            for (String value : listOfLines) {
+                builder.append(value);
             }
+
+            String text = builder.toString();
+
+            writeToFile(text, "testing-clone-method");
+
+            Assert.assertEquals("The files differ!",
+                    FileUtils.readFileToString(newGuide, "utf-8"),
+                    FileUtils.readFileToString(testingGuide, "utf-8"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("There is a difference between git-clone.adoc and the gitclone that the guides use.");
         }
+    }
 
     public static void writeToFile(String str, String guideName)
             throws IOException {
@@ -288,18 +293,16 @@ public class TestMain {
 
     @Test
     public void testLink() throws IOException {
+            ArrayList<String> listOfLines = new ArrayList<>();
 
-        ArrayList<String> listOfLines = new ArrayList<>();
+            listOfLines.add(0, "https://github.com/openliberty/guide-cdi-intro.git[Git repository^]");
+            listOfLines.add(1, "http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^]");
 
-        listOfLines.add(0, "https://github.com/openliberty/guide-cdi-intro.git[Git repository^]");
-        listOfLines.add(1, "http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^]");
+            Functions.link(listOfLines, 0);
+            Functions.link(listOfLines, 1);
 
-        Functions.link(listOfLines, 0);
-        Functions.link(listOfLines, 1);
-
-        Assert.assertTrue(listOfLines.get(0).equals("[Git repository](https://github.com/openliberty/guide-cdi-intro.git)"));
-        Assert.assertTrue(listOfLines.get(1).contains("curl http://localhost:9080/inventory/systems"));
-
+            Assert.assertTrue(listOfLines.get(0).equals("[Git repository](https://github.com/openliberty/guide-cdi-intro.git)"));
+            Assert.assertTrue(listOfLines.get(1).contains("curl http://localhost:9080/inventory/systems"));
     }
 
     @Test
@@ -347,14 +350,14 @@ public class TestMain {
                 if (listOfLines.get(i).startsWith("[.tab_content.")) {
                     Functions.removeWindowsCommand(listOfLines, i);
                 }
-                    Assert.assertTrue(!listOfLines.get(i).contains("[.tab_content"));
-                }
-            } catch(
-                    IOException e){
-                e.printStackTrace();
+                Assert.assertTrue(!listOfLines.get(i).contains("[.tab_content"));
             }
+        } catch (
+                IOException e) {
+            e.printStackTrace();
         }
-
     }
+
+}
 
 
