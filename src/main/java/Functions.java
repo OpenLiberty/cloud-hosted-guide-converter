@@ -639,7 +639,7 @@ public class Functions {
 //                    listOfLines.remove(i + 2);
 //                }
 
-                String imageRepoLink = "https://github.com/OpenLiberty/"+ guideName +"/blob/master/assets";
+                String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/"+ guideName +"/master/assets";
 
                 String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2,listOfLines.get(i).indexOf("["));
 
