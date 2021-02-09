@@ -537,7 +537,7 @@ public class Functions {
         Boolean flag = false;
         int counter = 0;
         String position = "";
-        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "image::", "start/", "finish/", "system/", "inventory/"};
+        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "start/", "finish/", "system/", "inventory/"};
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
 
@@ -633,11 +633,25 @@ public class Functions {
 //            }
 
             if (listOfLines.get(i).startsWith("image::")) {
-                if (listOfLines.get(i + 1).startsWith("*")) {
-                    listOfLines.remove(i + 1);
-                } else if (listOfLines.get(i + 2).startsWith("*")) {
-                    listOfLines.remove(i + 2);
+//                if (listOfLines.get(i + 1).startsWith("*")) {
+//                    listOfLines.remove(i + 1);
+//                } else if (listOfLines.get(i + 2).startsWith("*")) {
+//                    listOfLines.remove(i + 2);
+//                }
+
+                String imageRepoLink = "https://github.com/OpenLiberty/"+ guideName +"/blob/master/assets";
+
+                String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2,listOfLines.get(i).indexOf("["));
+
+                String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1,listOfLines.get(i).indexOf(","));
+
+                String imageLink = imageRepoLink + "/" + imageName;
+
+                if ( listOfLines.get(i + 1).contains("{empty} +")) {
+                    listOfLines.set(i + 1, "");
                 }
+
+                listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n");
             }
 
             //Removes Additional prerequisites section
