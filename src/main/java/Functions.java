@@ -537,7 +537,7 @@ public class Functions {
         Boolean flag = false;
         int counter = 0;
         String position = "";
-        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "start/", "finish/", "system/", "inventory/"};
+        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "start/", "finish/", "system/", "inventory/", "ifndef::cloud-hosted[]", "ifdef::cloud-hosted[]", "end::[]"};
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
 
@@ -651,7 +651,7 @@ public class Functions {
                     listOfLines.set(i + 1, "");
                 }
 
-                listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n");
+                listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n\n");
             }
 
             //Removes Additional prerequisites section

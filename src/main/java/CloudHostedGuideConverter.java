@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright (c) 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ public class CloudHostedGuideConverter {
     }
 
     // Reads the adoc from github, and writes it to an arraylist
-    public static void getMD( String guideName, String branch) throws IOException {
+    public static void getMD(String guideName, String branch) throws IOException {
         Scanner s = null;
         FileInputStream ip = null;
         FileInputStream ips = null;
@@ -63,6 +63,13 @@ public class CloudHostedGuideConverter {
                     }
                 }
 
+                if (inputLine.startsWith("ifndef::cloud-hosted[]")) {
+
+                    while (!s.nextLine().startsWith("endif::[]")) {
+                        continue;
+                    }
+                }
+
 
                 listOfLines.add(inputLine);
             }
@@ -86,7 +93,7 @@ public class CloudHostedGuideConverter {
         } catch (IOException ex) {
             System.out.println(ex);
         } finally {
-            if (s != null){
+            if (s != null) {
                 s.close();
                 ip.close();
                 ips.close();
