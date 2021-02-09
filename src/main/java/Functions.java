@@ -17,6 +17,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+class LinkSets {
+    String linkName;
+    String link;
+}
+
 class OverridingEquals {
 
     private String inArray;
@@ -64,6 +69,39 @@ public class Functions {
         if (listOfLines.get(i).startsWith(str[h])) {
             listOfLines.set(i, "");
         }
+    }
+
+
+    public static void replacePreSetURL(ArrayList<String> listOfLines, int i) {
+
+        LinkSets LinkSets = new LinkSets();
+
+        String inputLine = listOfLines.get(i);
+
+        int length = inputLine.length();
+
+        LinkSets.link = inputLine.substring(inputLine.indexOf(":", +1) + 2, length);
+
+        LinkSets.linkName = inputLine.substring(inputLine.indexOf(":") + 1, inputLine.indexOf(":", +1));
+
+
+        for (int x = 0; x < listOfLines.size(); x++) {
+            if (listOfLines.get(x).contains(LinkSets.linkName)) {
+//                System.out.println(LinkSets.linkName);
+//                System.out.println(LinkSets.link);
+
+                String fullLine = listOfLines.get(x).replaceAll("\\{" + LinkSets.linkName + "\\}", LinkSets.link);
+                fullLine = fullLine.replaceAll("\n", "");
+//                System.out.println(fullLine);
+
+
+
+                listOfLines.set(x, fullLine);
+//                System.out.println(listOfLines.get(x));
+            }
+        }
+
+//        link(listOfLines, i);
     }
 
     public static void ifAdminLink(ArrayList<String> listOfLines, int x, String AdminLink) {
@@ -310,13 +348,14 @@ public class Functions {
         if (link.contains("localhost")) {
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
+//                System.out.println(Arrays.toString(localhostSplit));
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
                     if (localhostSplit.length == 2) {
-                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                        listOfLines.set(i, "\n" + localhostSplit[0] + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
                     } else {
-                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                        listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
 
                     }
                     ifAdminLink(listOfLines, listOfLines.size(), link);
@@ -327,11 +366,12 @@ public class Functions {
 //                        System.out.println(noLinkInLocalHost);
 //                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
 //                    } else {
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0] + localhostSplit[1] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    System.out.println(listOfLines.get(i));
 //                    }
                 } else {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
@@ -340,10 +380,11 @@ public class Functions {
                 }
             }
         }
-        formattedLink = "[" + description + "](" + link + ")";
-        listOfLines.set(i, listOfLines.get(i).replaceAll("http(.*?)\\^\\]", formattedLink));
-                            System.out.println(listOfLines.get(i));
-
+        if (listOfLines.get(i).contains("http")) {
+            formattedLink = "[" + description + "](" + link + ")";
+            listOfLines.set(i, listOfLines.get(i).replaceAll("http(.*?)\\^\\]", formattedLink));
+//            System.out.println(listOfLines.get(i));
+        }
     }
 
 
@@ -514,6 +555,13 @@ public class Functions {
 //                }
 //            }
 
+            if (listOfLines.get(i).startsWith(":")) {
+                if (listOfLines.get(i).contains("-url")) {
+                    replacePreSetURL(listOfLines, i);
+//                    link(listOfLines, i);
+                }
+            }
+
             String pattern2 = "`(.*?)(\\w)(.*?)(\\w)(.*?)`";
             String pattern5 = "(?m)^[```]$";
 
@@ -579,10 +627,10 @@ public class Functions {
                 codeInsert(atIndex, listOfLines, guideName, branch, i, position);
             }
 
-            //Removes references to images
-            if (listOfLines.get(i).indexOf("diagram") != -1) {
-                removeDiagramReference(listOfLines, i);
-            }
+//            //Removes references to images
+//            if (listOfLines.get(i).indexOf("diagram") != -1) {
+//                removeDiagramReference(listOfLines, i);
+//            }
 
             if (listOfLines.get(i).startsWith("image::")) {
                 if (listOfLines.get(i + 1).startsWith("*")) {
