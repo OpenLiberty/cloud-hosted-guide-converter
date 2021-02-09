@@ -349,35 +349,21 @@ public class Functions {
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 String fullText = listOfLines.get(i);
-//                System.out.println(Arrays.toString(localhostSplit));
+                fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]",  link);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    if (localhostSplit.length == 2) {
-                        listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
-                    } else {
-                        listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
-
-                    }
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
                     ifAdminLink(listOfLines, listOfLines.size(), link);
                 } else if (localhostSplit.length >= 2) {
-                    fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]",  link);
-//                    if (localhostSplit[1].contains("http")) {
-//                        String noLinkInLocalHost = localhostSplit[1].replaceAll("http(.*?)\\^\\]","");
-//                        System.out.println(noLinkInLocalHost);
-//                        listOfLines.set(i, "\n" + localhostSplit[0].trim() + ("\n\n_(or run the following curl command)_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
-//                    } else {
                     listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
-                    System.out.println(listOfLines.get(i));
-//                    }
                 } else {
-                    localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + localhostSplit[0] + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n")));
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n");
                 }
             }
         }
