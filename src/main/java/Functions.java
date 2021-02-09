@@ -360,7 +360,7 @@ public class Functions {
 
                     }
                     ifAdminLink(listOfLines, listOfLines.size(), link);
-                } else if (localhostSplit.length == 2) {
+                } else if (localhostSplit.length >= 2) {
                     fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]",  link);
 //                    if (localhostSplit[1].contains("http")) {
 //                        String noLinkInLocalHost = localhostSplit[1].replaceAll("http(.*?)\\^\\]","");
