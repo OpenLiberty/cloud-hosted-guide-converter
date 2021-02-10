@@ -370,7 +370,6 @@ public class Functions {
         if (listOfLines.get(i).contains("http")) {
             formattedLink = "[" + description + "](" + link + ")";
             listOfLines.set(i, listOfLines.get(i).replaceAll("http(.*?)\\^\\]", formattedLink));
-//            System.out.println(listOfLines.get(i));
         }
     }
 
@@ -910,6 +909,10 @@ public class Functions {
                         }
                     }
                 }
+            }
+
+            if (listOfLines.get(i).contains("^]")) {
+                link(listOfLines, i);
             }
 
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
