@@ -523,7 +523,7 @@ public class Functions {
         Boolean flag = false;
         int counter = 0;
         String position = "";
-        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "start/", "finish/", "system/", "inventory/", "ifndef::cloud-hosted[]", "ifdef::cloud-hosted[]", "end::[]"};
+        final String[] startingPhrases = {"//", ":", "[source", "NOTE:", "include::", "[role=", "[.tab_", "start/", "finish/", "system/", "inventory/", "ifndef::cloud-hosted[]", "ifdef::cloud-hosted[]", "endif::[]"};
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
 
