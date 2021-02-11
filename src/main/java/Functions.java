@@ -56,6 +56,7 @@ class OverridingEquals {
 public class Functions {
 
     public static final String codes = "----";
+    private static ArrayList<String> linksForNextGuides;
 
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
@@ -95,7 +96,6 @@ public class Functions {
 //                System.out.println(fullLine);
 
 
-
                 listOfLines.set(x, fullLine);
 //                System.out.println(listOfLines.get(x));
             }
@@ -114,6 +114,57 @@ public class Functions {
                 }
             }
         }
+    }
+
+    public static ArrayList<String> relatedGuides(ArrayList<String> listOfLines, int i) {
+        ArrayList<String> visitLinks = new ArrayList<String>();
+        String line = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("]"));
+        String[] relatedGuides = line.trim().split("\\s*,\\s*");
+        for (String e : relatedGuides) {
+            String relatedGuidesName = e.substring(1, e.length() - 1);
+            String getTitle = null;
+            try {
+                URL url = new URL("https://raw.githubusercontent.com/openliberty/guide-" + relatedGuidesName + "/master/README.adoc");
+                Scanner s = new Scanner(url.openStream());
+                String inputLine = null;
+                while (s.hasNextLine()) {
+                    inputLine = s.nextLine() + "\n";
+
+                    if (inputLine.startsWith("= ")) {
+                        getTitle = inputLine;
+                    }
+                }
+            } catch (IOException ex) {
+
+                System.out.println(ex);
+            }
+
+            getTitle = getTitle.substring(+2, getTitle.length() - 1);
+            String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
+            String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
+            visitLinks.add(fullGuidePlus);
+        }
+        return visitLinks;
+    }
+
+    public static void Next(ArrayList<String> listOfLines) {
+
+        StringBuilder builder = new StringBuilder();
+        for (String value : linksForNextGuides) {
+            builder.append("- " + value + "\n");
+        }
+
+        String text = builder.toString();
+
+        String whereToNext = "\n\n\n# Where to next? \n\n" + text;
+
+
+        System.out.println(whereToNext);
+
+        int End = listOfLines.size();
+
+        listOfLines.add(End, whereToNext);
+
     }
 
     // This function removes the reference to any diagrams that were in the guide. This is becasue we do not convert images/diagrams, we remove them.
@@ -349,7 +400,7 @@ public class Functions {
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 String fullText = listOfLines.get(i);
-                fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]",  link);
+                fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]", link);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -515,7 +566,6 @@ public class Functions {
         return "table";
     }
 
-
     //Main function that runs all the methods
     public static void ConditionsMethod(ArrayList<String> listOfLines, String guideName, String
             branch, Properties prop, Properties props) throws IOException {
@@ -528,18 +578,9 @@ public class Functions {
         for (int i = 0; i < listOfLines.size(); i++) {
 
             // Function to add related Guides. (Not Completed)
-//            if (listOfLines.get(i).startsWith(":page-related-guides:")) {
-//                String line = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[")+1,listOfLines.get(i).indexOf("]"));
-//                String[] relatedGuides = line.trim().split("\\s*,\\s*");
-//                for (String e:relatedGuides){
-//                    String relatedGuidesName = e.substring(1, e.length()-1);
-//                    String[] fullLinks = {"https://openliberty.io/guides/" + relatedGuidesName + ".html"};
-//                    System.out.println(Arrays.toString(fullLinks));
-//                    if (i == listOfLines.size()) {
-//
-//                    }
-//                }
-//            }
+            if (listOfLines.get(i).startsWith(":page-related-guides:")) {
+                linksForNextGuides = relatedGuides(listOfLines, i);
+            }
 
             if (listOfLines.get(i).startsWith(":")) {
                 if (listOfLines.get(i).contains("-url")) {
@@ -625,15 +666,15 @@ public class Functions {
 //                    listOfLines.remove(i + 2);
 //                }
 
-                String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/"+ guideName +"/master/assets";
+                String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
 
-                String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2,listOfLines.get(i).indexOf("["));
+                String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
 
-                String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1,listOfLines.get(i).indexOf(","));
+                String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf(","));
 
                 String imageLink = imageRepoLink + "/" + imageName;
 
-                if ( listOfLines.get(i + 1).contains("{empty} +")) {
+                if (listOfLines.get(i + 1).contains("{empty} +")) {
                     listOfLines.set(i + 1, "");
                 }
 
