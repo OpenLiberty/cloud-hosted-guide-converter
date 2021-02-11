@@ -79,6 +79,7 @@ public class CloudHostedGuideConverter {
             // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
             Functions.end(listOfLines, guideName);
+            Functions.Next(listOfLines);
 
             //String builder to format the arraylist
             StringBuilder builder = new StringBuilder();
