@@ -376,7 +376,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **New File** > " + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + str +  "```\n{: codeblock}\n\n" + "\n> Then from the menue of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
