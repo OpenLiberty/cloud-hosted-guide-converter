@@ -138,10 +138,15 @@ public class Functions {
 
                 System.out.println(ex);
             }
-            getTitle = getTitle.substring(+2, getTitle.length() - 1);
-            String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
-            String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
-            visitLinks.add(fullGuidePlus);
+            if (getTitle != null) {
+                getTitle = getTitle.substring(+2, getTitle.length() - 1);
+                String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
+                String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
+                visitLinks.add(fullGuidePlus);
+            } else {
+                String fullGuidePlus = "";
+                visitLinks.add(fullGuidePlus);
+            }
         }
         return visitLinks;
     }
