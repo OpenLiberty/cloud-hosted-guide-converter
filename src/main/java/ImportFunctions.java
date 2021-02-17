@@ -153,7 +153,7 @@ public class ImportFunctions {
         }
     }
 
-    public static void beforeStart(ArrayList<String> listOfLines, int i, String CommonURL) {
+    public static void beforeStart(ArrayList<String> listOfLines, int i, String CommonURL, String guideName) {
         ArrayList<String> temp = new ArrayList<>();
         try {
             File common = new File("Guides-common/cloud-hosted/" + CommonURL);
@@ -162,6 +162,10 @@ public class ImportFunctions {
             String inputLine = null;
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
+
+                if(inputLine.startsWith("# Welcome to the cloud-hosted guide!")) {
+                    inputLine = inputLine.replaceAll("cloud-hosted guide", "cloud-hosted-" + guideName);
+                }
                 temp.add(inputLine);
             }
             temp.add("\n");

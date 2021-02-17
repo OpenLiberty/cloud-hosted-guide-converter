@@ -138,7 +138,6 @@ public class Functions {
 
                 System.out.println(ex);
             }
-
             getTitle = getTitle.substring(+2, getTitle.length() - 1);
             String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
             String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
@@ -157,9 +156,6 @@ public class Functions {
         String text = builder.toString();
 
         String whereToNext = "\n\n\n# Where to next? \n\n" + text;
-
-
-        System.out.println(whereToNext);
 
         int End = listOfLines.size();
 
@@ -261,7 +257,8 @@ public class Functions {
 
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
-        while (!listOfLines.get(i).startsWith("[role='command']")) {
+        while (!listOfLines.get(i).startsWith("[role=")) {
+//            System.out.println(listOfLines.get(i));
             listOfLines.remove(i);
         }
     }
@@ -284,10 +281,10 @@ public class Functions {
         }
     }
 
-    public static void addPriorStep1(ArrayList<String> listOfLines, int i) {
+    public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName) {
         String GuidesCommon = "before-start-information.md";
 
-        ImportFunctions.beforeStart(listOfLines, i, GuidesCommon);
+        ImportFunctions.beforeStart(listOfLines, i, GuidesCommon, guideName);
     }
 
     // Inserts all the Guides-common
@@ -884,20 +881,6 @@ public class Functions {
                 }
             }
 
-            if (listOfLines.get(i).contains(": codeblock")) {
-                String pattern6 = "(?m)^(.*?)codeblock(.*?)$";
-
-                Pattern r6 = Pattern.compile(pattern6);
-
-                Matcher m6 = r6.matcher(listOfLines.get(i));
-
-                if (m6.find()) {
-                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
-                    }
-                }
-            }
-
             String pattern7 = "(?m)^(.\s)$";
             String pattern8 = "(?m)^(.)$";
 
@@ -959,6 +942,20 @@ public class Functions {
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                 int g = i + 1;
                 Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+            }
+            if (listOfLines.get(i).contains(": codeblock")) {
+                String pattern6 = "(?m)^: codeblock$";
+
+                Pattern r6 = Pattern.compile(pattern6);
+
+                Matcher m6 = r6.matcher(listOfLines.get(i));
+
+                if (m6.find()) {
+                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
+
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+                    }
+                }
             }
         }
     }
