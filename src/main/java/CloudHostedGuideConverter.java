@@ -63,6 +63,14 @@ public class CloudHostedGuideConverter {
                     }
                 }
 
+
+                if (inputLine.startsWith("[.tab_content.windows_section]")) {
+                    while (!s.nextLine().startsWith("[.tab_content.mac_section.linux_section]")) {
+                        continue;
+                    }
+                }
+
+
                 if (inputLine.startsWith("ifndef::cloud-hosted[]")) {
 
                     while (!s.nextLine().startsWith("endif::[]")) {
