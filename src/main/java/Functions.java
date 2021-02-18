@@ -145,7 +145,6 @@ public class Functions {
                 visitLinks.add(fullGuidePlus);
             } else {
                 String fullGuidePlus = "";
-                visitLinks.add(fullGuidePlus);
             }
         }
         return visitLinks;
