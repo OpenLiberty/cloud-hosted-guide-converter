@@ -144,7 +144,26 @@ public class Functions {
                 String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
                 visitLinks.add(fullGuidePlus);
             } else {
-                String fullGuidePlus = "";
+                try {
+                    URL url = new URL("https://raw.githubusercontent.com/OpenLiberty/iguide-"+ relatedGuidesName + "/prod/html/"+ relatedGuidesName + "-guide.html");
+                    Scanner s = new Scanner(url.openStream());
+                    String inputLine = null;
+                    while (s.hasNextLine()) {
+                        inputLine = s.nextLine() + "\n";
+
+                        if (inputLine.startsWith("title: ")) {
+                            getTitle = inputLine;
+                        }
+                    }
+                } catch (IOException ex) {
+
+                    System.out.println(ex);
+                }
+                getTitle = getTitle.substring(+8, getTitle.length() - 2);
+                String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
+                String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
+                visitLinks.add(fullGuidePlus);
+                System.out.println(fullGuidePlus);
             }
         }
         return visitLinks;
@@ -938,6 +957,11 @@ public class Functions {
                     }
                 }
             }
+
+//            if (listOfLines.get(i).contains("# Related Links")) {
+//                System.out.println("HELLLOOOO");
+//                listOfLines.set(i, "### Related Links");
+//            }
 
             if (listOfLines.get(i).contains("^]")) {
                 link(listOfLines, i);
