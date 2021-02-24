@@ -4,8 +4,11 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestMain {
 
@@ -16,14 +19,18 @@ public class TestMain {
 
         CloudHostedGuideConverter.main(guide);
 
-        File newGuide = new File("guide-getting-started.md");
-        File testingGuide = new File("testing-file.md");
+        final File testingGuide = new File("testing-file.md");
+        final File newGuide = new File("guide-getting-started.md");
+
+        List<String> a = FileUtils.readLines(testingGuide);
+        List<String> b = FileUtils.readLines(newGuide);
 
 
-        Assert.assertEquals("The files differ!",
-                FileUtils.readFileToString(testingGuide, "utf-8"),
-                FileUtils.readFileToString(newGuide, "utf-8"));
+        assertEquals("The files sizes differ!", a.size(), b.size());
 
+        for (int i = 0; i < a.size(); ++i) {
+            assertEquals("The files differ!", a.get(i).trim(), b.get(i).trim());
+        }
     }
 
     @Test
@@ -77,7 +84,6 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Convertor has been run on Guide-getting-started and compared to a previous correct version, which did not match.");
         }
     }
 
@@ -131,7 +137,6 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("\"--\" Has been found within the guide.");
         }
     }
 
@@ -187,7 +192,6 @@ public class TestMain {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("A string within \"startingPhrases[]\" string has been detected. \"startingPhrases[]\" is made out of \"\"//\", \":\", \"[source\", \"NOTE:\", \"include::\", \"[role=\", \"[.tab_\", \"image::\", \"start/\", \"finish/\", \"system/\", \"inventory/\"\".");
         }
     }
 
@@ -242,7 +246,6 @@ public class TestMain {
         } catch (
                 IOException e) {
             e.printStackTrace();
-            System.out.println("The string \"Diagram/diagram\" has been found.");
 
         }
     }
@@ -274,13 +277,12 @@ public class TestMain {
 
             writeToFile(text, "testing-clone-method");
 
-            Assert.assertEquals("The files differ!",
+            assertEquals("The files differ!",
                     FileUtils.readFileToString(newGuide, "utf-8"),
                     FileUtils.readFileToString(testingGuide, "utf-8"));
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("There is a difference between git-clone.adoc and the gitclone that the guides use.");
         }
     }
 

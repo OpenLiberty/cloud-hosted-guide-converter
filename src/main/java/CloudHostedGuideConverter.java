@@ -42,6 +42,9 @@ public class CloudHostedGuideConverter {
 //          ArrayList for whole text file
             ArrayList<String> listOfLines = new ArrayList<>();
 
+            String GuideTitle = null;
+            String GuideDescription = null;
+
             Properties prop = new Properties();
             Properties props = new Properties();
 
@@ -55,6 +58,20 @@ public class CloudHostedGuideConverter {
 //          write each line into the file
             while (s.hasNextLine()) {
                 String inputLine = s.nextLine() + "\n";
+
+                if (inputLine.startsWith("= ")) {
+                    GuideTitle = inputLine;
+                    continue;
+                }
+
+                if (inputLine.startsWith(":page-description:")) {
+                    GuideDescription = inputLine.substring(inputLine.lastIndexOf(":") + 2, inputLine.length());
+                    System.out.println(GuideDescription);
+                }
+
+                if (inputLine.equals(GuideDescription)) {
+                    inputLine = "";
+                }
 
                 if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
 
@@ -83,11 +100,11 @@ public class CloudHostedGuideConverter {
             }
 
 
-            Functions.addPriorStep1(listOfLines, 0, guideName);
+            Functions.addPriorStep1(listOfLines, 0, guideName, GuideTitle, GuideDescription);
             // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
-            Functions.end(listOfLines, guideName);
             Functions.Next(listOfLines);
+            Functions.end(listOfLines, guideName);
 
             //String builder to format the arraylist
             StringBuilder builder = new StringBuilder();

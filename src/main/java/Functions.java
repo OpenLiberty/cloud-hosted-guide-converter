@@ -116,6 +116,28 @@ public class Functions {
         }
     }
 
+
+    public static void relatedLinksMove(ArrayList<String> listOfLines, int i) {
+
+        ArrayList<String> temp = new ArrayList<>();
+        int l = i;
+        for (int x = l; x < listOfLines.size() - 1; x++) {
+            if (!listOfLines.get(x).startsWith("# Related Links")) {
+                if (listOfLines.get(x).startsWith("http")) {
+                    if (!listOfLines.get(x).isBlank()) {
+                        if (!listOfLines.get(x).isEmpty()) {
+                            if (listOfLines.get(x).startsWith("http")) {
+                                link(listOfLines, x);
+                            }
+                            linksForNextGuides.add(listOfLines.get(x));
+                        }
+                    }
+                }
+            }
+            listOfLines.set(x, "");
+        }
+    }
+
     public static ArrayList<String> relatedGuides(ArrayList<String> listOfLines, int i) {
         ArrayList<String> visitLinks = new ArrayList<String>();
         String line = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("]"));
@@ -145,7 +167,7 @@ public class Functions {
                 visitLinks.add(fullGuidePlus);
             } else {
                 try {
-                    URL url = new URL("https://raw.githubusercontent.com/OpenLiberty/iguide-"+ relatedGuidesName + "/prod/html/"+ relatedGuidesName + "-guide.html");
+                    URL url = new URL("https://raw.githubusercontent.com/OpenLiberty/iguide-" + relatedGuidesName + "/prod/html/" + relatedGuidesName + "-guide.html");
                     Scanner s = new Scanner(url.openStream());
                     String inputLine = null;
                     while (s.hasNextLine()) {
@@ -163,7 +185,6 @@ public class Functions {
                 String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
                 String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
                 visitLinks.add(fullGuidePlus);
-                System.out.println(fullGuidePlus);
             }
         }
         return visitLinks;
@@ -178,7 +199,7 @@ public class Functions {
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n\n# Where to next? \n\n" + text;
+        String whereToNext = "\n\n\n## Where to next? \n\n" + text;
 
         int End = listOfLines.size();
 
@@ -304,10 +325,10 @@ public class Functions {
         }
     }
 
-    public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName) {
+    public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName, String GuideTitle, String GuideDescription) {
         String GuidesCommon = "before-start-information.md";
 
-        ImportFunctions.beforeStart(listOfLines, i, GuidesCommon, guideName);
+        ImportFunctions.beforeStart(listOfLines, i, GuidesCommon, guideName, GuideTitle, GuideDescription);
     }
 
     // Inserts all the Guides-common
@@ -352,7 +373,7 @@ public class Functions {
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
-        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+        listOfLines.add("\n\n# Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -394,7 +415,7 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         String str = listOfLines.get(i).replaceAll("`", "");
         listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + str +  "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
+        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + str + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str);
         position = "main";
         return position;
@@ -463,6 +484,10 @@ public class Functions {
                     // Removes --
                     if (listOfLines.get(i).startsWith("--\n")) {
                         listOfLines.set(i, "");
+                    }
+
+                    if (listOfLines.get(i).startsWith("== What you'll learn")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("==", "#"));
                     }
 
                     //Uses replacements.properties to change some more properties in the text
@@ -889,11 +914,28 @@ public class Functions {
                     String s = m3.group();
                     s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                     s = "**`" + s + "`**";
-                    if ((s.length() < 70)) {
+                    if ((s.length() < 90)) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
                     } else {
                         listOfLines.set(i, listOfLines.get(i));
                     }
+                }
+            }
+
+            String pattern11 = "\\*\\*<(.*?)>\\*\\*|\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*";
+
+            Pattern r11 = Pattern.compile(pattern11);
+
+            Matcher m11 = r11.matcher(listOfLines.get(i));
+
+            if (m11.find()) {
+                if (m11.group().contains("<")&&m11.group().contains(">")) {
+                    String s = m11.group();
+                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                    s = "**`" + s + "`**";
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`"));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", "`**"));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
                 }
             }
 
@@ -958,19 +1000,19 @@ public class Functions {
                 }
             }
 
-//            if (listOfLines.get(i).contains("# Related Links")) {
-//                System.out.println("HELLLOOOO");
-//                listOfLines.set(i, "### Related Links");
-//            }
-
             if (listOfLines.get(i).contains("^]")) {
                 link(listOfLines, i);
+            }
+
+            if (listOfLines.get(i).contains("# Related Links")) {
+                relatedLinksMove(listOfLines, i);
             }
 
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                 int g = i + 1;
                 Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
             }
+
             if (listOfLines.get(i).contains(": codeblock")) {
                 String pattern6 = "(?m)^: codeblock$";
 
