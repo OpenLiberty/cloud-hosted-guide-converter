@@ -933,8 +933,8 @@ public class Functions {
                     String s = m11.group();
                     s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                     s = "**`" + s + "`**";
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`"));
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", "`**"));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`<"));
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", ">`**"));
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
                 }
             }

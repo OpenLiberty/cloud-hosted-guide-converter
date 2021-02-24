@@ -1,6 +1,8 @@
 
 # Welcome to the Getting started with Open Liberty guide!
 
+Learn how to develop a Java application on Open Liberty with Maven and Docker.
+
 In this guide, you will use a pre-configured environment that runs in containers on the cloud and includes everything that you need to complete the guide.
 
 This panel contains the step-by-step guide instructions. You can customize these instructions by using the toolbar at the top of this panel. Move between steps by using either the arrows or the buttons at the bottom of this panel.
@@ -10,7 +12,6 @@ The other panel displays the IDE that you will use to create files, edit the cod
 
 
 
-Learn how to develop a Java application on Open Liberty with Maven and Docker.
 
 # What you'll learn
 
@@ -507,7 +508,7 @@ occur or whenever tracing is enabled. You can find the error logs in the
 **ffdc** directory and the tracing logs in the **trace.log** file.
 
 In addition to the log files that are generated automatically, you can enable logging of
-specific Java packages or classes by using the **<logging/>** element:
+specific Java packages or classes by using the **`<logging/>`** element:
 
 ```
 <logging traceSpecification="<component_1>=<level>:<component_2>=<level>:..."/>
@@ -518,7 +519,7 @@ of the following logging levels: **off**, **fatal**, **severe**, **warning**, **
 **config**, **detail**, **fine**, **finer**, **finest**, **all**.
 
 Try enabling detailed logging of the MicroProfile Health feature by adding the
-**<logging/>** element to your configuration file.
+**`<logging/>`** element to your configuration file.
 
 Replace the server configuration file.
 

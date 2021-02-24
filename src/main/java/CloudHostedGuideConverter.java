@@ -66,7 +66,6 @@ public class CloudHostedGuideConverter {
 
                 if (inputLine.startsWith(":page-description:")) {
                     GuideDescription = inputLine.substring(inputLine.lastIndexOf(":") + 2, inputLine.length());
-                    System.out.println(GuideDescription);
                 }
 
                 if (inputLine.equals(GuideDescription)) {
