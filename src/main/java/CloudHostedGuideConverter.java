@@ -61,11 +61,13 @@ public class CloudHostedGuideConverter {
 
                 if (inputLine.startsWith("= ")) {
                     GuideTitle = inputLine;
+                    if (!s.nextLine().isEmpty()||!s.nextLine().isBlank()) {
+                        s.nextLine();
+                        s.nextLine();
+                        GuideDescription = s.nextLine();
+                        GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
+                    }
                     continue;
-                }
-
-                if (inputLine.startsWith(":page-description:")) {
-                    GuideDescription = inputLine.substring(inputLine.lastIndexOf(":") + 2, inputLine.length());
                 }
 
                 if (inputLine.equals(GuideDescription)) {

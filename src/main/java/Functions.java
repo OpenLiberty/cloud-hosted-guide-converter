@@ -956,7 +956,7 @@ public class Functions {
                     }
                     if (!s.contains("$")) {
                         listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
-                        System.out.println(listOfLines.get(i));
+//                        System.out.println(listOfLines.get(i));
                     }
                 }
             }
