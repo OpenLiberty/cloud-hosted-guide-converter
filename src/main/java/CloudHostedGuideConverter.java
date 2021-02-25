@@ -61,7 +61,7 @@ public class CloudHostedGuideConverter {
 
                 if (inputLine.startsWith("= ")) {
                     GuideTitle = inputLine;
-                    if (GuideTitle.equals("Containerizing microservices")) {
+                    if (GuideTitle.startsWith("= Containerizing microservices")) {
                         if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
                             s.nextLine();
                             s.nextLine();
