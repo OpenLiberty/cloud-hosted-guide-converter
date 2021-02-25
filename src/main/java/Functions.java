@@ -929,13 +929,29 @@ public class Functions {
             Matcher m11 = r11.matcher(listOfLines.get(i));
 
             if (m11.find()) {
-                if (m11.group().contains("<")&&m11.group().contains(">")) {
+                if (m11.group().contains("<") && m11.group().contains(">")) {
                     String s = m11.group();
                     s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                     s = "**`" + s + "`**";
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`<"));
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", ">`**"));
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
+                }
+            }
+
+            String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)[^`]\\*\\*\\s";
+
+            Pattern r12 = Pattern.compile(pattern12);
+
+            Matcher m12 = r12.matcher(listOfLines.get(i));
+
+            if (m12.find()) {
+                if (m12.group().contains("<") && m12.group().contains(">")) {
+                    String s = m12.group();
+                    s = s.substring(s.indexOf("**") + 3, s.lastIndexOf("**"));
+                    s = "**`" + s + "`**";
+                    listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)[^`]\\*\\*", s));
+
                 }
             }
 
