@@ -11,8 +11,6 @@ The other panel displays the IDE that you will use to create files, edit the cod
 
 
 
-
-
 # What you'll learn
 
 You will learn how to run and update a simple REST microservice on an Open Liberty server.
@@ -241,7 +239,8 @@ Replace the server configuration file.
     <variable name="default.http.port" defaultValue="9080"/>
     <variable name="default.https.port" defaultValue="9443"/>
 
-    <webApplication location="guide-getting-started.war" contextRoot="/" />
+    <webApplication location="guide-getting-started.war" contextRoot="/dev" />
+    
     <mpMetrics authentication="false"/>
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
@@ -543,7 +542,8 @@ Replace the server configuration file.
     <variable name="default.http.port" defaultValue="9080"/>
     <variable name="default.https.port" defaultValue="9443"/>
 
-    <webApplication location="guide-getting-started.war" contextRoot="/" />
+    <webApplication location="guide-getting-started.war" contextRoot="/dev" />
+    
     <mpMetrics authentication="false"/>
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
