@@ -939,7 +939,7 @@ public class Functions {
                 }
             }
 
-            String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)[^`]\\*\\*\\s";
+            String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*\\s";
 
             Pattern r12 = Pattern.compile(pattern12);
 
@@ -950,8 +950,12 @@ public class Functions {
                     String s = m12.group();
                     s = s.substring(s.indexOf("**") + 3, s.lastIndexOf("**"));
                     s = "**`" + s + "`**";
+                    if (s.contains("``**")) {
+                        s = s.substring(s.indexOf("**`") + 3, s.lastIndexOf("``**"));
+                        s = "**`" + s + "`**";
+                    }
                     if (!s.contains("$")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)[^`]\\*\\*", s));
+                        listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
                         System.out.println(listOfLines.get(i));
                     }
                 }
