@@ -929,7 +929,7 @@ public class Functions {
             Matcher m11 = r11.matcher(listOfLines.get(i));
 
             if (m11.find()) {
-                if (m11.group().contains("<")&&m11.group().contains(">")) {
+                if (m11.group().contains("<") && m11.group().contains(">")) {
                     String s = m11.group();
                     s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                     s = "**`" + s + "`**";
