@@ -61,13 +61,23 @@ public class CloudHostedGuideConverter {
 
                 if (inputLine.startsWith("= ")) {
                     GuideTitle = inputLine;
-                    if (!s.nextLine().isEmpty()||!s.nextLine().isBlank()) {
-                        s.nextLine();
-                        s.nextLine();
-                        GuideDescription = s.nextLine();
-                        GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
+                    if (GuideTitle.equals("Containerizing microservices")) {
+                        if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
+                            s.nextLine();
+                            s.nextLine();
+                            s.nextLine();
+                            GuideDescription = s.nextLine();
+                            GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
+                        }
+                    } else {
+                        if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
+                            s.nextLine();
+                            s.nextLine();
+                            GuideDescription = s.nextLine();
+                            GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
+                        }
+                        continue;
                     }
-                    continue;
                 }
 
                 if (inputLine.equals(GuideDescription)) {
