@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017,2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,6 @@ public class Functions {
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
         listOfLines.get(i).replaceAll("----", "```");
-//        listOfLines.set(i,"```\n");
     }
 
     // This function uses a for loop to remove pre-set lines/words from the guide
@@ -64,6 +63,135 @@ public class Functions {
         if (listOfLines.get(i).startsWith(str[h])) {
             listOfLines.set(i, "");
         }
+    }
+
+
+    public static void replacePreSetURL(ArrayList<String> listOfLines, int i) {
+
+        LinkSets LinkSets = new LinkSets();
+
+        String inputLine = listOfLines.get(i);
+
+        int length = inputLine.length();
+
+        LinkSets.link = inputLine.substring(inputLine.indexOf(":", +1) + 2, length);
+
+        LinkSets.linkName = inputLine.substring(inputLine.indexOf(":") + 1, inputLine.indexOf(":", +1));
+
+
+        for (int x = 0; x < listOfLines.size(); x++) {
+            if (listOfLines.get(x).contains(LinkSets.linkName)) {
+
+                String fullLine = listOfLines.get(x).replaceAll("\\{" + LinkSets.linkName + "\\}", LinkSets.link);
+                fullLine = fullLine.replaceAll("\n", "");
+
+
+                listOfLines.set(x, fullLine);
+            }
+        }
+    }
+
+    public static void ifAdminLink(ArrayList<String> listOfLines, int x, String AdminLink) {
+        for (int i = 0; i < x; i++) {
+            if (listOfLines.get(i).contains(AdminLink)) {
+
+                if (listOfLines.get(i).contains("^]")) {
+                    link(listOfLines, i);
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^curl(.*?)$", "curl -k -u admin " + AdminLink));
+                }
+            }
+        }
+    }
+
+
+    public static void relatedLinksMove(ArrayList<String> listOfLines, int i) {
+
+        ArrayList<String> temp = new ArrayList<>();
+        int l = i;
+        for (int x = l; x < listOfLines.size() - 1; x++) {
+            if (!listOfLines.get(x).startsWith("# Related Links")) {
+                if (listOfLines.get(x).startsWith("http")) {
+                    if (!listOfLines.get(x).isBlank()) {
+                        if (!listOfLines.get(x).isEmpty()) {
+                            if (listOfLines.get(x).startsWith("http")) {
+                                link(listOfLines, x);
+                            }
+                            linksForNextGuides.add(listOfLines.get(x));
+                        }
+                    }
+                }
+            }
+            listOfLines.set(x, "");
+        }
+    }
+
+    public static ArrayList<String> relatedGuides(ArrayList<String> listOfLines, int i) {
+        ArrayList<String> visitLinks = new ArrayList<String>();
+        String line = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("]"));
+        String[] relatedGuides = line.trim().split("\\s*,\\s*");
+        for (String e : relatedGuides) {
+            String relatedGuidesName = e.substring(1, e.length() - 1);
+            String getTitle = null;
+            try {
+                URL url = new URL("https://raw.githubusercontent.com/openliberty/guide-" + relatedGuidesName + "/master/README.adoc");
+                Scanner s = new Scanner(url.openStream());
+                String inputLine = null;
+                while (s.hasNextLine()) {
+                    inputLine = s.nextLine() + "\n";
+
+                    if (inputLine.startsWith("= ")) {
+                        getTitle = inputLine;
+                    }
+                }
+            } catch (IOException ex) {
+
+                System.out.println(ex);
+            }
+            if (getTitle != null) {
+                getTitle = getTitle.substring(+2, getTitle.length() - 1);
+                String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
+                String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
+                visitLinks.add(fullGuidePlus);
+            } else {
+                try {
+                    URL url = new URL("https://raw.githubusercontent.com/OpenLiberty/iguide-" + relatedGuidesName + "/prod/html/" + relatedGuidesName + "-guide.html");
+                    Scanner s = new Scanner(url.openStream());
+                    String inputLine = null;
+                    while (s.hasNextLine()) {
+                        inputLine = s.nextLine() + "\n";
+
+                        if (inputLine.startsWith("title: ")) {
+                            getTitle = inputLine;
+                        }
+                    }
+                } catch (IOException ex) {
+
+                    System.out.println(ex);
+                }
+                getTitle = getTitle.substring(+8, getTitle.length() - 2);
+                String fullLinks = "https://openliberty.io/guides/" + relatedGuidesName + ".html";
+                String fullGuidePlus = "[" + getTitle + "](" + fullLinks + ")";
+                visitLinks.add(fullGuidePlus);
+            }
+        }
+        return visitLinks;
+    }
+
+    public static void Next(ArrayList<String> listOfLines) {
+
+        StringBuilder builder = new StringBuilder();
+        for (String value : linksForNextGuides) {
+            builder.append("- " + value + "\n");
+        }
+
+        String text = builder.toString();
+
+        String whereToNext = "\n\n\n## Where to next? \n\n" + text;
+
+        int End = listOfLines.size();
+
+        listOfLines.add(End, whereToNext);
+
     }
 
     // This function removes the reference to any diagrams that were in the guide. This is becasue we do not convert images/diagrams, we remove them.
@@ -118,9 +246,7 @@ public class Functions {
 
 
     public static void CheckTWYB(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        ArrayList<String> tempList = new ArrayList<>();
         for (int x = i; !listOfLines.get(x).startsWith("# "); x++) {
-//                System.out.println(x);
 
             if (listOfLines.get(x).startsWith("#Update")) {
                 position = "finishUpdate";
@@ -161,7 +287,7 @@ public class Functions {
 
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
-        while (!listOfLines.get(i).startsWith("[role='command']")) {
+        while (!listOfLines.get(i).startsWith("[role=")) {
             listOfLines.remove(i);
         }
     }
@@ -492,7 +618,6 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
             }
 
-
             OverridingEquals c1 = new OverridingEquals(listOfLines.get(i));
             OverridingEquals c2 = new OverridingEquals(codes);
 
@@ -544,16 +669,18 @@ public class Functions {
                 codeInsert(atIndex, listOfLines, guideName, branch, i, position);
             }
 
-            //Removes references to images
-            if (listOfLines.get(i).indexOf("diagram") != -1) {
-                removeDiagramReference(listOfLines, i);
-            }
-
             if (listOfLines.get(i).startsWith("image::")) {
-                if (listOfLines.get(i + 1).startsWith("*")) {
-                    listOfLines.remove(i + 1);
-                } else if (listOfLines.get(i + 2).startsWith("*")) {
-                    listOfLines.remove(i + 2);
+
+                String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
+
+                String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
+
+                String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf(","));
+
+                String imageLink = imageRepoLink + "/" + imageName;
+
+                if (listOfLines.get(i + 1).contains("{empty} +")) {
+                    listOfLines.set(i + 1, "");
                 }
             }
 
@@ -562,13 +689,7 @@ public class Functions {
                 removeAdditionalpres(listOfLines, i);
             }
 
-            //Identifies an instruction for windows only and skips the current line
-            if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
-                removeWindowsCommand(listOfLines, i);
-            }
-
-
-//            //Identifies that line is the start of a table
+            // Identifies that line is the start of a table
             if (listOfLines.get(i).startsWith("|===")) {
                 table(listOfLines, i, props);
                 listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("^[\\*]", ""));
@@ -767,9 +888,17 @@ public class Functions {
 
                 Matcher m6 = r6.matcher(listOfLines.get(i));
 
-                if (m6.find()) {
-                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+            if (m12.find()) {
+                if (m12.group().contains("<") && m12.group().contains(">")) {
+                    String s = m12.group();
+                    s = s.substring(s.indexOf("**") + 3, s.lastIndexOf("**"));
+                    s = "**`" + s + "`**";
+                    if (s.contains("``**")) {
+                        s = s.substring(s.indexOf("**`") + 3, s.lastIndexOf("``**"));
+                        s = "**`" + s + "`**";
+                    }
+                    if (!s.contains("$")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
                     }
                 }
             }
@@ -831,6 +960,25 @@ public class Functions {
             if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                 int g = i + 1;
                 Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+            }
+
+            if (listOfLines.get(i).startsWith("Update") && listOfLines.get(i-1).startsWith("```")) {
+                listOfLines.set(i-1, "");
+            }
+
+            if (listOfLines.get(i).contains(": codeblock")) {
+                String pattern6 = "(?m)^: codeblock$";
+
+                Pattern r6 = Pattern.compile(pattern6);
+
+                Matcher m6 = r6.matcher(listOfLines.get(i));
+
+                if (m6.find()) {
+                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
+
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+                    }
+                }
             }
         }
     }
