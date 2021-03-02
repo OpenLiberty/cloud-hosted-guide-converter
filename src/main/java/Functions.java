@@ -1049,6 +1049,11 @@ public class Functions {
                     }
                 }
             }
+
+            if (listOfLines.get(i).startsWith("Update") && listOfLines.get(i - 1).startsWith("```")) {
+                listOfLines.set(i - 1, "");
+                System.out.println(i);
+            }
         }
     }
 }
