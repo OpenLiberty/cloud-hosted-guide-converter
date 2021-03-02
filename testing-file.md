@@ -172,7 +172,7 @@ mvn liberty:stop
 The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project,
 including application source code or configuration. The Open Liberty server automatically reloads the configuration without restarting. This goal allows for quicker turnarounds and an improved developer experience.
 
-Stop the Open Liberty server if it is running, and start it in development mode by running the **liberty:dev** goal in the **start** directory:
+Stop the Open Liberty server if it is running, and start it in dev mode by running the **liberty:dev** goal in the **start** directory:
 
 ```
 mvn liberty:dev
@@ -180,7 +180,7 @@ mvn liberty:dev
 {: codeblock}
 
 
-Development mode automatically picks up changes that you make to your application and allows you to run tests by pressing the **enter/return** key in the active command-line session. When you’re working on your application, rather than rerunning Maven commands, press the **enter/return** key to verify your change.
+Dev mode automatically picks up changes that you make to your application and allows you to run tests by pressing the **enter/return** key in the active command-line session. When you’re working on your application, rather than rerunning Maven commands, press the **enter/return** key to verify your change.
 
 
 As before, you can see that the application is running by going to the http://localhost:9080/system/properties URL.
@@ -195,7 +195,7 @@ curl http://localhost:9080/system/properties
 
 
 
-Now try updating the server configuration while the server is running in development mode.
+Now try updating the server configuration while the server is running in dev mode.
 The **system** microservice does not currently include health monitoring to report whether the server and the microservice that it runs are healthy.
 You can add health reports with the MicroProfile Health feature, which adds a **/health** endpoint to your application.
 
@@ -304,7 +304,7 @@ Open Liberty automatically monitors these artifacts, and whenever they are updat
 Look at your **pom.xml** file.
 
 
-Try updating the source code while the server is running in development mode.
+Try updating the source code while the server is running in dev mode.
 At the moment, the **/health** endpoint reports whether the server is running, but the endpoint doesn't provide any details on the microservices that are running inside of the server.
 
 MicroProfile Health offers health checks for both readiness and liveness.
@@ -491,8 +491,8 @@ curl http://localhost:9080/health/live
 
 
 Making code changes and recompiling is fast and straightforward.
-The development mode of Open Liberty automatically picks up changes in the **.class** files and artifacts, without needing to be restarted.
-Alternatively, you can run the **run** goal and manually repackage or recompile the application by using the **mvn package** command or the **mvn compile** command while the server is running. The development mode was added to further improve the developer experience by minimizing turnaround times.
+Open Liberty dev mode automatically picks up changes in the **.class** files and artifacts, without needing to be restarted.
+Alternatively, you can run the **run** goal and manually repackage or recompile the application by using the **mvn package** command or the **mvn compile** command while the server is running. Dev mode was added to further improve the developer experience by minimizing turnaround times.
 
 
 
@@ -679,6 +679,122 @@ docker rmi openliberty-getting-started:1.0-SNAPSHOT
 
 
 
+# Developing the application in a Docker container
+
+
+The Open Liberty Maven plug-in includes a **devc** goal that simplifies developing
+your application in a Docker container by starting dev mode with container
+support. This goal builds a Docker image, mounts the required directories, binds
+the required ports, and then runs the application inside of a container. Dev
+mode also listens for any changes in the application source code or
+configuration and rebuilds the image and restarts the container as necessary.
+
+Build and run the container by running the devc goal from the **start** directory:
+
+```
+mvn liberty:devc
+```
+{: codeblock}
+
+
+When you see the following message, Open Liberty is ready to run in dev mode:
+
+```
+************************************************************************
+*    Liberty is running in dev mode.
+```
+
+Open another command-line session and run the **docker ps** command to verify that your container started:
+```
+docker ps
+```
+{: codeblock}
+
+
+Your container should be running and have **Up** as its status:
+
+```
+CONTAINER ID        IMAGE                                 COMMAND                  CREATED             STATUS                         PORTS                                                                    NAMES
+17af26af0539        guide-getting-started-dev-mode        "/opt/ol/helpers/run…"   3 minutes ago       Up 3 minutes                   0.0.0.0:7777->7777/tcp, 0.0.0.0:9080->9080/tcp, 0.0.0.0:9443->9443/tcp   liberty-dev
+```
+
+
+To access the application, go to the http://localhost:9080/system/properties URL.
+
+
+_To see the output for this URL in the IDE, run the following command at a terminal:_
+
+```
+curl http://localhost:9080/system/properties
+```
+{: codeblock}
+
+
+
+Dev mode automatically picks up changes that you make to your
+application and allows you to run tests by pressing the **enter/return** key in the
+active command-line session.
+
+Update the **server.xml** file to change the context root from **/** to **/dev**.
+
+Replace the server configuration file.
+
+> From the menu of the IDE, select
+**File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml
+
+
+
+
+```
+<server description="Sample Liberty server">
+    <featureManager>
+        <feature>jaxrs-2.1</feature>
+        <feature>jsonp-1.1</feature>
+        <feature>cdi-2.0</feature>
+        <feature>mpMetrics-2.3</feature>
+        <feature>mpHealth-2.2</feature>
+        <feature>mpConfig-1.4</feature>
+    </featureManager>
+
+    <variable name="default.http.port" defaultValue="9080"/>
+    <variable name="default.https.port" defaultValue="9443"/>
+
+    <webApplication location="guide-getting-started.war" contextRoot="/dev" />
+    
+    <mpMetrics authentication="false"/>
+
+    <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
+
+    <httpEndpoint host="*" httpPort="${default.http.port}" 
+        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+
+    <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
+</server>
+```
+{: codeblock}
+
+
+After you make the file changes, Open Liberty automatically reloads its
+configuration. You can access the application at the
+
+http://localhost:9080/dev/system/properties
+
+
+_To see the output for this URL in the IDE, run the following command at a terminal:_
+
+```
+curl http://localhost:9080/dev/system/properties
+```
+{: codeblock}
+
+
+URL. Notice that context root is now **/dev**.
+
+When you are finished, exit dev mode by pressing **CTRL+C** in the
+command-line session that the container was started from, or by typing `q` and
+then pressing the **enter/return** key. Either of these options stops and
+removes the container. To check that the container was stopped, run the **docker ps** command.
+
 
 # Running the application from a minimal runnable JAR
 
@@ -720,17 +836,18 @@ java -jar guide-getting-started.jar
 
 
 
-When the server starts, go to the http://localhost:9080/system/properties URL to access your application that is now running out of the minimal runnable JAR file.
+When the server starts, go to the http://localhost:9080/dev/system/properties URL to access
 
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/system/properties
+curl http://localhost:9080/dev/system/properties
 ```
 {: codeblock}
 
 
+your application that is now running out of the minimal runnable JAR file.
 
 You can stop the server by pressing **CTRL+C** in the command-line session that the server runs in.
 

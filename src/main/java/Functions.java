@@ -280,17 +280,18 @@ public class Functions {
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
-        for (int x = 0; x < 10; x++) {
-            int y = x + i;
-            if (listOfLines.get(y).startsWith("----")) {
-                listOfLines.set(y, "");
-            }
+
+        if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
+            listOfLines.set(i - 1, "");
         }
+        if (listOfLines.get(i + 2).startsWith("----")) {
+            listOfLines.set(i + 2, "");
+        }
+
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
             touch(listOfLines, guideName, branch, g, position);
-        }
-        if (atIndex.startsWith("#Update") && position != "finishUpdate") {
+        } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
             update(listOfLines, guideName, branch, g, position);
         } else if (atIndex.startsWith("#Replace")) {
             replace(listOfLines, guideName, branch, g, position);
@@ -681,7 +682,7 @@ public class Functions {
                 listOfLines.set(i + 3, "");
             }
 
-            // Replaces left over ----
+//             Replaces left over ----
             if (listOfLines.get(i).startsWith("----")) {
                 replaceDashes(listOfLines, i);
             }
