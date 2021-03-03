@@ -190,7 +190,7 @@ public class Functions {
         return visitLinks;
     }
 
-    public static void Next(ArrayList<String> listOfLines) {
+    public static String Next(ArrayList<String> listOfLines) {
 
         StringBuilder builder = new StringBuilder();
         for (String value : linksForNextGuides) {
@@ -203,7 +203,9 @@ public class Functions {
 
         int End = listOfLines.size();
 
-        listOfLines.add(End, whereToNext);
+//        listOfLines.add(End, whereToNext);
+
+        return whereToNext;
 
     }
 
@@ -374,7 +376,7 @@ public class Functions {
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
-        listOfLines.add("\n\n# Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" + Next(listOfLines) + "\n\n## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
