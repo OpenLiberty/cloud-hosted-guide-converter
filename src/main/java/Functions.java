@@ -873,7 +873,10 @@ public class Functions {
 
             // end of guide
             if (listOfLines.get(i).startsWith("# Great work! You're done!")) {
-                String lastLine = listOfLines.get(i + 2).replaceAll("`","**");
+                String lastLine = listOfLines.get(i + 2);
+                if (lastLine.contains("`")) {
+                    lastLine = lastLine.replaceAll("`","**");
+                }
                 listOfLines.set(i + 2, "");
                 finish(listOfLines, lastLine, guideName, i);
             }
