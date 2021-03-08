@@ -100,12 +100,10 @@ public class CloudHostedGuideConverter {
 
 
                 if (inputLine.startsWith("ifndef::cloud-hosted[]")) {
-
                     while (!s.nextLine().startsWith("endif::[]")) {
                         continue;
                     }
                 }
-
 
                 listOfLines.add(inputLine);
             }
