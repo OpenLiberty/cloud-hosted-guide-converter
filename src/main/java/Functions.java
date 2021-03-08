@@ -158,7 +158,7 @@ public class Functions {
                 }
             } catch (IOException ex) {
 
-                System.out.println(ex);
+                System.out.println("Guide contains iGuide reference");
             }
             if (getTitle != null) {
                 getTitle = getTitle.substring(+2, getTitle.length() - 1);
@@ -625,433 +625,449 @@ public class Functions {
         // Main for loop
         for (int i = 0; i < listOfLines.size(); i++) {
 
-            // Function to add related Guides. (Not Completed)
-            if (listOfLines.get(i).startsWith(":page-related-guides:")) {
-                linksForNextGuides = relatedGuides(listOfLines, i);
-            }
+            boolean ignoreMacros = false;
 
-            if (listOfLines.get(i).startsWith(":")) {
-                if (listOfLines.get(i).contains("-url")) {
-                    replacePreSetURL(listOfLines, i);
-//                    link(listOfLines, i);
+            if (listOfLines.get(i).startsWith("ifdef::cloud-hosted[]")) {
+                listOfLines.set(i,"");
+                while (!listOfLines.get(i).startsWith("endif::[]")) {
+                    i++;
+                    ignoreMacros = true;
+                }
+                if (listOfLines.get(i).startsWith("endif::[]")) {
+                    listOfLines.set(i,"");
                 }
             }
 
-            String pattern2 = "`(.*?)(\\w)(.*?)(\\w)(.*?)`";
-            String pattern5 = "(?m)^[```]$";
+            if (ignoreMacros == false) {
+                // Function to add related Guides. (Not Completed)
+                if (listOfLines.get(i).startsWith(":page-related-guides:")) {
+                    linksForNextGuides = relatedGuides(listOfLines, i);
+                }
 
-            Pattern r2 = Pattern.compile(pattern2);
-            Pattern r5 = Pattern.compile(pattern5);
-
-            Matcher m2 = r2.matcher(listOfLines.get(i));
-            Matcher m5 = r5.matcher(listOfLines.get(i));
-
-            if (m2.find() && !m5.find()) {
-                listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-            }
+                if (listOfLines.get(i).startsWith(":")) {
+                    if (listOfLines.get(i).contains("-url")) {
+                        replacePreSetURL(listOfLines, i);
+//                    link(listOfLines, i);
+                    }
+                }
 
 
-            OverridingEquals c1 = new OverridingEquals(listOfLines.get(i));
-            OverridingEquals c2 = new OverridingEquals(codes);
+                String pattern2 = "`(.*?)(\\w)(.*?)(\\w)(.*?)`";
+                String pattern5 = "(?m)^[```]$";
 
-            // Runs the commons Functions
-            commons(listOfLines, guideName, i);
+                Pattern r2 = Pattern.compile(pattern2);
+                Pattern r5 = Pattern.compile(pattern5);
 
-            // Changes ---- to ```
-            if (c1.equals(c2)) {
-                replaceCodeBlocks(listOfLines, i);
-            }
+                Matcher m2 = r2.matcher(listOfLines.get(i));
+                Matcher m5 = r5.matcher(listOfLines.get(i));
 
-            // removes un-used code blocks
-            if (listOfLines.get(i).startsWith("[role=\"code_command")) {
-                listOfLines.set(i + 1, "");
-                listOfLines.set(i + 4, "");
-                listOfLines.set(i + 5, "");
-            }
+                if (m2.find() && !m5.find()) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
+                }
 
-            String pattern = "\\[source(.*?)linenums";
 
-            Pattern r = Pattern.compile(pattern);
+                OverridingEquals c1 = new OverridingEquals(listOfLines.get(i));
+                OverridingEquals c2 = new OverridingEquals(codes);
 
-            Matcher m = r.matcher(listOfLines.get(i));
+                // Runs the commons Functions
+                commons(listOfLines, guideName, i);
 
-            // removes code examples
+                // Changes ---- to ```
+                if (c1.equals(c2)) {
+                    replaceCodeBlocks(listOfLines, i);
+                }
+
+                // removes un-used code blocks
+                if (listOfLines.get(i).startsWith("[role=\"code_command")) {
+                    listOfLines.set(i + 1, "");
+                    listOfLines.set(i + 4, "");
+                    listOfLines.set(i + 5, "");
+                }
+
+                String pattern = "\\[source(.*?)linenums";
+
+                Pattern r = Pattern.compile(pattern);
+
+                Matcher m = r.matcher(listOfLines.get(i));
+
+                // removes code examples
 //            if (listOfLines.get(i).startsWith("[source, Java, linenums") || listOfLines.get(i).startsWith("[source,java,linenums") || listOfLines.get(i).startsWith("[source, java, linenums,") || listOfLines.get(i).startsWith("[source, xml, linenums,") || listOfLines.get(i).startsWith("[source , xml, linenums,")|| listOfLines.get(i).startsWith("[source,xml,linenums")|| listOfLines.get(i).startsWith("[source, XML, linenums,") || listOfLines.get(i).startsWith("[source, Text, linenums") || listOfLines.get(i).startsWith("[source, text, linenums,") || listOfLines.get(i).startsWith("[source, json, linenums,") || listOfLines.get(i).startsWith("[source, JSON, linenums,")) {
 
-            if (m.find()) {
-                listOfLines.set(i - 1, "");
-                listOfLines.set(i + 1, "");
-                listOfLines.set(i + 3, "");
-            }
+                if (m.find()) {
+                    listOfLines.set(i - 1, "");
+                    listOfLines.set(i + 1, "");
+                    listOfLines.set(i + 3, "");
+                }
 
 //             Replaces left over ----
-            if (listOfLines.get(i).startsWith("----")) {
-                replaceDashes(listOfLines, i);
-            }
+                if (listOfLines.get(i).startsWith("----")) {
+                    replaceDashes(listOfLines, i);
+                }
 
 
-            //For parts of text that need to be copied
-            if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
-                insertCopyButton(listOfLines, i);
-            }
+                //For parts of text that need to be copied
+                if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
+                    insertCopyButton(listOfLines, i);
+                }
 
-            //User is instructed to replace a file
-            if (listOfLines.get(i).startsWith("#Replace") || listOfLines.get(i).startsWith("#Create") || listOfLines.get(i).startsWith("#Update")) {
-                final String atIndex = listOfLines.get(i);
+                //User is instructed to replace a file
+                if (listOfLines.get(i).startsWith("#Replace") || listOfLines.get(i).startsWith("#Create") || listOfLines.get(i).startsWith("#Update")) {
+                    final String atIndex = listOfLines.get(i);
 
-                codeInsert(atIndex, listOfLines, guideName, branch, i, position);
-            }
+                    codeInsert(atIndex, listOfLines, guideName, branch, i, position);
+                }
 
 //            //Removes references to images
 //            if (listOfLines.get(i).indexOf("diagram") != -1) {
 //                removeDiagramReference(listOfLines, i);
 //            }
 
-            if (listOfLines.get(i).startsWith("image::")) {
+                if (listOfLines.get(i).startsWith("image::")) {
 //                if (listOfLines.get(i + 1).startsWith("*")) {
 //                    listOfLines.remove(i + 1);
 //                } else if (listOfLines.get(i + 2).startsWith("*")) {
 //                    listOfLines.remove(i + 2);
 //                }
 
-                String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
+                    String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
 
-                String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
+                    String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
 
-                String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf(","));
+                    String imageDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf(","));
 
-                String imageLink = imageRepoLink + "/" + imageName;
+                    String imageLink = imageRepoLink + "/" + imageName;
 
-                if (listOfLines.get(i + 1).contains("{empty} +")) {
-                    listOfLines.set(i + 1, "");
+                    if (listOfLines.get(i + 1).contains("{empty} +")) {
+                        listOfLines.set(i + 1, "");
+                    }
+
+                    listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n\n");
                 }
 
-                listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n\n");
-            }
+                //Removes Additional prerequisites section
+                if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
+                    removeAdditionalpres(listOfLines, i);
+                }
 
-            //Removes Additional prerequisites section
-            if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
-                removeAdditionalpres(listOfLines, i);
-            }
-
-            // Identifies an instruction for windows only and skips the current line
+                // Identifies an instruction for windows only and skips the current line
 //             if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
 //                 removeWindowsCommand(listOfLines, i);
 //             }
 
 
-            // Identifies that line is the start of a table
-            if (listOfLines.get(i).startsWith("|===")) {
-                table(listOfLines, i, props);
-                listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("^[\\*]", ""));
-            }
+                // Identifies that line is the start of a table
+                if (listOfLines.get(i).startsWith("|===")) {
+                    table(listOfLines, i, props);
+                    listOfLines.set(i + 1, listOfLines.get(i + 1).replaceAll("^[\\*]", ""));
+                }
 
-            //Finds title so we skip over irrelevant lines
-            if (listOfLines.get(i).startsWith("= ")) {
-                listOfLines.set(i, listOfLines.get(i).replaceAll("=", "#"));
-            }
+                //Finds title so we skip over irrelevant lines
+                if (listOfLines.get(i).startsWith("= ")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("=", "#"));
+                }
 
-            if (listOfLines.get(i).startsWith("[.h")) {
-                listOfLines.set(i, "");
-                if (!listOfLines.get(i + 1).isBlank()) {
-                    listOfLines.set(i + 1, "");
-                    if (!listOfLines.get(i + 2).isBlank()) {
-                        listOfLines.set(i + 2, "");
+                if (listOfLines.get(i).startsWith("[.h")) {
+                    listOfLines.set(i, "");
+                    if (!listOfLines.get(i + 1).isBlank()) {
+                        listOfLines.set(i + 1, "");
+                        if (!listOfLines.get(i + 2).isBlank()) {
+                            listOfLines.set(i + 2, "");
+                        }
                     }
                 }
-            }
 
-            //Identifies another heading after the intro so we stop skipping over lines
-            if (listOfLines.get(i).startsWith("== ")) {
-                position = "main";
-            }
-
-            if (listOfLines.get(i).startsWith("[source")) {
-                removeLast(guideName);
-            }
-
-            if (listOfLines.get(i).contains("\\http")) {
-                listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
-            }
-
-            if (listOfLines.get(i).indexOf("^]") > 1) {
-                int counters = 0;
-                char letter = '^';
-                if (listOfLines.get(i).startsWith("- ")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
+                //Identifies another heading after the intro so we stop skipping over lines
+                if (listOfLines.get(i).startsWith("== ")) {
+                    position = "main";
                 }
-                if (listOfLines.get(i).startsWith("* ")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+
+                if (listOfLines.get(i).startsWith("[source")) {
+                    removeLast(guideName);
                 }
-                if (!listOfLines.get(i).contains("localhost")) {
-                    for (int x = 0; x < listOfLines.get(i).length(); x++) {
-                        if (listOfLines.get(i).charAt(x) == letter) {
-                            counters++;
-                        }
-                    }
 
-                    String[] moreThen = new String[0];
-                    if (counters == 2) {
-                        moreThen = listOfLines.get(i).split("]");
+                if (listOfLines.get(i).contains("\\http")) {
+                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
+                }
 
-                        moreThen[0] = moreThen[0] + "]";
-                        moreThen[1] = moreThen[1] + "]";
+                if (listOfLines.get(i).indexOf("^]") > 1) {
+                    int counters = 0;
+                    char letter = '^';
+                    if (listOfLines.get(i).startsWith("- ")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
                     }
+                    if (listOfLines.get(i).startsWith("* ")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                    }
+                    if (!listOfLines.get(i).contains("localhost")) {
+                        for (int x = 0; x < listOfLines.get(i).length(); x++) {
+                            if (listOfLines.get(i).charAt(x) == letter) {
+                                counters++;
+                            }
+                        }
 
-                    if (moreThen.length == 3) {
-                        String link = moreThen[0].substring(moreThen[0].indexOf("http"), moreThen[0].indexOf("["));
-                        String link2 = moreThen[1].substring(moreThen[1].indexOf("http"), moreThen[1].indexOf("["));
-                        String linkDesc = moreThen[0].substring(moreThen[0].indexOf("[") + 1, moreThen[0].indexOf("^"));
-                        if (linkDesc.isEmpty()) {
-                            linkDesc = link;
+                        String[] moreThen = new String[0];
+                        if (counters == 2) {
+                            moreThen = listOfLines.get(i).split("]");
+
+                            moreThen[0] = moreThen[0] + "]";
+                            moreThen[1] = moreThen[1] + "]";
                         }
-                        String linkDesc2 = moreThen[1].substring(moreThen[1].indexOf("[") + 1, moreThen[1].indexOf("^"));
-                        if (linkDesc2.isEmpty()) {
-                            linkDesc2 = link2;
+
+                        if (moreThen.length == 3) {
+                            String link = moreThen[0].substring(moreThen[0].indexOf("http"), moreThen[0].indexOf("["));
+                            String link2 = moreThen[1].substring(moreThen[1].indexOf("http"), moreThen[1].indexOf("["));
+                            String linkDesc = moreThen[0].substring(moreThen[0].indexOf("[") + 1, moreThen[0].indexOf("^"));
+                            if (linkDesc.isEmpty()) {
+                                linkDesc = link;
+                            }
+                            String linkDesc2 = moreThen[1].substring(moreThen[1].indexOf("[") + 1, moreThen[1].indexOf("^"));
+                            if (linkDesc2.isEmpty()) {
+                                linkDesc2 = link2;
+                            }
+                            String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                            String fullLink2 = "[" + linkDesc2 + "]" + "(" + link2 + ")";
+                            String wholeLine = listOfLines.get(i);
+                            String begginingOfLine = listOfLines.get(i).substring(0, listOfLines.get(i).indexOf("http"));
+                            wholeLine = wholeLine.replace(begginingOfLine, "");
+                            String endOfLine = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("]") + 1, listOfLines.get(i).length());
+                            wholeLine = wholeLine.replace(endOfLine, "");
+                            wholeLine = wholeLine.replace(link, "");
+                            String middleOfLine = wholeLine.substring(wholeLine.indexOf("]") + 1, wholeLine.indexOf("http"));
+                            String check2 = begginingOfLine + fullLink + middleOfLine + fullLink2 + endOfLine;
+                            listOfLines.set(i, check2);
                         }
-                        String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                        String fullLink2 = "[" + linkDesc2 + "]" + "(" + link2 + ")";
-                        String wholeLine = listOfLines.get(i);
-                        String begginingOfLine = listOfLines.get(i).substring(0, listOfLines.get(i).indexOf("http"));
-                        wholeLine = wholeLine.replace(begginingOfLine, "");
-                        String endOfLine = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("]") + 1, listOfLines.get(i).length());
-                        wholeLine = wholeLine.replace(endOfLine, "");
-                        wholeLine = wholeLine.replace(link, "");
-                        String middleOfLine = wholeLine.substring(wholeLine.indexOf("]") + 1, wholeLine.indexOf("http"));
-                        String check2 = begginingOfLine + fullLink + middleOfLine + fullLink2 + endOfLine;
-                        listOfLines.set(i, check2);
-                    }
-                } else {
-                    if (listOfLines.get(i).contains("^]")) {
-                        if (listOfLines.get(i).startsWith("-")) {
-                            listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
-                        }
-                        if (listOfLines.get(i).startsWith("* ")) {
-                            listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
-                        }
-                        if (listOfLines.get(i).indexOf("http://") != -1) {
-                            if (!listOfLines.get(i).contains("localhost")) {
-                                String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
-                                String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
-                                if (linkDesc.isEmpty()) {
-                                    linkDesc = link;
+                    } else {
+                        if (listOfLines.get(i).contains("^]")) {
+                            if (listOfLines.get(i).startsWith("-")) {
+                                listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                            }
+                            if (listOfLines.get(i).startsWith("* ")) {
+                                listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                            }
+                            if (listOfLines.get(i).indexOf("http://") != -1) {
+                                if (!listOfLines.get(i).contains("localhost")) {
+                                    String link = listOfLines.get(i).substring(listOfLines.get(i).indexOf("http://"), listOfLines.get(i).indexOf("["));
+                                    String linkDesc = listOfLines.get(i).substring(listOfLines.get(i).indexOf("[") + 1, listOfLines.get(i).indexOf("^"));
+                                    if (linkDesc.isEmpty()) {
+                                        linkDesc = link;
+                                    }
+                                    String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
+                                    String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
+                                    listOfLines.set(i, check);
                                 }
-                                String fullLink = "[" + linkDesc + "]" + "(" + link + ")";
-                                String check = listOfLines.get(i).replaceAll("http:(.*?)]", fullLink);
-                                listOfLines.set(i, check);
                             }
                         }
                     }
                 }
-            }
 
-            if (listOfLines.get(i).contains("^]")) {
-                link(listOfLines, i);
-                if (listOfLines.get(i).contains("localhost")) {
-                    counter++;
-                }
-                if (listOfLines.get(i).startsWith("-")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
-                }
-                if (listOfLines.get(i).startsWith("*")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                if (listOfLines.get(i).contains("^]")) {
+                    link(listOfLines, i);
+                    if (listOfLines.get(i).contains("localhost")) {
+                        counter++;
+                    }
+                    if (listOfLines.get(i).startsWith("-")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
+                    }
+                    if (listOfLines.get(i).startsWith("*")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                    }
+
+                    if (counter == 1) {
+                        flag = true;
+                    }
+
+                    if (flag == true) {
+                        String GuidesCommon = "new-terminal.md";
+
+                        listOfLines.add(i, "");
+                        listOfLines.add(i, "");
+                        ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
+                        listOfLines.add(i + 12, "");
+                        flag = false;
+                    }
                 }
 
-                if (counter == 1) {
-                    flag = true;
+
+                // end of guide
+                if (listOfLines.get(i).startsWith("# Great work! You're done!")) {
+                    String lastLine = listOfLines.get(i + 2);
+                    if (lastLine.contains("`")) {
+                        lastLine = lastLine.replaceAll("`", "**");
+                    }
+                    listOfLines.set(i + 2, "");
+                    finish(listOfLines, lastLine, guideName, i);
                 }
-
-                if (flag == true) {
-                    String GuidesCommon = "new-terminal.md";
-
-                    listOfLines.add(i, "");
-                    listOfLines.add(i, "");
-                    ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
-                    listOfLines.add(i + 12, "");
-                    flag = false;
-                }
-            }
-
-
-            // end of guide
-            if (listOfLines.get(i).startsWith("# Great work! You're done!")) {
-                String lastLine = listOfLines.get(i + 2);
-                if (lastLine.contains("`")) {
-                    lastLine = lastLine.replaceAll("`","**");
-                }
-                listOfLines.set(i + 2, "");
-                finish(listOfLines, lastLine, guideName, i);
-            }
 
 //            //Identifies the start of a table
-            if (listOfLines.get(i).startsWith("[cols")) {
-                listOfLines.set(i, "");
-            }
-
-            //compares line with the irrelevant ones in startingPhrases
-            for (int h = 0; h < startingPhrases.length; h++) {
-                removingIrrelevant(listOfLines, i, startingPhrases, h);
-                position = "main";
-            }
-
-            // element contains info that needs general configuration and is not a special case
-            if (position.equals("main")) {
-                mains(listOfLines, prop, props);
-            }
-
-            if (listOfLines.get(i).startsWith("Add the")) {
-                listOfLines.set(i, "");
-            }
-
-            if (listOfLines.get(i).startsWith("- ")) {
-                if (listOfLines.get(i + 1).isBlank()) {
-                    listOfLines.set(i, listOfLines.get(i).substring(+1, listOfLines.get(i).length()));
+                if (listOfLines.get(i).startsWith("[cols")) {
+                    listOfLines.set(i, "");
                 }
-            }
 
-            String pattern3 = "\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*";
+                //compares line with the irrelevant ones in startingPhrases
+                for (int h = 0; h < startingPhrases.length; h++) {
+                    removingIrrelevant(listOfLines, i, startingPhrases, h);
+                    position = "main";
+                }
 
-            Pattern r3 = Pattern.compile(pattern3);
+                // element contains info that needs general configuration and is not a special case
+                if (position.equals("main")) {
+                    mains(listOfLines, prop, props);
+                }
 
-            Matcher m3 = r3.matcher(listOfLines.get(i));
+                if (listOfLines.get(i).startsWith("Add the")) {
+                    listOfLines.set(i, "");
+                }
 
-            if (m3.find()) {
-                if (m3.group().contains("_")) {
-                    String s = m3.group();
-                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                    s = "**`" + s + "`**";
-                    if ((s.length() < 90)) {
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
-                    } else {
-                        listOfLines.set(i, listOfLines.get(i));
+                if (listOfLines.get(i).startsWith("- ")) {
+                    if (listOfLines.get(i + 1).isBlank()) {
+                        listOfLines.set(i, listOfLines.get(i).substring(+1, listOfLines.get(i).length()));
                     }
                 }
-            }
 
-            String pattern11 = "\\*\\*<(.*?)>\\*\\*|\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*";
+                String pattern3 = "\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*";
 
-            Pattern r11 = Pattern.compile(pattern11);
+                Pattern r3 = Pattern.compile(pattern3);
 
-            Matcher m11 = r11.matcher(listOfLines.get(i));
+                Matcher m3 = r3.matcher(listOfLines.get(i));
 
-            if (m11.find()) {
-                if (m11.group().contains("<") && m11.group().contains(">")) {
-                    String s = m11.group();
-                    s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
-                    s = "**`" + s + "`**";
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`<"));
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", ">`**"));
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
-                }
-            }
-
-            String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*\\s";
-
-            Pattern r12 = Pattern.compile(pattern12);
-
-            Matcher m12 = r12.matcher(listOfLines.get(i));
-
-            if (m12.find()) {
-                if (m12.group().contains("<") && m12.group().contains(">")) {
-                    String s = m12.group();
-                    s = s.substring(s.indexOf("**") + 3, s.lastIndexOf("**"));
-                    s = "**`" + s + "`**";
-                    if (s.contains("``**")) {
-                        s = s.substring(s.indexOf("**`") + 3, s.lastIndexOf("``**"));
+                if (m3.find()) {
+                    if (m3.group().contains("_")) {
+                        String s = m3.group();
+                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
                         s = "**`" + s + "`**";
+                        if ((s.length() < 90)) {
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*", s));
+                        } else {
+                            listOfLines.set(i, listOfLines.get(i));
+                        }
                     }
-                    if (!s.contains("$")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
+                }
+
+                String pattern11 = "\\*\\*<(.*?)>\\*\\*|\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*";
+
+                Pattern r11 = Pattern.compile(pattern11);
+
+                Matcher m11 = r11.matcher(listOfLines.get(i));
+
+                if (m11.find()) {
+                    if (m11.group().contains("<") && m11.group().contains(">")) {
+                        String s = m11.group();
+                        s = s.substring(s.indexOf("**") + 2, s.lastIndexOf("**"));
+                        s = "**`" + s + "`**";
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\<", "**`<"));
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\>\\*\\*", ">`**"));
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
+                    }
+                }
+
+                String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*\\s";
+
+                Pattern r12 = Pattern.compile(pattern12);
+
+                Matcher m12 = r12.matcher(listOfLines.get(i));
+
+                if (m12.find()) {
+                    if (m12.group().contains("<") && m12.group().contains(">")) {
+                        String s = m12.group();
+                        s = s.substring(s.indexOf("**") + 3, s.lastIndexOf("**"));
+                        s = "**`" + s + "`**";
+                        if (s.contains("``**")) {
+                            s = s.substring(s.indexOf("**`") + 3, s.lastIndexOf("``**"));
+                            s = "**`" + s + "`**";
+                        }
+                        if (!s.contains("$")) {
+                            listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
 //                        System.out.println(listOfLines.get(i));
+                        }
                     }
                 }
-            }
 
-            if (listOfLines.get(i).startsWith("docker")) {
-                if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
-                    listOfLines.add(i + 2, "");
-                    listOfLines.set(i + 2, "{: codeblock}\n\n\n");
-                }
-            }
-
-            String pattern7 = "(?m)^(.\s)$";
-            String pattern8 = "(?m)^(.)$";
-
-            Pattern r7 = Pattern.compile(pattern7);
-            Pattern r8 = Pattern.compile(pattern8);
-
-            Matcher m7 = r7.matcher(listOfLines.get(i));
-            Matcher m8 = r8.matcher(listOfLines.get(i));
-
-            if (m7.find()) {
-                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
-                }
-            }
-
-            if (m8.find()) {
-                if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
-                    listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
-                }
-            }
-
-            if (listOfLines.get(i).startsWith("mvn")) {
-                if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
-                    if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                if (listOfLines.get(i).startsWith("docker")) {
+                    if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                         listOfLines.add(i + 2, "");
-                        listOfLines.set(i + 1, "```\n{: codeblock}\n\n\n");
+                        listOfLines.set(i + 2, "{: codeblock}\n\n\n");
                     }
                 }
-            }
 
-            String pattern9 = "^mvn(.*?)";
-            String pattern10 = "[A-Za-z]+";
+                String pattern7 = "(?m)^(.\s)$";
+                String pattern8 = "(?m)^(.)$";
 
-            Pattern r9 = Pattern.compile(pattern9);
-            Pattern r10 = Pattern.compile(pattern10);
+                Pattern r7 = Pattern.compile(pattern7);
+                Pattern r8 = Pattern.compile(pattern8);
 
-            Matcher m9 = r9.matcher(listOfLines.get(i));
-            Matcher m10 = null;
-            if (i < listOfLines.size() - 2) {
-                m10 = r10.matcher(listOfLines.get(i + 2));
-            }
+                Matcher m7 = r7.matcher(listOfLines.get(i));
+                Matcher m8 = r8.matcher(listOfLines.get(i));
 
-            if (m9.find()) {
-                if (m10 != null) {
-                    if (m10.find()) {
-                        if (!m10.group().contains("codeblock")) {
-                            if (!listOfLines.get(i + 2).startsWith("mvn")) {
-                                listOfLines.set(i + 2, "{: codeblock}\n\n" + listOfLines.get(i + 2));
+                if (m7.find()) {
+                    if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
+                    }
+                }
+
+                if (m8.find()) {
+                    if (!listOfLines.get(i).contains("{") || !listOfLines.get(i).contains("}") || !listOfLines.get(i).contains("(") || !listOfLines.get(i).contains(")")) {
+                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.\s)$", ""));
+                    }
+                }
+
+                if (listOfLines.get(i).startsWith("mvn")) {
+                    if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                        if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
+                            listOfLines.add(i + 2, "");
+                            listOfLines.set(i + 1, "```\n{: codeblock}\n\n\n");
+                        }
+                    }
+                }
+
+                String pattern9 = "^mvn(.*?)";
+                String pattern10 = "[A-Za-z]+";
+
+                Pattern r9 = Pattern.compile(pattern9);
+                Pattern r10 = Pattern.compile(pattern10);
+
+                Matcher m9 = r9.matcher(listOfLines.get(i));
+                Matcher m10 = null;
+                if (i < listOfLines.size() - 2) {
+                    m10 = r10.matcher(listOfLines.get(i + 2));
+                }
+
+                if (m9.find()) {
+                    if (m10 != null) {
+                        if (m10.find()) {
+                            if (!m10.group().contains("codeblock")) {
+                                if (!listOfLines.get(i + 2).startsWith("mvn")) {
+                                    listOfLines.set(i + 2, "{: codeblock}\n\n" + listOfLines.get(i + 2));
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if (listOfLines.get(i).contains("^]")) {
-                link(listOfLines, i);
-            }
+                if (listOfLines.get(i).contains("^]")) {
+                    link(listOfLines, i);
+                }
 
-            if (listOfLines.get(i).contains("# Related Links")) {
-                relatedLinksMove(listOfLines, i);
-            }
+                if (listOfLines.get(i).contains("# Related Links")) {
+                    relatedLinksMove(listOfLines, i);
+                }
 
-            if (listOfLines.get(i).startsWith("### Try what you'll build")) {
-                int g = i + 1;
-                Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
-            }
+                if (listOfLines.get(i).startsWith("### Try what you'll build")) {
+                    int g = i + 1;
+                    Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+                }
 
-            if (listOfLines.get(i).contains(": codeblock")) {
-                String pattern6 = "(?m)^: codeblock$";
+                if (listOfLines.get(i).contains(": codeblock")) {
+                    String pattern6 = "(?m)^: codeblock$";
 
-                Pattern r6 = Pattern.compile(pattern6);
+                    Pattern r6 = Pattern.compile(pattern6);
 
-                Matcher m6 = r6.matcher(listOfLines.get(i));
+                    Matcher m6 = r6.matcher(listOfLines.get(i));
 
-                if (m6.find()) {
-                    if (!listOfLines.get(i).startsWith("{: codeblock}")) {
+                    if (m6.find()) {
+                        if (!listOfLines.get(i).startsWith("{: codeblock}")) {
 
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+                            listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
+                        }
                     }
                 }
             }
