@@ -61,15 +61,6 @@ public class CloudHostedGuideConverter {
 
                 if (inputLine.startsWith("= ")) {
                     GuideTitle = inputLine;
-                    if (GuideTitle.startsWith("= Containerizing microservices")) {
-                        if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
-                            s.nextLine();
-                            s.nextLine();
-                            s.nextLine();
-                            GuideDescription = s.nextLine();
-                            GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
-                        }
-                    } else {
                         if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
                             s.nextLine();
                             s.nextLine();
@@ -78,7 +69,6 @@ public class CloudHostedGuideConverter {
                         }
                         continue;
                     }
-                }
 
                 if (inputLine.equals(GuideDescription)) {
                     inputLine = "";

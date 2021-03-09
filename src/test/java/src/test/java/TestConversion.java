@@ -32,13 +32,6 @@ public class TestConversion {
 
                inputLine = s.nextLine() + "\n";
 
-                if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
-
-                    while (!s.nextLine().startsWith("[.tab_content.linux_section]")) {
-                        continue;
-                    }
-                }
-
                 testTab();
 
                 testHotspot();
