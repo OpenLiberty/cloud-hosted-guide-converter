@@ -30,7 +30,7 @@ jobs:
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: ManuallyConverterAllGuides
-        repo: jakub-pomykala/cloud-hosted-guides
+        repo: OpenLiberty/cloud-hosted-guides
         token: ${{ secrets.GUIDECONVERSIONTOOL_PASSWORD }}
         inputs: '{ "branch": "qa", "GuideConverterBranch": "${{ github.event.pull_request.head.ref }}" }'
         ref: "refs/heads/prod"
