@@ -1,0 +1,36 @@
+name: ManuallyConverterAllGuides
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch pushed to'     
+        required: true
+        default: 'refs/heads/qa'
+      GuideConverterBranch:
+        description: 'GuideConverter branch to use'
+        required: true
+        default: 'refs/heads/main'
+        
+jobs:
+
+  post:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    # Uses the secrets from the organisation for credentials
+    - uses: actions/checkout@v2
+
+    - name: Invoke workflow in another repo with inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: ManuallyConverterAllGuides
+        repo: OpenLiberty/cloud-hosted-guides
+        token: ${{ secrets.GUIDECONVERSIONTOOL_PASSWORD }}
+        inputs: '{ "branch": "qa", "GuideConverterBranch": "${{ github.event.pull_request.head.ref }}" }'
+        ref: "refs/heads/prod"
