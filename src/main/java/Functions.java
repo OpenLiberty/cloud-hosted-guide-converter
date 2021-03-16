@@ -282,7 +282,7 @@ public class Functions {
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
-        String hideTags = null;
+        String hideTags[] = null;
 
         if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
             listOfLines.set(i - 1, "");
@@ -295,8 +295,9 @@ public class Functions {
         if (atIndex.startsWith("#Create")) {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
-                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                    hideTags = AllTags.split(",");
                 } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
@@ -306,9 +307,10 @@ public class Functions {
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
-                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                    hideTags = AllTags.split(",");
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
@@ -317,9 +319,10 @@ public class Functions {
         } else if (atIndex.startsWith("#Replace")) {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
-                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                    hideTags = AllTags.split(",");
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
@@ -327,12 +330,14 @@ public class Functions {
             replace(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
-                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                    hideTags = AllTags.split(",");
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
+
             updateFinish(listOfLines, guideName, branch, g, position, hideTags);
         }
     }
@@ -415,7 +420,7 @@ public class Functions {
     }
 
     //configures instructions to replace file
-    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include")) {
@@ -436,7 +441,7 @@ public class Functions {
     }
 
     //configures instructions to update file
-    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include")) {
@@ -457,7 +462,7 @@ public class Functions {
         return position;
     }
 
-    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include")) {
@@ -479,7 +484,7 @@ public class Functions {
     }
 
     //configures instructions to create file
-    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include")) {
@@ -589,7 +594,7 @@ public class Functions {
 
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
-    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path, String hideTags) {
+    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path, String hideTags[]) {
         try {
             ArrayList<String> code = new ArrayList<String>();
             URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + path);
@@ -599,16 +604,14 @@ public class Functions {
             code.add("```\n");
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-                if (inputLine.contains("// tag::copyright[]")) {
-                    while (!s.nextLine().startsWith("// end::copyright[]")) {
-                        continue;
-                    }
-                }
 
                 if (hideTags != null) {
-                    if (inputLine.contains("tag::" + hideTags)) {
-                        while (!s.nextLine().contains("end::" + hideTags)) {
-                            continue;
+                    for (String e : hideTags){
+                        if (inputLine.contains("tag::" + e)) {
+                        System.out.println(e);
+                            while (!s.nextLine().contains("end::" + e)) {
+                                continue;
+                            }
                         }
                     }
                 }
