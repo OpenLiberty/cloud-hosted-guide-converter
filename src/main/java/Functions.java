@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -194,7 +194,7 @@ public class Functions {
 
         StringBuilder builder = new StringBuilder();
         for (String value : linksForNextGuides) {
-            builder.append("- " + value + "\n");
+            builder.append("* " + value + "\n");
         }
 
         String text = builder.toString();
@@ -282,6 +282,7 @@ public class Functions {
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
+        String hideTags = null;
 
         if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
             listOfLines.set(i - 1, "");
@@ -292,13 +293,50 @@ public class Functions {
 
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
-            touch(listOfLines, guideName, branch, g, position);
+
+            for (int x = i; x <= i + 10; x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                }
+                else {
+                    hideTags = null;
+                }
+            }
+
+            touch(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
-            update(listOfLines, guideName, branch, g, position);
+
+            for (int x = i; x <= i + 10; x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                }
+                else {
+                    hideTags = null;
+                }
+            }
+
+            update(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Replace")) {
-            replace(listOfLines, guideName, branch, g, position);
+
+            for (int x = i; x <= i + 10; x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                }
+                else {
+                    hideTags = null;
+                }
+            }
+            replace(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
-            updateFinish(listOfLines, guideName, branch, g, position);
+            for (int x = i; x <= i + 10; x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
+                }
+                else {
+                    hideTags = null;
+                }
+            }
+            updateFinish(listOfLines, guideName, branch, g, position, hideTags);
         }
     }
 
@@ -376,50 +414,88 @@ public class Functions {
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
-        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" + Next(listOfLines) + "\n\n## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" + "## What could make this guide better?\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" + Next(listOfLines) + "\n\n## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
-    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        String str = listOfLines.get(i).replaceAll("`", "");
+    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+        String str = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include")) {
+                str = listOfLines.get(x);
+                str = str.substring(9, str.length() - 3);
+            }
+        }
+        if (str == null) {
+            str = "finish/" + listOfLines.get(i).replaceAll("`", "");
+        }
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
         position = "main";
         return position;
     }
 
     //configures instructions to update file
-    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        String str = listOfLines.get(i).replaceAll("`", "");
+    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+        String str = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include")) {
+                str = listOfLines.get(x);
+                str = str.substring(9, str.length() - 3);
+
+            }
+        }
+        if (str == null) {
+            str = "finish/" + listOfLines.get(i).replaceAll("`", "");
+        }
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
         position = "main";
         return position;
     }
 
-    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        String str = listOfLines.get(i).replaceAll("`", "");
+    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+        String str = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include")) {
+                str = listOfLines.get(x);
+                str = str.substring(9, str.length() - 3);
+
+            }
+        }
+        if (str == null) {
+            str = "finish/" + listOfLines.get(i).replaceAll("`", "");
+        }
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
         position = "main";
         return position;
     }
 
     //configures instructions to create file
-    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        String str = listOfLines.get(i).replaceAll("`", "");
-        listOfLines.set(i, "```\n" + "touch " + str + "```" + "\n{: codeblock}\n\n\n");
-        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + str + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, str);
+    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags) {
+        String str = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include")) {
+                str = listOfLines.get(x);
+                str = str.substring(9, str.length() - 3);
+            }
+        }
+        if (str == null) {
+            str = "finish/" + listOfLines.get(i).replaceAll("`", "");
+        }
+        listOfLines.set(i, "```\n" + "touch " + listOfLines.get(i) + "```" + "\n{: codeblock}\n\n\n");
+        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
         position = "main";
         return position;
     }
@@ -517,10 +593,10 @@ public class Functions {
 
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
-    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path) {
+    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path, String hideTags) {
         try {
             ArrayList<String> code = new ArrayList<String>();
-            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/finish/" + path);
+            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + path);
             Scanner s = new Scanner(url.openStream());
             String inputLine = null;
             code.add("\n");
@@ -530,6 +606,14 @@ public class Functions {
                 if (inputLine.contains("// tag::copyright[]")) {
                     while (!s.nextLine().startsWith("// end::copyright[]")) {
                         continue;
+                    }
+                }
+
+                if (hideTags != null) {
+                    if (inputLine.contains("tag::" + hideTags)) {
+                        while (!s.nextLine().contains("end::" + hideTags)) {
+                            continue;
+                        }
                     }
                 }
 
@@ -628,13 +712,13 @@ public class Functions {
             boolean ignoreMacros = false;
 
             if (listOfLines.get(i).startsWith("ifdef::cloud-hosted[]")) {
-                listOfLines.set(i,"");
+                listOfLines.set(i, "");
                 while (!listOfLines.get(i).startsWith("endif::[]")) {
                     i++;
                     ignoreMacros = true;
                 }
                 if (listOfLines.get(i).startsWith("endif::[]")) {
-                    listOfLines.set(i,"");
+                    listOfLines.set(i, "");
                 }
             }
 
