@@ -243,7 +243,6 @@ Replace the server configuration file.
     
     <mpMetrics authentication="false"/>
 
-    <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
     <httpEndpoint host="*" httpPort="${default.http.port}" 
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
@@ -320,7 +319,8 @@ touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sam
 {: codeblock}
 
 
-> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/finish/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java
+> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java
+
 
 
 
@@ -375,7 +375,8 @@ touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sam
 {: codeblock}
 
 
-> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/finish/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java
+> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java
+
 
 
 

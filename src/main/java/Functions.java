@@ -295,10 +295,9 @@ public class Functions {
         if (atIndex.startsWith("#Create")) {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
                     hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                }
-                else {
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
@@ -307,10 +306,9 @@ public class Functions {
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
                     hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                }
-                else {
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
@@ -319,20 +317,19 @@ public class Functions {
         } else if (atIndex.startsWith("#Replace")) {
 
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
                     hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                }
-                else {
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
+
             replace(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
             for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags=copyright")) {
                     hideTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                }
-                else {
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
             }
