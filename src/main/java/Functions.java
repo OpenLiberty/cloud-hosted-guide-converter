@@ -493,7 +493,6 @@ public class Functions {
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
-        listOfLines.set(i, "```\n" + "touch " + listOfLines.get(i) + "```" + "\n{: codeblock}\n\n\n");
         listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + str + "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
         position = "main";
