@@ -423,7 +423,7 @@ public class Functions {
     public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
-            if (listOfLines.get(x).startsWith("include")) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
                 str = listOfLines.get(x);
                 str = str.substring(9, str.length() - 3);
             }
@@ -444,7 +444,8 @@ public class Functions {
     public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
-            if (listOfLines.get(x).startsWith("include")) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
+
                 str = listOfLines.get(x);
                 str = str.substring(9, str.length() - 3);
 
@@ -465,7 +466,8 @@ public class Functions {
     public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
-            if (listOfLines.get(x).startsWith("include")) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
+
                 str = listOfLines.get(x);
                 str = str.substring(9, str.length() - 3);
 
@@ -487,7 +489,8 @@ public class Functions {
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
-            if (listOfLines.get(x).startsWith("include")) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
+
                 str = listOfLines.get(x);
                 str = str.substring(9, str.length() - 3);
             }
