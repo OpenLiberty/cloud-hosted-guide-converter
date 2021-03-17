@@ -611,7 +611,6 @@ public class Functions {
                 if (hideTags != null) {
                     for (String e : hideTags){
                         if (inputLine.contains("tag::" + e)) {
-                        System.out.println(e);
                             while (!s.nextLine().contains("end::" + e)) {
                                 continue;
                             }
