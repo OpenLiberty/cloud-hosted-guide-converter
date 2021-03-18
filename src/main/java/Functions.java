@@ -61,7 +61,6 @@ public class Functions {
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
         listOfLines.get(i).replaceAll("----", "```");
-//        listOfLines.set(i,"```\n");
     }
 
     // This function uses a for loop to remove pre-set lines/words from the guide
@@ -88,20 +87,14 @@ public class Functions {
 
         for (int x = 0; x < listOfLines.size(); x++) {
             if (listOfLines.get(x).contains(LinkSets.linkName)) {
-//                System.out.println(LinkSets.linkName);
-//                System.out.println(LinkSets.link);
 
                 String fullLine = listOfLines.get(x).replaceAll("\\{" + LinkSets.linkName + "\\}", LinkSets.link);
                 fullLine = fullLine.replaceAll("\n", "");
-//                System.out.println(fullLine);
 
 
                 listOfLines.set(x, fullLine);
-//                System.out.println(listOfLines.get(x));
             }
         }
-
-//        link(listOfLines, i);
     }
 
     public static void ifAdminLink(ArrayList<String> listOfLines, int x, String AdminLink) {
@@ -203,8 +196,6 @@ public class Functions {
 
         int End = listOfLines.size();
 
-//        listOfLines.add(End, whereToNext);
-
         return whereToNext;
 
     }
@@ -262,7 +253,6 @@ public class Functions {
     public static void CheckTWYB(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         ArrayList<String> tempList = new ArrayList<>();
         for (int x = i; !listOfLines.get(x).startsWith("# "); x++) {
-//                System.out.println(x);
 
             if (listOfLines.get(x).startsWith("#Update")) {
                 position = "finishUpdate";
@@ -345,7 +335,6 @@ public class Functions {
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
         while (!listOfLines.get(i).startsWith("[role=")) {
-//            System.out.println(listOfLines.get(i));
             listOfLines.remove(i);
         }
     }
@@ -555,7 +544,6 @@ public class Functions {
         for (int i = 0; i < listOfLines.size(); i++) {
             if (!listOfLines.get(i).startsWith("[.hidden]")) {
                 if (listOfLines.get(i).startsWith("----")) {
-//                    listOfLines.set(i, "" + "\n");
                 } else {
                     //For loop that changes all the properties in the text that match with the ones in the loopReplacements.properties file
                     for (String key : prop.stringPropertyNames()) {
@@ -732,7 +720,6 @@ public class Functions {
                 if (listOfLines.get(i).startsWith(":")) {
                     if (listOfLines.get(i).contains("-url")) {
                         replacePreSetURL(listOfLines, i);
-//                    link(listOfLines, i);
                     }
                 }
 
@@ -802,17 +789,7 @@ public class Functions {
                     codeInsert(atIndex, listOfLines, guideName, branch, i, position);
                 }
 
-//            //Removes references to images
-//            if (listOfLines.get(i).indexOf("diagram") != -1) {
-//                removeDiagramReference(listOfLines, i);
-//            }
-
                 if (listOfLines.get(i).startsWith("image::")) {
-//                if (listOfLines.get(i + 1).startsWith("*")) {
-//                    listOfLines.remove(i + 1);
-//                } else if (listOfLines.get(i + 2).startsWith("*")) {
-//                    listOfLines.remove(i + 2);
-//                }
 
                     String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
 
@@ -833,11 +810,6 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
                     removeAdditionalpres(listOfLines, i);
                 }
-
-                // Identifies an instruction for windows only and skips the current line
-//             if (listOfLines.get(i).startsWith("[.tab_content.windows_section]") || listOfLines.get(i).startsWith("[.tab_content.windows_section.mac_section]")) {
-//                 removeWindowsCommand(listOfLines, i);
-//             }
 
 
                 // Identifies that line is the start of a table
@@ -1062,7 +1034,6 @@ public class Functions {
                         }
                         if (!s.contains("$")) {
                             listOfLines.set(i, listOfLines.get(i).replaceFirst("\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*", s));
-//                        System.out.println(listOfLines.get(i));
                         }
                     }
                 }
