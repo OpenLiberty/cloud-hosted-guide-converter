@@ -38,9 +38,9 @@ There are also 2 Test files: `TestMain` and `TestConversion`.
 
 When updating/maintaing the Cloud-hosted-guide-converter:
 1. Pull this repository to your local machine and do the changes there. Once the changes are done, try running the guide converter with some guides. Do this by running the following commands from your terminal (make sure you are in the same directory as the GuideConverter files) :
-   * `mvn compiler:compile`
+   * ```mvn compiler:compile```
   
-   * `mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" `(e.g - ` mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"`) 
+   * ```mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" ```(e.g - ``` mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"```)
   
 2. Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
   
