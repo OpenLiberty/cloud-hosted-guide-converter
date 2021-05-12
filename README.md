@@ -42,7 +42,15 @@ When updating/maintaing the Cloud-hosted-guide-converter:
    mvn compiler:compile
    ```
   
-   * ```mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" ```(e.g - ``` mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"```)
+   ```
+   mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" 
+   ```
+   (e.g - 
+   ```
+   mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"
+   ```
+   )
+   
   
 2. Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
   
