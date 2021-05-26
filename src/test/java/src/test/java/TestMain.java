@@ -40,7 +40,7 @@ public class TestMain {
         assertEquals("The files sizes differ!", a.size(), b.size());
 
         for (int i = 0; i < a.size(); ++i) {
-            assertEquals("The files differ!", a.get(i).trim(), b.get(i).trim());
+            assertEquals("The files differ at line " + i + "!", a.get(i).trim(), b.get(i).trim());
         }
     }
 
