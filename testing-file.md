@@ -19,7 +19,7 @@ to interact with the running server instance.
 
 Open Liberty is an application server designed for the cloud. It's small, lightweight,
 and designed with modern cloud-native application development in mind. It supports the
-full MicroProfile and Java EE APIs and is composable, meaning that you can use only the
+full MicroProfile and Jakarta EE APIs and is composable, meaning that you can use only the
 features that you need, keeping the server lightweight, which is great for microservices.
 It also deploys to every major cloud platform, including Docker, Kubernetes, and Cloud
 Foundry.
@@ -684,7 +684,7 @@ configuration and rebuilds the image and restarts the container as necessary.
 Build and run the container by running the devc goal from the **start** directory:
 
 ```
-mvn liberty:devc
+mvn liberty:devc -DserverStartTimeout=300
 ```
 {: codeblock}
 
