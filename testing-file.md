@@ -689,7 +689,6 @@ mvn liberty:devc -DserverStartTimeout=300
 ```
 {: codeblock}
 
-
 When you see the following message, Open Liberty is ready to run in dev mode:
 
 ```
