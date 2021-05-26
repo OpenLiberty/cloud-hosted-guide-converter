@@ -39,8 +39,3 @@ jobs:
 
       - name: Testing with Maven
         run: mvn -Dtest=TestMain test
-      
-      - name: Post test
-        if: always()
-        run: |
-          diff testing-file.md guide-getting-started.md;
