@@ -186,18 +186,21 @@ public class Functions {
     public static String Next(ArrayList<String> listOfLines) {
 
         StringBuilder builder = new StringBuilder();
-        for (String value : linksForNextGuides) {
-            builder.append("* " + value + "\n");
+        if (linksForNextGuides != null) {
+            for (String value : linksForNextGuides) {
+                builder.append("* " + value + "\n");
+            }
+
+            String text = builder.toString();
+
+            String whereToNext = "\n\n\n## Where to next? \n\n" + text;
+
+            int End = listOfLines.size();
+
+            return whereToNext;
+        } else {
+            return null;
         }
-
-        String text = builder.toString();
-
-        String whereToNext = "\n\n\n## Where to next? \n\n" + text;
-
-        int End = listOfLines.size();
-
-        return whereToNext;
-
     }
 
     // This function removes the reference to any diagrams that were in the guide. This is becasue we do not convert images/diagrams, we remove them.
@@ -601,8 +604,9 @@ public class Functions {
                 inputLine = s.nextLine() + "\n";
 
                 if (hideTags != null) {
-                    for (String e : hideTags){
+                    for (String e : hideTags) {
                         if (inputLine.contains("tag::" + e)) {
+                            inputLine = "";
                             while (!s.nextLine().contains("end::" + e)) {
                                 continue;
                             }
@@ -1070,7 +1074,7 @@ public class Functions {
                     }
                 }
 
-                if (listOfLines.get(i).startsWith("mvn")) {
+                if (listOfLines.get(i).startsWith("mvn") || listOfLines.get(i).startsWith("cd")) {
                     if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                         if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                             listOfLines.add(i + 2, "");
@@ -1102,6 +1106,113 @@ public class Functions {
                         }
                     }
                 }
+
+                if (guideName.equals("open-liberty-masterclass")) {
+
+                    int count = 0;
+
+                    if (listOfLines.get(i).startsWith("Replace the following") || listOfLines.get(i).contains("add the following")|| listOfLines.get(i).contains("add the") || listOfLines.get(i).contains("Add the following") || listOfLines.get(i).contains("run the following")) {
+                        for (int l = 0; l < listOfLines.size(); l++) {
+                            if (listOfLines.get(i + l).startsWith("----")) {
+                                count++;
+                            }
+                            if (count == 2) {
+                                listOfLines.add(i + l + 1, "{: codeblock}\n\n");
+                                count = 0;
+                                l = listOfLines.size();
+                            }
+                        }
+                    }
+
+                    if (listOfLines.get(i).contains("create the file")) {
+
+
+                        String pattern15 = "create the file \\*\\*(.*?).(.*?)\\*\\*";
+                        String pattern16 = "In the directory \\*\\*(.*?)\\*\\*";
+
+                        Pattern r15 = Pattern.compile(pattern15);
+                        Pattern r16 = Pattern.compile(pattern16);
+
+                        Matcher m15 = r15.matcher(listOfLines.get(i));
+                        Matcher m16 = r16.matcher(listOfLines.get(i));
+
+                        String fileName = null;
+                        String fileDir = null;
+
+
+                        if (m15.find()) {
+                            fileName = m15.group();
+                        }
+
+                        if (m16.find()) {
+                            fileDir = m16.group();
+                        }
+
+                        fileName = fileName.substring(18, fileName.length() - 2);
+                        fileDir = fileDir.substring(19, fileDir.length() - 2);
+
+
+                        listOfLines.add(i + 1, "\nYou can create this file using the following **touch** command:\n\n```\ntouch " + "home/project/" + fileDir + "/" + fileName + "\n```\n{: codeblock}\n\n");
+                    }
+
+                    String pattern13 = "\\[#(.*?)]";
+
+                    Pattern r13 = Pattern.compile(pattern13);
+
+                    Matcher m13 = r13.matcher(listOfLines.get(i));
+
+                    if (m13.find()) {
+                        listOfLines.set(i, "");
+                    }
+
+                    String pattern14 = "----";
+
+                    Pattern r14 = Pattern.compile(pattern14);
+
+                    if (listOfLines.get(i).startsWith("To:")) {
+                        for (int x = 0; x < 10; x++) {
+
+                            Matcher m14 = r14.matcher(listOfLines.get(i + x));
+
+                            if (m14.find()) {
+                                count++;
+                            }
+                            if (count == 2) {
+                                listOfLines.add(i + x + 1, "{: codeblock}\n\n");
+                                count = 0;
+                                x = 10;
+                            }
+                        }
+                    }
+
+
+                    if (listOfLines.get(i).contains("Run the") || listOfLines.get(i).contains("run the")) {
+                        String pattern17 = "(?i)Run the \\*\\*(.*?)\\*\\* container";
+
+                        Pattern r17 = Pattern.compile(pattern17);
+
+                        Matcher m17 = r17.matcher(listOfLines.get(i));
+
+                        if (m17.find()) {
+                            for (int x = 0; x < 10; x++) {
+
+                                Matcher m14 = r14.matcher(listOfLines.get(i + x));
+
+                                if (m14.find()) {
+                                    count++;
+                                }
+                                if (count == 2) {
+                                    if (!listOfLines.get(i+x+1).startsWith("{: codeblock}")) {
+                                        listOfLines.add(i + x + 1, "{: codeblock}\n\n");
+                                        count = 0;
+                                        x = 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
