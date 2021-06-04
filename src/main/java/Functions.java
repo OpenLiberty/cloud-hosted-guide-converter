@@ -290,7 +290,7 @@ public class Functions {
             int nextSectionHeading = 0;
 
             for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("##")) {
+                if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
                 }
             }
@@ -329,10 +329,11 @@ public class Functions {
                                     hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
                                     ;
                                 }
-                            } else if (!ifTags.contains("tags=")) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                ;
                             }
+//                            else if (!ifTags.contains("tags=")) {
+//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+//                                ;
+//                            }
                         }
                     }
                 }
@@ -391,10 +392,10 @@ public class Functions {
                                     ;
                                 }
                             }
-                            else if (!ifTags.contains("tags=")) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                ;
-                            }
+//                            else if (!ifTags.contains("tags=")) {
+//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+//                                ;
+//                            }
                         }
                     }
                 }
@@ -410,7 +411,7 @@ public class Functions {
             int nextSectionHeading = 0;
 
             for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("##")) {
+                if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
                 }
             }
@@ -450,10 +451,11 @@ public class Functions {
                                     hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
                                     ;
                                 }
-                            } else if (!ifTags.contains("tags=")) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                ;
                             }
+//                            else if (!ifTags.contains("tags=")) {
+//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+//                                ;
+//                            }
                         }
                     }
                 }
@@ -470,7 +472,7 @@ public class Functions {
             int nextSectionHeading = 0;
 
             for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("##")) {
+                if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
                 }
             }
@@ -486,9 +488,10 @@ public class Functions {
                     } else {
                         hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
                     }
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
                 }
+//                else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
+//                    hideTags = null;
+//                }
             }
             for (int x = i; x < listOfLines.size(); x++) {
 
@@ -509,10 +512,11 @@ public class Functions {
                                     hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
                                     ;
                                 }
-                            } else if (!ifTags.contains("tags=")) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                ;
                             }
+//                            else if (!ifTags.contains("tags=")) {
+//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+//                                ;
+//                            }
                         }
                     }
                 }
@@ -599,7 +603,7 @@ public class Functions {
     public static void end(ArrayList<String> listOfLines, String guideName) {
         listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
                         "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
-                        "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" + 
+                        "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                         Next(listOfLines) + "\n\n" +
                         "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
