@@ -310,6 +310,7 @@ public class Functions {
                     hideTags = null;
                 }
             }
+
             for (int x = i; x < listOfLines.size(); x++) {
 
                 String pattern20 = fileName;
@@ -323,17 +324,16 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                            if (ifTags.contains("tags=")) {
                                 ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
                                 if (ifTags.startsWith("tags")) {
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
-                                    ;
+                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                                 }
                             }
-//                            else if (!ifTags.contains("tags=")) {
-//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-//                                ;
-//                            }
+                            if (hideTags == null) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            }
                         }
                     }
                 }
@@ -344,9 +344,7 @@ public class Functions {
 
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-            String ifTags = "";
-
-            String helpTags = "";
+            String ifTags = null;
 
             int nextSectionHeading = 0;
 
@@ -385,22 +383,20 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                            if (ifTags.contains("tags=")) {
                                 ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
                                 if (ifTags.startsWith("tags")) {
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
-                                    ;
+                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                                 }
                             }
-//                            else if (!ifTags.contains("tags=")) {
-//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-//                                ;
-//                            }
+                            if (hideTags == null) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            }
                         }
                     }
                 }
             }
-
 
             update(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Replace")) {
@@ -445,24 +441,22 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                            if (ifTags.contains("tags=")) {
                                 ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
                                 if (ifTags.startsWith("tags")) {
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
-                                    ;
+                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                                 }
                             }
-//                            else if (!ifTags.contains("tags=")) {
-//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-//                                ;
-//                            }
+                            if (hideTags == null) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            }
                         }
                     }
                 }
             }
 
             replace(listOfLines, guideName, branch, g, position, hideTags);
-
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
@@ -489,10 +483,8 @@ public class Functions {
                         hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
                     }
                 }
-//                else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-//                    hideTags = null;
-//                }
             }
+
             for (int x = i; x < listOfLines.size(); x++) {
 
                 String pattern20 = fileName;
@@ -506,17 +498,16 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                            if (ifTags.contains("tags=")) {
                                 ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
                                 if (ifTags.startsWith("tags")) {
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
-                                    ;
+                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                                 }
                             }
-//                            else if (!ifTags.contains("tags=")) {
-//                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-//                                ;
-//                            }
+                            if (hideTags == null) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            }
                         }
                     }
                 }
@@ -602,10 +593,10 @@ public class Functions {
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
         listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
-                        "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
-                        "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
-                        Next(listOfLines) + "\n\n" +
-                        "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+                "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
+                "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+                Next(listOfLines) + "\n\n" +
+                "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -801,6 +792,15 @@ public class Functions {
             code.add("```\n");
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
+
+                if (inputLine.contains("/*")) {
+                    inputLine = "";
+                    if (s.nextLine().contains("* Copyright (c)")) {
+                        while (!s.nextLine().contains("*/")) {
+                            continue;
+                        }
+                    }
+                }
 
                 if (hideTags != null) {
                     for (String e : hideTags) {
