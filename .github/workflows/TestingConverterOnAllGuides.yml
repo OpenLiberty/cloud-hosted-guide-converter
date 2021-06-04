@@ -8,7 +8,7 @@ on:
       branch:
         description: 'Branch pushed to'     
         required: true
-        default: 'refs/heads/qa'
+        default: 'refs/heads/staging'
       GuideConverterBranch:
         description: 'GuideConverter branch to use'
         required: true
