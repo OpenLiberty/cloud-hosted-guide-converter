@@ -350,7 +350,7 @@ public class Functions {
             int nextSectionHeading = 0;
 
             for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("##")) {
+                if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
                 }
             }
@@ -390,7 +390,8 @@ public class Functions {
                                     hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
                                     ;
                                 }
-                            } else if (!ifTags.contains("tags=")) {
+                            }
+                            else if (!ifTags.contains("tags=")) {
                                 hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                                 ;
                             }
