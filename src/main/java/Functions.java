@@ -794,8 +794,8 @@ public class Functions {
                 inputLine = s.nextLine() + "\n";
 
                 if (inputLine.contains("/*")) {
-                    inputLine = "";
                     if (s.nextLine().contains("* Copyright (c)")) {
+                        inputLine = "";
                         while (!s.nextLine().contains("*/")) {
                             continue;
                         }
