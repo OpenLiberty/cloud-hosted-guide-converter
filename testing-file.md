@@ -224,9 +224,9 @@ Replace the server configuration file.
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
         <feature>cdi-2.0</feature>
-        <feature>mpMetrics-2.3</feature>
-        <feature>mpHealth-2.2</feature>
-        <feature>mpConfig-1.4</feature>
+        <feature>mpMetrics-3.0</feature>
+        <feature>mpHealth-3.0</feature>
+        <feature>mpConfig-2.0</feature>
     </featureManager>
 
     <variable name="default.http.port" defaultValue="9080"/>
@@ -236,6 +236,7 @@ Replace the server configuration file.
     
     <mpMetrics authentication="false"/>
 
+    <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
     <httpEndpoint host="*" httpPort="${default.http.port}" 
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
@@ -329,27 +330,26 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.health.Readiness;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
-import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
 @Readiness
 @ApplicationScoped
 public class SystemReadinessCheck implements HealthCheck {
 
-    private static final String readinessCheck = SystemResource.class.getSimpleName() 
+    private static final String READINESS_CHECK = SystemResource.class.getSimpleName()
                                                  + " Readiness Check";
 
     @Inject
     @ConfigProperty(name = "io_openliberty_guides_system_inMaintenance")
     Provider<String> inMaintenance;
-	
+
     @Override
     public HealthCheckResponse call() {
         if (inMaintenance != null && inMaintenance.get().equalsIgnoreCase("true")) {
-            return HealthCheckResponse.down(readinessCheck);
+            return HealthCheckResponse.down(READINESS_CHECK);
         }
-        return HealthCheckResponse.up(readinessCheck);
+        return HealthCheckResponse.up(READINESS_CHECK);
     }
-    
+
 }
 ```
 {: codeblock}
@@ -399,9 +399,9 @@ public class SystemLivenessCheck implements HealthCheck {
             SystemResource.class.getSimpleName() + " Liveness Check")
                                   .withData("memory used", memUsed)
                                   .withData("memory max", memMax)
-                                  .state(memUsed < memMax * 0.9).build();
+                                  .status(memUsed < memMax * 0.9).build();
     }
-    
+
 }
 ```
 {: codeblock}
@@ -526,9 +526,9 @@ Replace the server configuration file.
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
         <feature>cdi-2.0</feature>
-        <feature>mpMetrics-2.3</feature>
-        <feature>mpHealth-2.2</feature>
-        <feature>mpConfig-1.4</feature>
+        <feature>mpMetrics-3.0</feature>
+        <feature>mpHealth-3.0</feature>
+        <feature>mpConfig-2.0</feature>
     </featureManager>
 
     <variable name="default.http.port" defaultValue="9080"/>
@@ -743,9 +743,9 @@ Replace the server configuration file.
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
         <feature>cdi-2.0</feature>
-        <feature>mpMetrics-2.3</feature>
-        <feature>mpHealth-2.2</feature>
-        <feature>mpConfig-1.4</feature>
+        <feature>mpMetrics-3.0</feature>
+        <feature>mpHealth-3.0</feature>
+        <feature>mpConfig-2.0</feature>
     </featureManager>
 
     <variable name="default.http.port" defaultValue="9080"/>
@@ -869,7 +869,12 @@ rm -fr guide-getting-started
 ```
 {: codeblock}
 
+## What did you think of this guide?
+We want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,
+select **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.
+
 ## What could make this guide better?
+You can also provide feedback or contribute to this guide from GitHub.
 * [Raise an issue to share feedback](https://github.com/OpenLiberty/guide-getting-started/issues)
 * [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/guide-getting-started/pulls)
 

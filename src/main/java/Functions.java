@@ -285,6 +285,7 @@ public class Functions {
         if (atIndex.startsWith("#Create")) {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
 
             int nextSectionHeading = 0;
 
@@ -296,7 +297,15 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
+                    if (!ifTags.startsWith("tags=")) {
+                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                        if (ifTags.startsWith("tags")) {
+                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
+                        }
+                    } else {
+                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    }
                 } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
@@ -313,7 +322,17 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
+                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                                if (ifTags.startsWith("tags")) {
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
+                                    ;
+                                }
+                            } else if (!ifTags.contains("tags=")) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                                ;
+                            }
                         }
                     }
                 }
@@ -322,7 +341,11 @@ public class Functions {
             touch(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
+
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
+
+            String helpTags = "";
 
             int nextSectionHeading = 0;
 
@@ -334,45 +357,15 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
-                }
-            }
-            for (int x = i; x < listOfLines.size(); x++) {
-
-                String pattern20 = fileName;
-
-                Pattern r20 = Pattern.compile(pattern20);
-
-                Matcher m20 = r20.matcher(listOfLines.get(x));
-
-
-                if (m20.find()) {
-                    if (x < nextSectionHeading) {
-                        if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
+                    if (!ifTags.startsWith("tags=")) {
+                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                        if (ifTags.startsWith("tags")) {
+                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
                         }
+                    } else {
+                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
                     }
-                }
-            }
-
-            update(listOfLines, guideName, branch, g, position, hideTags);
-        } else if (atIndex.startsWith("#Replace")) {
-
-            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-
-            int nextSectionHeading = 0;
-
-            for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("##")) {
-                    nextSectionHeading = x;
-                }
-            }
-
-            for (int x = i; x < listOfLines.size(); x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
                 } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
@@ -390,18 +383,28 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
+                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                                if (ifTags.startsWith("tags")) {
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
+                                    ;
+                                }
+                            } else if (!ifTags.contains("tags=")) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                                ;
+                            }
                         }
                     }
                 }
             }
 
-            replace(listOfLines, guideName, branch, g, position, hideTags);
 
-
-        } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
+            update(listOfLines, guideName, branch, g, position, hideTags);
+        } else if (atIndex.startsWith("#Replace")) {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
 
             int nextSectionHeading = 0;
 
@@ -413,7 +416,75 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
+                    if (!ifTags.startsWith("tags=")) {
+                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                        if (ifTags.startsWith("tags")) {
+                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
+                        }
+                    } else {
+                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    }
+                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = null;
+                }
+            }
+
+            for (int x = i; x < listOfLines.size(); x++) {
+
+                String pattern20 = fileName;
+
+                Pattern r20 = Pattern.compile(pattern20);
+
+                Matcher m20 = r20.matcher(listOfLines.get(x));
+
+
+                if (m20.find()) {
+                    if (x < nextSectionHeading) {
+                        if (listOfLines.get(x - 2).contains("hide_tags")) {
+                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
+                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                                if (ifTags.startsWith("tags")) {
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
+                                    ;
+                                }
+                            } else if (!ifTags.contains("tags=")) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                                ;
+                            }
+                        }
+                    }
+                }
+            }
+
+            replace(listOfLines, guideName, branch, g, position, hideTags);
+
+
+        } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
+
+            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
+
+            int nextSectionHeading = 0;
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("##")) {
+                    nextSectionHeading = x;
+                }
+            }
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
+                    if (!ifTags.startsWith("tags=")) {
+                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                        if (ifTags.startsWith("tags")) {
+                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
+                        }
+                    } else {
+                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    }
                 } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
                     hideTags = null;
                 }
@@ -430,7 +501,17 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
+                            if (!ifTags.startsWith("tags=") && ifTags.contains("tags=")) {
+                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
+                                if (ifTags.startsWith("tags")) {
+                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - ifTags.length() - 4)).split(",");
+                                    ;
+                                }
+                            } else if (!ifTags.contains("tags=")) {
+                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                                ;
+                            }
                         }
                     }
                 }
