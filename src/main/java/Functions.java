@@ -274,6 +274,8 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         String hideTags[] = new String[0];
 
+        ArrayList<String> hideList = new ArrayList<>();
+
         if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
             listOfLines.set(i - 1, "");
         }
@@ -297,17 +299,11 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
-                    if (!ifTags.startsWith("tags=")) {
-                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                        if (ifTags.startsWith("tags")) {
-                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
-                        }
-                    } else {
-                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
                     }
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
                 }
             }
 
@@ -323,28 +319,17 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (ifTags.contains("tags=")) {
-                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                                if (ifTags.startsWith("tags")) {
-                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                }
-                            }
-                            if (hideTags == null) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            }
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
                         }
                     }
                 }
             }
 
-            touch(listOfLines, guideName, branch, g, position, hideTags);
+//            touch(listOfLines, guideName, branch, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-            String ifTags = null;
 
             int nextSectionHeading = 0;
 
@@ -356,19 +341,14 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
-                    if (!ifTags.startsWith("tags=")) {
-                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                        if (ifTags.startsWith("tags")) {
-                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
-                        }
-                    } else {
-                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
                     }
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
                 }
             }
+
 
             for (int x = i; x < listOfLines.size(); x++) {
 
@@ -382,23 +362,18 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (ifTags.contains("tags=")) {
-                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                                if (ifTags.startsWith("tags")) {
-                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                }
-                            }
-                            if (hideTags == null) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
                             }
                         }
                     }
                 }
             }
 
-            update(listOfLines, guideName, branch, g, position, hideTags);
+            update(listOfLines, guideName, branch, g, position, hideList);
+
         } else if (atIndex.startsWith("#Replace")) {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
@@ -414,17 +389,11 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
-                    if (!ifTags.startsWith("tags=")) {
-                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                        if (ifTags.startsWith("tags")) {
-                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
-                        }
-                    } else {
-                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
                     }
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
                 }
             }
 
@@ -440,23 +409,17 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (ifTags.contains("tags=")) {
-                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                                if (ifTags.startsWith("tags")) {
-                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                }
-                            }
-                            if (hideTags == null) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
                             }
                         }
                     }
                 }
             }
 
-            replace(listOfLines, guideName, branch, g, position, hideTags);
+            replace(listOfLines, guideName, branch, g, position, hideList);
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
@@ -473,14 +436,10 @@ public class Functions {
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    ifTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length());
-                    if (!ifTags.startsWith("tags=")) {
-                        ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                        if (ifTags.startsWith("tags")) {
-                            hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - ifTags.length() - 4)).split(",");
-                        }
-                    } else {
-                        hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
                     }
                 }
             }
@@ -497,23 +456,17 @@ public class Functions {
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
-                            ifTags = listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length());
-                            if (ifTags.contains("tags=")) {
-                                ifTags = ifTags.substring(ifTags.indexOf(" tags=") + 1, ifTags.length() - 3);
-                                if (ifTags.startsWith("tags")) {
-                                    listOfLines.set(x - 2, listOfLines.get(x - 2).replace(ifTags, ""));
-                                    hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                                }
-                            }
-                            if (hideTags == null) {
-                                hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
                             }
                         }
                     }
                 }
             }
 
-            updateFinish(listOfLines, guideName, branch, g, position, hideTags);
+            updateFinish(listOfLines, guideName, branch, g, position, hideList);
         }
 
     }
@@ -601,7 +554,7 @@ public class Functions {
 
     //configures instructions to replace file
     public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String
-            position, String hideTags[]) {
+            position, ArrayList<String> hideList) {
 
         String str = null;
         for (int x = i; x <= i + 10; x++) {
@@ -617,14 +570,14 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
     //configures instructions to update file
     public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String
-            position, String hideTags[]) {
+            position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -641,13 +594,13 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
     public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch,
-                                      int i, String position, String hideTags[]) {
+                                      int i, String position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -664,14 +617,14 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
     //configures instructions to create file
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String
-            position, String hideTags[]) {
+            position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -684,7 +637,7 @@ public class Functions {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
         listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
@@ -782,7 +735,7 @@ public class Functions {
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
     public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
-                                                int i, String path, String hideTags[]) {
+                                                int i, String path, ArrayList<String> hideList) {
         try {
             ArrayList<String> code = new ArrayList<String>();
             URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + path);
@@ -793,17 +746,22 @@ public class Functions {
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
 
-                if (inputLine.contains("/*")) {
-                    if (s.nextLine().contains("* Copyright (c)")) {
-                        inputLine = "";
-                        while (!s.nextLine().contains("*/")) {
-                            continue;
-                        }
+                ArrayList<String> newList = new ArrayList<>();
+
+                // Traverse through the first list
+                for (String element : hideList) {
+
+                    // If this element is not present in newList
+                    // then add it
+                    if (!newList.contains(element)) {
+
+                        newList.add(element);
                     }
                 }
 
-                if (hideTags != null) {
-                    for (String e : hideTags) {
+                if (hideList != null) {
+                    for (String e : newList) {
+
                         if (inputLine.contains("tag::" + e)) {
                             while (!s.nextLine().contains("end::" + e)) {
                                 continue;
