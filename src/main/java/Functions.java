@@ -325,7 +325,7 @@ public class Functions {
                 }
             }
 
-//            touch(listOfLines, guideName, branch, g, position, hideTags);
+            touch(listOfLines, guideName, branch, g, position, hideList);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
 
