@@ -272,7 +272,9 @@ public class Functions {
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
-        String hideTags[] = null;
+        String hideTags[] = new String[0];
+
+        ArrayList<String> hideList = new ArrayList<>();
 
         if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
             listOfLines.set(i - 1, "");
@@ -284,52 +286,189 @@ public class Functions {
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
 
-            for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                    hideTags = AllTags.split(",");
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
+            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
+
+            int nextSectionHeading = 0;
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("#")) {
+                    nextSectionHeading = x;
                 }
             }
 
-            touch(listOfLines, guideName, branch, g, position, hideTags);
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
+                    }
+                }
+            }
+
+            for (int x = i; x < listOfLines.size(); x++) {
+
+                String pattern20 = fileName;
+
+                Pattern r20 = Pattern.compile(pattern20);
+
+                Matcher m20 = r20.matcher(listOfLines.get(x));
+
+
+                if (m20.find()) {
+                    if (x < nextSectionHeading) {
+                        if (listOfLines.get(x - 2).contains("hide_tags")) {
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                        }
+                    }
+                }
+            }
+
+            touch(listOfLines, guideName, branch, g, position, hideList);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
-            for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                    hideTags = AllTags.split(",");
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
+
+            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+
+            int nextSectionHeading = 0;
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("#")) {
+                    nextSectionHeading = x;
                 }
             }
 
-            update(listOfLines, guideName, branch, g, position, hideTags);
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
+                    }
+                }
+            }
+
+
+            for (int x = i; x < listOfLines.size(); x++) {
+
+                String pattern20 = fileName;
+
+                Pattern r20 = Pattern.compile(pattern20);
+
+                Matcher m20 = r20.matcher(listOfLines.get(x));
+
+
+                if (m20.find()) {
+                    if (x < nextSectionHeading) {
+                        if (listOfLines.get(x - 2).contains("hide_tags")) {
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
+                            }
+                        }
+                    }
+                }
+            }
+
+            update(listOfLines, guideName, branch, g, position, hideList);
+
         } else if (atIndex.startsWith("#Replace")) {
 
-            for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                    hideTags = AllTags.split(",");
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
+            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
+
+            int nextSectionHeading = 0;
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("#")) {
+                    nextSectionHeading = x;
                 }
             }
 
-            replace(listOfLines, guideName, branch, g, position, hideTags);
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
+                    }
+                }
+            }
+
+            for (int x = i; x < listOfLines.size(); x++) {
+
+                String pattern20 = fileName;
+
+                Pattern r20 = Pattern.compile(pattern20);
+
+                Matcher m20 = r20.matcher(listOfLines.get(x));
+
+
+                if (m20.find()) {
+                    if (x < nextSectionHeading) {
+                        if (listOfLines.get(x - 2).contains("hide_tags")) {
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
+                            }
+                        }
+                    }
+                }
+            }
+
+            replace(listOfLines, guideName, branch, g, position, hideList);
+
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
-            for (int x = i; x <= i + 10; x++) {
-                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
-                    String AllTags = listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3);
-                    hideTags = AllTags.split(",");
-                } else if (listOfLines.get(x).startsWith("[source") && !listOfLines.get(x).contains("hide_tags") && !listOfLines.get(x).contains("hide_tags")) {
-                    hideTags = null;
+
+            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            String ifTags = "";
+
+            int nextSectionHeading = 0;
+
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("#")) {
+                    nextSectionHeading = x;
                 }
             }
 
-            updateFinish(listOfLines, guideName, branch, g, position, hideTags);
+            for (int x = i; x < listOfLines.size(); x++) {
+                if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
+                    hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
+
+                    for (String e : hideTags) {
+                        hideList.add(e);
+                    }
+                }
+            }
+
+            for (int x = i; x < listOfLines.size(); x++) {
+
+                String pattern20 = fileName;
+
+                Pattern r20 = Pattern.compile(pattern20);
+
+                Matcher m20 = r20.matcher(listOfLines.get(x));
+
+
+                if (m20.find()) {
+                    if (x < nextSectionHeading) {
+                        if (listOfLines.get(x - 2).contains("hide_tags")) {
+                            hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+
+                            for (String e : hideTags) {
+                                hideList.add(e);
+                            }
+                        }
+                    }
+                }
+            }
+
+            updateFinish(listOfLines, guideName, branch, g, position, hideList);
         }
+
     }
 
     // Removes the "Additional pre-reqs" section
@@ -357,7 +496,8 @@ public class Functions {
         }
     }
 
-    public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName, String GuideTitle, String GuideDescription) {
+    public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName, String
+            GuideTitle, String GuideDescription) {
         String GuidesCommon = "before-start-information.md";
 
         ImportFunctions.beforeStart(listOfLines, i, GuidesCommon, guideName, GuideTitle, GuideDescription);
@@ -406,14 +546,16 @@ public class Functions {
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
         listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
-                        "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
-                        "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" + 
-                        Next(listOfLines) + "\n\n" +
-                        "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+                "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
+                "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+                Next(listOfLines) + "\n\n" +
+                "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
-    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
+    public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String
+            position, ArrayList<String> hideList) {
+
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -428,13 +570,14 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
     //configures instructions to update file
-    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
+    public static String update(ArrayList<String> listOfLines, String guideName, String branch, int i, String
+            position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -451,12 +594,13 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
-    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
+    public static String updateFinish(ArrayList<String> listOfLines, String guideName, String branch,
+                                      int i, String position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -473,13 +617,14 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
 
     //configures instructions to create file
-    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String position, String hideTags[]) {
+    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String
+            position, ArrayList<String> hideList) {
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -492,7 +637,7 @@ public class Functions {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
         listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideTags);
+        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
     }
@@ -589,7 +734,8 @@ public class Functions {
 
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
-    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch, int i, String path, String hideTags[]) {
+    public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
+                                                int i, String path, ArrayList<String> hideList) {
         try {
             ArrayList<String> code = new ArrayList<String>();
             URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + path);
@@ -600,8 +746,22 @@ public class Functions {
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
 
-                if (hideTags != null) {
-                    for (String e : hideTags){
+                ArrayList<String> newList = new ArrayList<>();
+
+                // Traverse through the first list
+                for (String element : hideList) {
+
+                    // If this element is not present in newList
+                    // then add it
+                    if (!newList.contains(element)) {
+
+                        newList.add(element);
+                    }
+                }
+
+                if (hideList != null) {
+                    for (String e : newList) {
+
                         if (inputLine.contains("tag::" + e)) {
                             while (!s.nextLine().contains("end::" + e)) {
                                 continue;

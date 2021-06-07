@@ -38,12 +38,24 @@ There are also 2 Test files: `TestMain` and `TestConversion`.
 
 When updating/maintaing the Cloud-hosted-guide-converter:
 1. Pull this repository to your local machine and do the changes there. Once the changes are done, try running the guide converter with some guides. Do this by running the following commands from your terminal (make sure you are in the same directory as the GuideConverter files) :
-   * `mvn compiler:compile`
+   ```
+   mvn compiler:compile
+   ```
   
-   * `mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" `(e.g - ` mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"`) 
+   ```
+   mvn exec:java -Dexec.args="GUIDE_NAME BRANCH_NAME" 
+   ```
+   (e.g - 
+   ```
+   mvn exec:java -Dexec.args="${{ github.event.inputs.guide_name }} ${branchName:11}"
+   ```
+   )
+   
   
 2. Review the converted guides and make sure there is nothing wrong with them and everything has been converted properly.
   
-3. If there is something that hasn't converted properly, Look within the `ConditionMethods` in `Functions.java` to see if a method to convert this already      exists. If it does exists looks for reason as to why it might have not converted, this could potentially be something like the CloudHostedGuideConverter has not been set to take under consideration the extra space in the text, majority of the reasons behind incorrect the conversions are very simple. If there is bigger bug then it is recommened to have a look at the original guides `.adoc` file and checking out the text around the part that has not been converted properly. If it is something to do with the `guides-common` please look in `ImportFunctions.java`.
+3. If there is something that hasn't converted properly, Look within the `ConditionMethods` in `Functions.java` to see if a method to convert this already      exists. If it does exists look for a reason as to why it might have not converted, this could potentially be something like the CloudHostedGuideConverter has not been set to take under consideration the extra space in the text, majority of the reasons behind incorrect the conversions are very simple. If there is bigger bug then it is recommened to have a look at the original guides `.adoc` file and checking out the text around the part that has not been converted properly. If it is something to do with the `guides-common` please look in `ImportFunctions.java`.
    
-4. After the changes to CloudHostedGuideConverter have been tested locally and everything is in working order, create a PR to this repositories `main` branch.
+4. After the changes to CloudHostedGuideConverter have been tested locally and everything is in working order, create a PR to this repositories `main` branch. this will kick off two actions: JUnit testing for the GuideConverter & also an action that will kick of the GuideConverter in the cloud-hosted-guides repository: This action will create a single PR containing a conversion of every single guide. This is so that an admin can go into the PR and verify wether the change to the GuideConverter is correct and is not causing any problems.
+
+5. After an admin verifies the PR in the cloud-hosted-guides repository they will come back to your PR in this repository and approve it.
