@@ -864,7 +864,7 @@ Delete the **guide-getting-started** project by running the following commands:
 
 ```
 cd /home/project
-rm -fr guide-getting-started
+rm -fr guide-getting-startedmicroservice on [an Open Liberty server]
 ```
 {: codeblock}
 
