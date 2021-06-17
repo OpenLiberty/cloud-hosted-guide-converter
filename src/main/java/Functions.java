@@ -807,6 +807,13 @@ public class Functions {
                     }
                 }
 
+                if (inputLine.contains("# tag::")) {
+                    inputLine = "";
+                }
+
+                if (inputLine.contains("# end::")) {
+                    inputLine = "";
+                }
 
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
                     if (!inputLine.startsWith("#")) {
@@ -828,6 +835,7 @@ public class Functions {
                     code.remove(x);
                 }
             }
+
             code.add("```\n{: codeblock}\n\n\n");
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
