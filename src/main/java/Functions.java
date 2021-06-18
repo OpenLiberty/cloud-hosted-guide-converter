@@ -109,6 +109,36 @@ public class Functions {
         }
     }
 
+    public static void addCodeblockAfterMVN(ArrayList<String> listOfLines, int i) {
+        String pattern9 = "^mvn(.*?)";
+        String pattern10 = "[A-Za-z]+";
+
+        Pattern r9 = Pattern.compile(pattern9);
+        Pattern r10 = Pattern.compile(pattern10);
+
+        Matcher m9 = r9.matcher(listOfLines.get(i));
+        Matcher m10 = null;
+        if (i < listOfLines.size() - 2) {
+            m10 = r10.matcher(listOfLines.get(i + 2));
+        }
+
+        if (m9.find()) {
+            if (m10 != null) {
+                if (m10.find()) {
+                    if (!m10.group().contains("codeblock")) {
+                        if (!listOfLines.get(i + 2).startsWith("mvn")) {
+                            for (int l = i; l < listOfLines.size(); l++) {
+                                if (listOfLines.get(l).contains("----")){
+                                    listOfLines.set(l + 1, "{: codeblock}\n\n");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     public static void relatedLinksMove(ArrayList<String> listOfLines, int i) {
 
@@ -473,9 +503,9 @@ public class Functions {
 
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
-        while (!listOfLines.get(i).startsWith("[role=")) {
-            listOfLines.remove(i);
-        }
+            while (!listOfLines.get(i).startsWith("[role=")) {
+                listOfLines.remove(i);
+            }
     }
 
     //Don't know what this does
@@ -777,6 +807,13 @@ public class Functions {
                     }
                 }
 
+                if (inputLine.contains("# tag::")) {
+                    inputLine = "";
+                }
+
+                if (inputLine.contains("# end::")) {
+                    inputLine = "";
+                }
 
                 if (!inputLine.replaceAll(" ", "").startsWith("//")) {
                     if (!inputLine.startsWith("#")) {
@@ -798,6 +835,7 @@ public class Functions {
                     code.remove(x);
                 }
             }
+
             code.add("```\n{: codeblock}\n\n\n");
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
@@ -873,6 +911,11 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("endif::[]")) {
                     listOfLines.set(i, "");
                 }
+            }
+
+            //Removes Additional prerequisites section
+            if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
+                removeAdditionalpres(listOfLines, i);
             }
 
             if (ignoreMacros == false) {
@@ -968,11 +1011,6 @@ public class Functions {
                     }
 
                     listOfLines.set(i, "![" + imageDesc + "]" + "(" + imageLink + ")\n\n");
-                }
-
-                //Removes Additional prerequisites section
-                if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
-                    removeAdditionalpres(listOfLines, i);
                 }
 
 
@@ -1239,29 +1277,7 @@ public class Functions {
                     }
                 }
 
-                String pattern9 = "^mvn(.*?)";
-                String pattern10 = "[A-Za-z]+";
-
-                Pattern r9 = Pattern.compile(pattern9);
-                Pattern r10 = Pattern.compile(pattern10);
-
-                Matcher m9 = r9.matcher(listOfLines.get(i));
-                Matcher m10 = null;
-                if (i < listOfLines.size() - 2) {
-                    m10 = r10.matcher(listOfLines.get(i + 2));
-                }
-
-                if (m9.find()) {
-                    if (m10 != null) {
-                        if (m10.find()) {
-                            if (!m10.group().contains("codeblock")) {
-                                if (!listOfLines.get(i + 2).startsWith("mvn")) {
-                                    listOfLines.set(i + 2, "{: codeblock}\n\n" + listOfLines.get(i + 2));
-                                }
-                            }
-                        }
-                    }
-                }
+                addCodeblockAfterMVN(listOfLines, i);
 
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
