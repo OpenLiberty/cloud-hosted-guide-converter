@@ -13,14 +13,14 @@ The other panel displays the IDE that you will use to create files, edit the cod
 
 # What you'll learn
 
-You will learn how to run and update a simple REST microservice on an Open Liberty server.
+You will learn how to run and update a simple REST microservice on Open Liberty.
 You will use Maven throughout the guide to build and deploy the microservice as well as
-to interact with the running server instance.
+to interact with the running Liberty instance.
 
-Open Liberty is an application server designed for the cloud. It's small, lightweight,
+Open Liberty is an open application framework designed for the cloud. It's small, lightweight,
 and designed with modern cloud-native application development in mind. It supports the
 full MicroProfile and Jakarta EE APIs and is composable, meaning that you can use only the
-features that you need, keeping the server lightweight, which is great for microservices.
+features that you need, keeping everything lightweight, which is great for microservices.
 It also deploys to every major cloud platform, including Docker, Kubernetes, and Cloud
 Foundry.
 
@@ -29,9 +29,9 @@ Using Maven, you will build a simple microservice, called **system**, that colle
 system properties from your laptop and displays them on an endpoint that you can access
 in your web browser.
 
-You'll also explore how to package your application
-with the server runtime so that it can be deployed anywhere in one go. You will then make server configuration and code changes and see how
-they are picked up by a running server.
+You'll also explore how to package your application with Open Liberty
+so that it can be deployed anywhere in one go. You will then make Liberty configuration and code changes and see how
+they are immediately picked up by a running instance.
 
 Finally, you will package the application along with the server configuration into a Docker
 image and run that image as a container.
@@ -581,7 +581,7 @@ mvn package
 Run the following command to download or update to the latest Open Liberty Docker image:
 
 ```
-docker pull openliberty/open-liberty:full-java11-openj9-ubi
+docker pull openliberty/open-liberty:full-java8-openj9-ubi
 ```
 {: codeblock}
 
@@ -864,7 +864,7 @@ Delete the **guide-getting-started** project by running the following commands:
 
 ```
 cd /home/project
-rm -fr guide-getting-startedmicroservice on [an Open Liberty server]
+rm -fr guide-getting-started
 ```
 {: codeblock}
 
