@@ -83,9 +83,9 @@ public class CloudHostedGuideConverter {
 
 
                 if (inputLine.startsWith("[.tab_content.windows_section]")) {
-                    do {
+                    while (!s.nextLine().startsWith("[.tab_content.mac_section")) {
                         continue;
-                    } while (!s.nextLine().startsWith("[.tab_content.mac_section.linux_section]") && !s.nextLine().startsWith("[.tab_content.mac_section]") && s.nextLine().isBlank());
+                    }
                 }
 
 
