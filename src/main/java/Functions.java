@@ -992,6 +992,10 @@ public class Functions {
                     replaceDashes(listOfLines, i);
                 }
 
+                if (listOfLines.get(i).startsWith("{empty} +")) {
+                    listOfLines.set(i,"\n\n");
+                }
+
 
                 //For parts of text that need to be copied
                 if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
