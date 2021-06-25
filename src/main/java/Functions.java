@@ -574,10 +574,19 @@ public class Functions {
         listOfLines.set(i, Summery);
     }
 
-    public static void end(ArrayList<String> listOfLines, String guideName) {
+    public static void end(ArrayList<String> listOfLines, String guideName, String GuideTitle) {
+
+        String GuideNameFormatted = (GuideTitle.replaceAll("= ","")).replaceAll(" ", "%20").trim();
+
+        System.out.println(GuideNameFormatted);
+
+        String FeedbackLink = "https://ol-staging.skillsnetwork.site/thanks-for-completing-our-content?guide-name=" + GuideNameFormatted + "&guide-id=cloud-hosted-" + guideName;
+
+        System.out.println(FeedbackLink);
+
         listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
-                "## What did you think of this guide?\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support/Feedback** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
-                "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+                "## What did you think of this guide?\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give Us Feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
+                "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
                 "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }

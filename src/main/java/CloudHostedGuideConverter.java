@@ -83,7 +83,7 @@ public class CloudHostedGuideConverter {
 
 
                 if (inputLine.startsWith("[.tab_content.windows_section]")) {
-                    while (!s.nextLine().startsWith("[.tab_content.mac_section.linux_section]")) {
+                    while (!s.nextLine().startsWith("[.tab_content.mac")) {
                         continue;
                     }
                 }
@@ -103,7 +103,7 @@ public class CloudHostedGuideConverter {
             // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
 //            Functions.Next(listOfLines);
-            Functions.end(listOfLines, guideName);
+            Functions.end(listOfLines, guideName, GuideTitle);
 
             //String builder to format the arraylist
             StringBuilder builder = new StringBuilder();
