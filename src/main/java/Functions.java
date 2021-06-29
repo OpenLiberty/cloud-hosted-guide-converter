@@ -570,7 +570,7 @@ public class Functions {
 
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
-        String Summery = "# Summary\n\n## Nice Work!\n\n" + lastLine;
+        String Summery = "# **Summary**\n\n## **Nice Work!**\n\n" + lastLine;
         listOfLines.set(i, Summery);
     }
 
