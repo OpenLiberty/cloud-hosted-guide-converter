@@ -1283,19 +1283,6 @@ public class Functions {
 
                 addCodeblockAfterMVN(listOfLines, i);
 
-                if (listOfLines.get(i).startsWith("#")) {
-                    if (!listOfLines.get(i).contains("**")) {
-                        String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
-                        String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
-                        heading = HSize + " **" + heading + "**";
-                        listOfLines.set(i, heading);
-                    }
-                }
-
-                if (listOfLines.get(i).startsWith("##")) {
-                    listOfLines.set(i,listOfLines.get(i) + "\n\n");
-                }
-
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
                 }
@@ -1307,6 +1294,24 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                     int g = i + 1;
                     Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+                }
+
+                if (listOfLines.get(i).startsWith("#")) {
+                    if (!listOfLines.get(i).contains("**")) {
+                        String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
+                        String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
+                        heading = HSize + " **" + heading + "**\n";
+                        if (listOfLines.get(i).contains("Welcome to the")) {
+                            heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).lastIndexOf("!") + 1);
+                            String desc = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("!")+1);
+                            heading = HSize + " **" + heading + "**" + desc;
+                        }
+                        listOfLines.set(i, heading);
+                    }
+                }
+
+                if (listOfLines.get(i).startsWith("##")) {
+                    listOfLines.set(i,listOfLines.get(i) + "\n\n\n");
                 }
 
                 if (listOfLines.get(i).contains(": codeblock")) {
