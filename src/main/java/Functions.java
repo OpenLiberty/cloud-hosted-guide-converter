@@ -1126,7 +1126,8 @@ public class Functions {
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
                     if (listOfLines.get(i).contains("localhost")) {
-                        counter++;
+                            counter++;
+                            System.out.println(listOfLines.get(i));
                     }
                     if (listOfLines.get(i).startsWith("-")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
@@ -1147,6 +1148,7 @@ public class Functions {
                         ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
                         listOfLines.add(i + 12, "");
                         flag = false;
+                        counter = 0;
                     }
                 }
 
