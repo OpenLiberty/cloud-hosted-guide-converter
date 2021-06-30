@@ -1,7 +1,8 @@
 
-# **Welcome to the Getting started with Open Liberty guide!
+# **Welcome to the Getting started with Open Liberty guide!**
 
-Learn how to develop a Java application on Open Liberty with Maven and Docker.**
+Learn how to develop a Java application on Open Liberty with Maven and Docker.
+
 In this guide, you will use a pre-configured environment that runs in containers on the cloud and includes everything that you need to complete the guide.
 
 This panel contains the step-by-step guide instructions. You can customize these instructions by using the toolbar at the top of this panel. Move between steps by using either the arrows or the buttons at the bottom of this panel.
@@ -11,6 +12,7 @@ The other panel displays the IDE that you will use to create files, edit the cod
 
 
 # **What you'll learn**
+
 You will learn how to run and update a simple REST microservice on Open Liberty.
 You will use Maven throughout the guide to build and deploy the microservice as well as
 to interact with the running Liberty instance.
@@ -36,6 +38,7 @@ image and run that image as a container.
 
 
 # **Getting started**
+
 To open a new command-line session,
 select **Terminal** > **New Terminal** from the menu of the IDE.
 
@@ -63,6 +66,7 @@ The **finish** directory contains the finished project that you will build.
 
 
 # **Building and running the application**
+
 Your application is configured to be built with Maven. Every Maven-configured project
 contains a **pom.xml** file, which defines the project configuration, dependencies, plug-ins,
 and so on.
@@ -141,6 +145,7 @@ mvn liberty:stop
 
 
 # **Starting and stopping the Open Liberty server in the background**
+
 Although you can start and stop the server in the foreground by using the Maven
 **liberty:run** goal, you can also start and stop the server in the background with
 the Maven **liberty:start** and **liberty:stop** goals:
@@ -156,6 +161,7 @@ mvn liberty:stop
 
 
 # **Updating the server configuration without restarting the server**
+
 The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project,
 including application source code or configuration. The Open Liberty server automatically reloads the configuration without restarting. This goal allows for quicker turnarounds and an improved developer experience.
 
@@ -283,6 +289,7 @@ Now you can verify whether your server is up and running.
 
 
 # **Updating the source code without restarting the server**
+
 The JAX-RS application that contains your **system** microservice runs in a server from its **.class** file and other artifacts.
 Open Liberty automatically monitors these artifacts, and whenever they are updated, it updates the running server without the need for the server to be restarted.
 
@@ -481,6 +488,7 @@ Alternatively, you can run the **run** goal and manually repackage or recompile 
 
 
 # **Checking the Open Liberty server logs**
+
 While the server is running in the foreground, it displays various console messages in
 the command-line session. These messages are also logged to the **target/liberty/wlp/usr/servers/defaultServer/logs/console.log**
 file. You can find the complete server logs in the **target/liberty/wlp/usr/servers/defaultServer/logs**
@@ -550,6 +558,7 @@ where you ran the server, or by typing **q** and then pressing the **enter/retur
 
 
 # **Running the application in a Docker container**
+
 To run the application in a container, Docker needs to be installed. For installation
 instructions, see the [Official Docker Docs](https://docs.docker.com/install/).
 
@@ -662,6 +671,7 @@ docker rmi openliberty-getting-started:1.0-SNAPSHOT
 
 
 # **Developing the application in a Docker container**
+
 
 The Open Liberty Maven plug-in includes a **devc** goal that simplifies developing
 your application in a Docker container by starting dev mode with container
@@ -778,6 +788,7 @@ removes the container. To check that the container was stopped, run the **docker
 
 
 # **Running the application from a minimal runnable JAR**
+
 So far, Open Liberty was running out of the **target/liberty/wlp** directory, which
 effectively contains an Open Liberty server installation and the deployed application. The
 final product of the Maven build is a server package for use in a continuous integration
