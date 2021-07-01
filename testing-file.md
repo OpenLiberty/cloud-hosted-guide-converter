@@ -858,6 +858,7 @@ You've learned the basics of deploying and updating an application on an Open Li
 
 ## **Clean up your environment**
 
+
 Clean up your online environment so that it is ready to be used with the next guide:
 
 Delete the **guide-getting-started** project by running the following commands:
@@ -869,10 +870,14 @@ rm -fr guide-getting-started
 {: codeblock}
 
 ## **What did you think of this guide?**
+
+
 We want to hear from you. To provide feedback on your experience with this guide, click the **Support** button in the IDE,
 select **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.
 
 ## **What could make this guide better?**
+
+
 You can also provide feedback or contribute to this guide from GitHub.
 * [Raise an issue to share feedback](https://github.com/OpenLiberty/guide-getting-started/issues)
 * [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/guide-getting-started/pulls)
@@ -881,6 +886,7 @@ You can also provide feedback or contribute to this guide from GitHub.
 
 
 ## **Where to next?**
+
 
 * [Building a web application with Maven](https://openliberty.io/guides/maven-intro.html)
 * [Creating a RESTful web service](https://openliberty.io/guides/rest-intro.html)
