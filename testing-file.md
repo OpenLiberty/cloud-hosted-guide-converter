@@ -871,6 +871,7 @@ rm -fr guide-getting-started
 
 <br/>
 ## **What did you think of this guide?**
+
 We want to hear from you. To provide feedback, click the following link.
 
 * [Give us feedback](https://ol-staging.skillsnetwork.site/thanks-for-completing-our-content?guide-name=Getting%20started%20with%20Open%20Liberty&guide-id=cloud-hosted-guide-getting-started)
@@ -879,7 +880,6 @@ Or, click the **Support/Feedback** button in the IDE and select the **Give feedb
 
 <br/>
 ## **What could make this guide better?**
-
 
 You can also provide feedback or contribute to this guide from GitHub.
 * [Raise an issue to share feedback.](https://github.com/OpenLiberty/guide-getting-started/issues)
