@@ -855,7 +855,6 @@ You've learned the basics of deploying and updating an application on an Open Li
 
 
 
-
 <br/><br/>
 ## **Clean up your environment**
 
