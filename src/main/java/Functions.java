@@ -122,13 +122,20 @@ public class Functions {
             m10 = r10.matcher(listOfLines.get(i + 2));
         }
 
+
         if (m9.find()) {
             if (m10 != null) {
                 if (m10.find()) {
                     if (!m10.group().contains("codeblock")) {
+                        for (int s = -10; s < 7; s++) {
+                            if (listOfLines.get(i + s).contains("NO_COPY")) {
+                                listOfLines.set(i + s, "");
+                                return;
+                            }
+                        }
                         if (!listOfLines.get(i + 2).startsWith("mvn")) {
                             for (int l = i; l < listOfLines.size(); l++) {
-                                if (listOfLines.get(l).contains("----")){
+                                if (listOfLines.get(l).contains("----")) {
                                     listOfLines.set(l + 1, "{: codeblock}\n\n");
                                 }
                             }
@@ -222,7 +229,7 @@ public class Functions {
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n\n## Where to next? \n\n" + text;
+        String whereToNext = "\n\n<br/>\n## **Where to next?**\n\n" + text;
 
         int End = listOfLines.size();
 
@@ -503,9 +510,9 @@ public class Functions {
 
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
-            while (!listOfLines.get(i).startsWith("[role=")) {
-                listOfLines.remove(i);
-            }
+        while (!listOfLines.get(i).startsWith("[role=")) {
+            listOfLines.remove(i);
+        }
     }
 
     //Don't know what this does
@@ -570,7 +577,7 @@ public class Functions {
 
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
-        String Summery = "# Summary\n\n## Nice Work!\n\n" + lastLine;
+        String Summery = "# **Summary**\n\n## **Nice Work!**\n\n" + lastLine;
         listOfLines.set(i, Summery);
     }
 
@@ -584,11 +591,11 @@ public class Functions {
 
         System.out.println(FeedbackLink);
 
-        listOfLines.add("\n\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
-                "## What did you think of this guide?\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
-                "## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+        listOfLines.add("\n<br/>\n## Clean up your environment\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
+                "<br/>\n## What did you think of this guide?\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
+                "<br/>\n## What could make this guide better?\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
-                "## Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+                "<br/>\n## **Log out of the session**\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -922,6 +929,10 @@ public class Functions {
                 }
             }
 
+            if (listOfLines.get(i).contains("no_copy")) {
+                listOfLines.set(i, "NO_COPY\n");
+            }
+
             //Removes Additional prerequisites section
             if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
                 removeAdditionalpres(listOfLines, i);
@@ -993,7 +1004,7 @@ public class Functions {
                 }
 
                 if (listOfLines.get(i).startsWith("{empty} +")) {
-                    listOfLines.set(i,"\n\n");
+                    listOfLines.set(i, "\n\n");
                 }
 
 
@@ -1154,7 +1165,7 @@ public class Functions {
                         listOfLines.add(i, "");
                         listOfLines.add(i, "");
                         ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
-                        listOfLines.add(i + 12, "");
+//                        listOfLines.add(i + 12, "");
                         flag = false;
                     }
                 }
@@ -1303,6 +1314,28 @@ public class Functions {
                 if (listOfLines.get(i).startsWith("### Try what you'll build")) {
                     int g = i + 1;
                     Functions.CheckTWYB(listOfLines, guideName, branch, g, position);
+                }
+
+                if (listOfLines.get(i).startsWith("#")) {
+                    if (!listOfLines.get(i).contains("**")) {
+                        String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
+                        String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
+                        heading = HSize + " **" + heading + "**\n";
+                        if (listOfLines.get(i).contains("Welcome to the")) {
+                            heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).lastIndexOf("!") + 1);
+                            String desc = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("!") + 1);
+                            heading = HSize + " **" + heading + "**" + desc;
+                        }
+                        listOfLines.set(i, heading);
+                    }
+                }
+
+                if (listOfLines.get(i).startsWith("NO_COPY")) {
+                    listOfLines.set(i, "");
+                }
+
+                if (listOfLines.get(i).startsWith("##")) {
+                    listOfLines.set(i, "<br/>\n" + listOfLines.get(i));
                 }
 
                 if (listOfLines.get(i).contains(": codeblock")) {
