@@ -1311,7 +1311,7 @@ public class Functions {
                 }
 
                 if (listOfLines.get(i).startsWith("##")) {
-                    listOfLines.set(i, "<br/><br/>\n" + listOfLines.get(i) \);
+                    listOfLines.set(i, "<br/><br/>\n" + listOfLines.get(i));
                 }
 
                 if (listOfLines.get(i).contains(": codeblock")) {
