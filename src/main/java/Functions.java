@@ -1322,6 +1322,10 @@ public class Functions {
                     }
                 }
 
+                if (listOfLines.get(i).startsWith("NO_COPY")) {
+                    listOfLines.set(i, "");
+                }
+
                 if (listOfLines.get(i).startsWith("##")) {
                     listOfLines.set(i, "<br/>\n" + listOfLines.get(i));
                 }
