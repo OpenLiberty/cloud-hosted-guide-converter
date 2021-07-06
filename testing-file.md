@@ -889,7 +889,6 @@ You can also provide feedback or contribute to this guide from GitHub.
 <br/><br/>
 ## **Where to next?**
 
-
 * [Building a web application with Maven](https://openliberty.io/guides/maven-intro.html)
 * [Creating a RESTful web service](https://openliberty.io/guides/rest-intro.html)
 * [Using Docker containers to develop microservices](https://openliberty.io/guides/docker.html)
