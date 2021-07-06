@@ -122,10 +122,17 @@ public class Functions {
             m10 = r10.matcher(listOfLines.get(i + 2));
         }
 
+
         if (m9.find()) {
             if (m10 != null) {
                 if (m10.find()) {
                     if (!m10.group().contains("codeblock")) {
+                        for (int s = -10; s < 7; s++) {
+                            if (listOfLines.get(i + s).contains("NO_COPY")) {
+                                listOfLines.set(i + s, "");
+                                return;
+                            }
+                        }
                         if (!listOfLines.get(i + 2).startsWith("mvn")) {
                             for (int l = i; l < listOfLines.size(); l++) {
                                 if (listOfLines.get(l).contains("----")) {
@@ -913,6 +920,10 @@ public class Functions {
                 }
             }
 
+            if (listOfLines.get(i).contains("no_copy")) {
+                listOfLines.set(i, "NO_COPY\n");
+            }
+
             //Removes Additional prerequisites section
             if (listOfLines.get(i).startsWith("## Additional prerequisites") || listOfLines.get(i).startsWith("# Additional prerequisites")) {
                 removeAdditionalpres(listOfLines, i);
@@ -1303,11 +1314,15 @@ public class Functions {
                         heading = HSize + " **" + heading + "**\n";
                         if (listOfLines.get(i).contains("Welcome to the")) {
                             heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).lastIndexOf("!") + 1);
-                            String desc = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("!")+1);
+                            String desc = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("!") + 1);
                             heading = HSize + " **" + heading + "**" + desc;
                         }
                         listOfLines.set(i, heading);
                     }
+                }
+
+                if (listOfLines.get(i).startsWith("NO_COPY")) {
+                    listOfLines.set(i, "");
                 }
 
                 if (listOfLines.get(i).startsWith("##")) {
