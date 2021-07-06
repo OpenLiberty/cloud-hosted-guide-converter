@@ -222,7 +222,7 @@ public class Functions {
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n<br/><br/>\n## **Where to next?**\n\n" + text;
+        String whereToNext = "\n\n<br/>\n## **Where to next?**\n\n" + text;
 
         int End = listOfLines.size();
 
@@ -575,11 +575,11 @@ public class Functions {
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName) {
-        listOfLines.add("\n<br/><br/>\n## **Clean up your environment**\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
-                "<br/><br/>\n## **What did you think of this guide?**\n\n\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
-                "<br/><br/>\n## **What could make this guide better?**\n\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+        listOfLines.add("\n<br/>\n## **Clean up your environment**\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
+                "<br/>\n## **What did you think of this guide?**\n\n\nWe want to hear from you. To provide feedback on your experience with this guide, click the **Support** button in the IDE,\nselect **Give feedback** option, fill in the fields, choose **General** category, and click the **Post Idea** button.\n\n" +
+                "<br/>\n## **What could make this guide better?**\n\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
-                "<br/><br/>\n## **Log out of the session**\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+                "<br/>\n## **Log out of the session**\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -1311,7 +1311,7 @@ public class Functions {
                 }
 
                 if (listOfLines.get(i).startsWith("##")) {
-                    listOfLines.set(i, "<br/><br/>\n" + listOfLines.get(i));
+                    listOfLines.set(i, "<br/>\n" + listOfLines.get(i));
                 }
 
                 if (listOfLines.get(i).contains(": codeblock")) {
