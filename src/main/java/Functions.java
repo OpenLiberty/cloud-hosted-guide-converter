@@ -1126,7 +1126,7 @@ public class Functions {
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
                     if (listOfLines.get(i).contains("localhost")) {
-                            counter++;
+                        counter++;
                     }
                     if (listOfLines.get(i).startsWith("-")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
