@@ -850,7 +850,7 @@ You can stop the server by pressing **CTRL+C** in the command-line session that 
 
 ## **Nice Work!**
 
-You've learned the basics of deploying and updating an application on an Open Liberty server.**
+You've learned the basics of deploying and updating an application on an Open Liberty server.
 
 
 
