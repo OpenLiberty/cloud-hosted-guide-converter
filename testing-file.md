@@ -870,7 +870,7 @@ rm -fr guide-getting-started
 {: codeblock}
 
 <br/>
-## What did you think of this guide?
+## **What did you think of this guide?**
 We want to hear from you. To provide feedback, click the following link.
 
 * [Give us feedback](https://ol-staging.skillsnetwork.site/thanks-for-completing-our-content?guide-name=Getting%20started%20with%20Open%20Liberty&guide-id=cloud-hosted-guide-getting-started)
