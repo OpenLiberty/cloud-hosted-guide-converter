@@ -132,6 +132,7 @@ public class Functions {
                                 listOfLines.set(i + s, "");
                                 return;
                             }
+                            return;
                         }
                         if (!listOfLines.get(i + 2).startsWith("mvn")) {
                             for (int l = i; l < listOfLines.size(); l++) {
@@ -1321,10 +1322,6 @@ public class Functions {
                     }
                 }
 
-                if (listOfLines.get(i).startsWith("NO_COPY")) {
-                    listOfLines.set(i, "");
-                }
-
                 if (listOfLines.get(i).startsWith("##")) {
                     listOfLines.set(i, listOfLines.get(i) + "\n\n\n");
                 }
@@ -1342,6 +1339,9 @@ public class Functions {
                             listOfLines.set(i, listOfLines.get(i).replaceAll("(?m)^(.*?)codeblock(.*?)$", "{: codeblock}"));
                         }
                     }
+                }
+                if (listOfLines.get(i).startsWith("NO_COPY")) {
+                    listOfLines.set(i, "");
                 }
             }
         }
