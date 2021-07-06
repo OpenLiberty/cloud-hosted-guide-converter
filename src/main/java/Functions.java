@@ -222,7 +222,7 @@ public class Functions {
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n<br/><br/>\n## **Where to next?** \n\n" + text;
+        String whereToNext = "\n\n<br/><br/>\n## **Where to next?**\n\n" + text;
 
         int End = listOfLines.size();
 
