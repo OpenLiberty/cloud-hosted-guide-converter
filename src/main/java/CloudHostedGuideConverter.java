@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 IBM Corporation and others.
+ * Copyright (c) 2020, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -103,7 +103,7 @@ public class CloudHostedGuideConverter {
             // Runs the src.main.java.Functions.class
             Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
 //            Functions.Next(listOfLines);
-            Functions.end(listOfLines, guideName);
+            Functions.end(listOfLines, guideName, GuideTitle);
 
             //String builder to format the arraylist
             StringBuilder builder = new StringBuilder();
