@@ -588,7 +588,7 @@ public class Functions {
 
         System.out.println(GuideNameFormatted);
 
-        String FeedbackLink = "https://https://openliberty.skillsnetwork.site/thanks-for-completing-our-content?guide-name=" + GuideNameFormatted + "&guide-id=cloud-hosted-" + guideName;
+        String FeedbackLink = "https://openliberty.skillsnetwork.site/thanks-for-completing-our-content?guide-name=" + GuideNameFormatted + "&guide-id=cloud-hosted-" + guideName;
 
         System.out.println(FeedbackLink);
 

@@ -874,7 +874,7 @@ rm -fr guide-getting-started
 
 We want to hear from you. To provide feedback, click the following link.
 
-* [Give us feedback](https://https://openliberty.skillsnetwork.site/thanks-for-completing-our-content?guide-name=Getting%20started%20with%20Open%20Liberty&guide-id=cloud-hosted-guide-getting-started)
+* [Give us feedback](https://openliberty.skillsnetwork.site/thanks-for-completing-our-content?guide-name=Getting%20started%20with%20Open%20Liberty&guide-id=cloud-hosted-guide-getting-started)
 
 Or, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.
 
