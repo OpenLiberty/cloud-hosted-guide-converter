@@ -150,7 +150,6 @@ public class Functions {
 
     public static void relatedLinksMove(ArrayList<String> listOfLines, int i) {
 
-        ArrayList<String> temp = new ArrayList<>();
         int l = i;
         for (int x = l; x < listOfLines.size() - 1; x++) {
             if (!listOfLines.get(x).startsWith("# Related Links")) {
@@ -232,8 +231,6 @@ public class Functions {
 
         String whereToNext = "\n\n<br/>\n## **Where to next?**\n\n" + text;
 
-        int End = listOfLines.size();
-
         return whereToNext;
 
     }
@@ -289,7 +286,7 @@ public class Functions {
 
 
     public static void CheckTWYB(ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
-        ArrayList<String> tempList = new ArrayList<>();
+ 
         for (int x = i; !listOfLines.get(x).startsWith("# "); x++) {
 
             if (listOfLines.get(x).startsWith("#Update")) {
@@ -325,7 +322,6 @@ public class Functions {
         if (atIndex.startsWith("#Create")) {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-            String ifTags = "";
 
             int nextSectionHeading = 0;
 
@@ -415,7 +411,6 @@ public class Functions {
         } else if (atIndex.startsWith("#Replace")) {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-            String ifTags = "";
 
             int nextSectionHeading = 0;
 
@@ -462,7 +457,6 @@ public class Functions {
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
             String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
-            String ifTags = "";
 
             int nextSectionHeading = 0;
 
@@ -713,17 +707,17 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
                     ifAdminLink(listOfLines, listOfLines.size(), link);
                 } else if (localhostSplit.length >= 2) {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
                 } else {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + link + "\n```\n{: codeblock}\n\n\n");
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n");
                 }
             }
         }
@@ -733,6 +727,22 @@ public class Functions {
         }
     }
 
+    private static String appendJQ(String link) {
+    	String pattern[] = new String[] { 
+    	    ".*/system/properties$",
+    	    ".*/inventory/systems$",
+    	    ".*/inventory/systems/localhost$",
+    	    ".*/LibertyProject/System/properties$",
+    	    ".*/health$",
+    	    ".*/health/ready$",
+    	    ".*/health/live$" };
+    	for (String p : pattern) {
+    		if (link.matches(p)) {
+    			return "-s " + link + " | jq";
+    		}
+    	}
+    	return link;
+    }
 
     // general text configuration
     public static ArrayList<String> mains(ArrayList<String> listOfLines, Properties prop, Properties props) {

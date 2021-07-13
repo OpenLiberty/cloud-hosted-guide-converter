@@ -117,7 +117,7 @@ To access the **system** microservice, see the http://localhost:9080/system/prop
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/system/properties
+curl -s http://localhost:9080/system/properties | jq
 ```
 {: codeblock}
 
@@ -182,7 +182,7 @@ As before, you can see that the application is running by going to the http://lo
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/system/properties
+curl -s http://localhost:9080/system/properties | jq
 ```
 {: codeblock}
 
@@ -192,13 +192,13 @@ Now try updating the server configuration while the server is running in dev mod
 The **system** microservice does not currently include health monitoring to report whether the server and the microservice that it runs are healthy.
 You can add health reports with the MicroProfile Health feature, which adds a **/health** endpoint to your application.
 
-If you try to access this endpoint now at the http://localhost:9080/health/ URL, you see a 404 error because the **/health** endpoint does not yet exist:
+If you try to access this endpoint now at the http://localhost:9080/health URL, you see a 404 error because the **/health** endpoint does not yet exist:
 
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/health/
+curl -s http://localhost:9080/health | jq
 ```
 {: codeblock}
 
@@ -270,7 +270,7 @@ Try to access the **/health** endpoint again by visiting the http://localhost:90
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/health
+curl -s http://localhost:9080/health | jq
 ```
 {: codeblock}
 
@@ -428,7 +428,7 @@ Access the **/health** endpoint again by going to the http://localhost:9080/heal
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/health
+curl -s http://localhost:9080/health | jq
 ```
 {: codeblock}
 
@@ -463,7 +463,7 @@ You can also access the **/health/ready** endpoint by going to the http://localh
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/health/ready
+curl -s http://localhost:9080/health/ready | jq
 ```
 {: codeblock}
 
@@ -475,7 +475,7 @@ Similarly, access the **/health/live** endpoint by going to the http://localhost
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/health/live
+curl -s http://localhost:9080/health/live | jq
 ```
 {: codeblock}
 
@@ -649,7 +649,7 @@ To access the application, go to the http://localhost:9080/system/properties URL
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/system/properties
+curl -s http://localhost:9080/system/properties | jq
 ```
 {: codeblock}
 
@@ -716,7 +716,7 @@ To access the application, go to the http://localhost:9080/system/properties URL
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/system/properties
+curl -s http://localhost:9080/system/properties | jq
 ```
 {: codeblock}
 
@@ -774,7 +774,7 @@ http://localhost:9080/dev/system/properties
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/dev/system/properties
+curl -s http://localhost:9080/dev/system/properties | jq
 ```
 {: codeblock}
 
@@ -833,7 +833,7 @@ When the server starts, go to the http://localhost:9080/dev/system/properties UR
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl http://localhost:9080/dev/system/properties
+curl -s http://localhost:9080/dev/system/properties | jq
 ```
 {: codeblock}
 
