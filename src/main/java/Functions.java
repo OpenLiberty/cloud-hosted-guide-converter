@@ -728,20 +728,20 @@ public class Functions {
     }
 
     private static String appendJQ(String link) {
-    	String pattern[] = new String[] { 
-    	    ".*/system/properties$",
-    	    ".*/inventory/systems$",
-    	    ".*/inventory/systems/localhost$",
-    	    ".*/LibertyProject/System/properties$",
-    	    ".*/health$",
-    	    ".*/health/ready$",
-    	    ".*/health/live$" };
-    	for (String p : pattern) {
-    		if (link.matches(p)) {
-    			return "-s " + link + " | jq";
-    		}
-    	}
-    	return link;
+        String pattern[] = new String[] { 
+            ".*/system/properties$",
+            ".*/inventory/systems$",
+            ".*/inventory/systems/localhost$",
+            ".*/LibertyProject/System/properties$",
+            ".*/health$",
+            ".*/health/ready$",
+            ".*/health/live$" };
+        for (String p : pattern) {
+            if (link.matches(p)) {
+                return "-s " + link + " | jq";
+            }
+        }
+        return link;
     }
 
     // general text configuration
