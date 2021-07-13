@@ -523,6 +523,7 @@ public class Functions {
             file.seek(++pos);
             file.setLength(pos);
             file.write("".getBytes());
+            file.close();
         } catch (IOException ex) {
             System.out.println(ex);
         }
