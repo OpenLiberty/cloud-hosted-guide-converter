@@ -192,13 +192,13 @@ Now try updating the server configuration while the server is running in dev mod
 The **system** microservice does not currently include health monitoring to report whether the server and the microservice that it runs are healthy.
 You can add health reports with the MicroProfile Health feature, which adds a **/health** endpoint to your application.
 
-If you try to access this endpoint now at the http://localhost:9080/health URL, you see a 404 error because the **/health** endpoint does not yet exist:
+If you try to access this endpoint now at the http://localhost:9080/health/ URL, you see a 404 error because the **/health** endpoint does not yet exist:
 
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
 ```
-curl -s http://localhost:9080/health | jq
+curl http://localhost:9080/health/
 ```
 {: codeblock}
 
