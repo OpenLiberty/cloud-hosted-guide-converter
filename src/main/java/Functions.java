@@ -625,7 +625,6 @@ public class Functions {
                 lastChar = listOfLines.get(v).charAt(listOfLines.get(v).length()-2);
             }
             if(lastChar == ','){
-                System.out.println("a");
                 listOfLines.set(i-1, listOfLines.get(i-1).replaceAll("Replace", "replace"));
             }
             v--;
