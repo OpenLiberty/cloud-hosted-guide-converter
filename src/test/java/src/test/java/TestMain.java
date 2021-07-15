@@ -313,7 +313,7 @@ public class TestMain {
             Functions.link(listOfLines, 1);
 
             Assert.assertTrue(listOfLines.get(0).equals("[Git repository](https://github.com/openliberty/guide-cdi-intro.git)"));
-            Assert.assertTrue(listOfLines.get(1).contains("curl http://localhost:9080/inventory/systems"));
+            Assert.assertTrue(listOfLines.get(1).contains("curl -s http://localhost:9080/inventory/systems | jq"));
     }
 
     @Test
