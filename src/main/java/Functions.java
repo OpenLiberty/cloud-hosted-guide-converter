@@ -309,6 +309,25 @@ public class Functions {
         }
     }
 
+    public static void lowercaseKeyword(String keyword, ArrayList<String> listOfLines, int i){
+        String lowerCase = keyword.toLowerCase();
+        String prohibited = "[]-=";
+        int v = i-2;
+        char lastChar = 0;
+        do{
+            if(listOfLines.get(v).isBlank()){
+                lastChar = 0;
+            }else{
+                lastChar = listOfLines.get(v).charAt(listOfLines.get(v).length()-2);
+            }
+            if(lastChar == ','){
+                listOfLines.set(i-1, listOfLines.get(i-1).replaceAll(keyword, lowerCase));
+            }
+            v--;
+        } while (prohibited.indexOf(lastChar) != -1 || lastChar == 0);
+    }
+
+
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
@@ -615,20 +634,7 @@ public class Functions {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
 
-        String prohibited = "[]-=";
-        int v = i-2;
-        char lastChar = 0;
-        do{
-            if(listOfLines.get(v).isBlank()){
-                lastChar = 0;
-            }else{
-                lastChar = listOfLines.get(v).charAt(listOfLines.get(v).length()-2);
-            }
-            if(lastChar == ','){
-                listOfLines.set(i-1, listOfLines.get(i-1).replaceAll("Replace", "replace"));
-            }
-            v--;
-        } while (prohibited.indexOf(lastChar) != -1 || lastChar == 0);
+        lowercaseKeyword("Replace", listOfLines, i);
 
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
@@ -651,6 +657,9 @@ public class Functions {
 
             }
         }
+
+        lowercaseKeyword("Update", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
@@ -674,6 +683,9 @@ public class Functions {
 
             }
         }
+
+        lowercaseKeyword("Update", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
@@ -697,6 +709,9 @@ public class Functions {
                 str = str.substring(9, str.length() - 3);
             }
         }
+
+        lowercaseKeyword("Create", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
