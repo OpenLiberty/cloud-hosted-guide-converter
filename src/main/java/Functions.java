@@ -10,12 +10,14 @@
  *******************************************************************************/
 
 import java.io.IOException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
 
 class LinkSets {
     String linkName;
@@ -303,6 +305,25 @@ public class Functions {
             listOfLines.set(i, "```\n");
         }
     }
+
+    public static void lowercaseKeyword(String keyword, ArrayList<String> listOfLines, int i){
+        String lowerCase = keyword.toLowerCase();
+        String prohibited = "[]-=";
+        int v = i-2;
+        char lastChar = 0;
+        do{
+            if(listOfLines.get(v).isBlank()){
+                lastChar = 0;
+            }else{
+                lastChar = listOfLines.get(v).charAt(listOfLines.get(v).length()-2);
+            }
+            if(lastChar == ','){
+                listOfLines.set(i-1, listOfLines.get(i-1).replaceAll(keyword, lowerCase));
+            }
+            v--;
+        } while (prohibited.indexOf(lastChar) != -1 || lastChar == 0);
+    }
+
 
     // Inserts code snippets
     public static void codeInsert(String atIndex, ArrayList<String> listOfLines, String guideName, String branch, int i, String position) {
@@ -597,7 +618,6 @@ public class Functions {
     //configures instructions to replace file
     public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String
             position, ArrayList<String> hideList) {
-
         String str = null;
         for (int x = i; x <= i + 10; x++) {
             if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
@@ -608,6 +628,9 @@ public class Functions {
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
+
+        lowercaseKeyword("Replace", listOfLines, i);
+
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select \n **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
@@ -629,6 +652,9 @@ public class Functions {
 
             }
         }
+
+        lowercaseKeyword("Update", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
@@ -652,6 +678,9 @@ public class Functions {
 
             }
         }
+
+        lowercaseKeyword("Update", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
@@ -675,6 +704,9 @@ public class Functions {
                 str = str.substring(9, str.length() - 3);
             }
         }
+
+        lowercaseKeyword("Create", listOfLines, i);
+
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
