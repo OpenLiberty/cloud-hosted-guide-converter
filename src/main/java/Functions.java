@@ -661,7 +661,6 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
         listOfLines.set(i, "\n> From the menu of the IDE, select   \n> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
-        listOfLines.set(i, "\n> From the menu of the IDE, select   \n> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
