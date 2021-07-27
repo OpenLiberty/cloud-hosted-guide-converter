@@ -231,7 +231,7 @@ public class Functions {
         StringBuilder builder = new StringBuilder();
         for (String value : linksForNextGuides) {
             if(value.startsWith("[")){
-                builder.append("* " + value + "\n");
+                builder.append("* " + value);
             } else {
                 builder.append("\n**" + value.replaceAll("\\.", "**\n"));
             }
