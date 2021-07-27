@@ -235,7 +235,7 @@ public class Functions {
                 if (!value.endsWith("\n"))
                     builder.append("\n");
             } else {
-                builder.append("\n**" + value.replaceAll("\\.", "**\n"));
+                builder.append("\n**" + value.replaceAll("\\.", "**"));
             }
         }
 
