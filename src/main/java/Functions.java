@@ -233,7 +233,7 @@ public class Functions {
             if(value.startsWith("[")){
                 builder.append("* " + value + "\n");
             } else {
-                builder.append("<br/> \n### **" + value.replaceAll("\n", "**\n"));
+                builder.append("\n**" + value.replaceAll("\\.", "**\n"));
             }
         }
 
