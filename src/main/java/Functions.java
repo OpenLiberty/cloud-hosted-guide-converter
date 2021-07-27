@@ -232,6 +232,8 @@ public class Functions {
         for (String value : linksForNextGuides) {
             if(value.startsWith("[")){
                 builder.append("* " + value);
+                if (!value.endsWith("\n"))
+                    builder.append("\n");
             } else {
                 builder.append("\n**" + value.replaceAll("\\.", "**\n"));
             }
