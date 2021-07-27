@@ -165,10 +165,14 @@ public class Functions {
                         }
                     }
                 }
+                if(listOfLines.get(x).startsWith("Learn more about")){
+                    linksForNextGuides.add(listOfLines.get(x));
+                }
             }
             listOfLines.set(x, "");
         }
     }
+
 
     public static ArrayList<String> relatedGuides(ArrayList<String> listOfLines, int i) {
         ArrayList<String> visitLinks = new ArrayList<String>();
@@ -226,7 +230,13 @@ public class Functions {
 
         StringBuilder builder = new StringBuilder();
         for (String value : linksForNextGuides) {
-            builder.append("* " + value + "\n");
+            if(value.startsWith("[")){
+                builder.append("* " + value);
+                if (!value.endsWith("\n"))
+                    builder.append("\n");
+            } else {
+                builder.append("\n**" + value.replaceAll("\\.", "**"));
+            }
         }
 
         String text = builder.toString();

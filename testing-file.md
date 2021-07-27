@@ -27,7 +27,7 @@ Foundry.
 Maven is an automation build tool that provides an efficient way to develop Java applications.
 Using Maven, you will build a simple microservice, called **system**, that collects basic
 system properties from your laptop and displays them on an endpoint that you can access
-in your web browser.
+in your web browser. 
 
 You'll also explore how to package your application with Open Liberty
 so that it can be deployed anywhere in one go. You will then make Liberty configuration and code changes and see how
@@ -162,7 +162,7 @@ mvn liberty:stop
 
 # **Updating the server configuration without restarting the server**
 
-The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project,
+The Open Liberty Maven plug-in includes a **dev** goal that listens for any changes in the project, 
 including application source code or configuration. The Open Liberty server automatically reloads the configuration without restarting. This goal allows for quicker turnarounds and an improved developer experience.
 
 Stop the Open Liberty server if it is running, and start it in dev mode by running the **liberty:dev** goal in the **start** directory:
@@ -355,7 +355,7 @@ public class SystemReadinessCheck implements HealthCheck {
 
 
 
-The **SystemReadinessCheck** class verifies that the
+The **SystemReadinessCheck** class verifies that the 
 **system** microservice is not in maintenance by checking a config property.
 
 Create the **SystemLivenessCheck** class.
@@ -407,7 +407,7 @@ public class SystemLivenessCheck implements HealthCheck {
 
 
 
-The **SystemLivenessCheck** class reports a status of
+The **SystemLivenessCheck** class reports a status of 
 **DOWN** if the microservice uses over 90% of the maximum amount of memory.
 
 After you make the file changes, Open Liberty automatically reloads its configuration and the **system** application.
@@ -493,7 +493,7 @@ While the server is running in the foreground, it displays various console messa
 the command-line session. These messages are also logged to the **target/liberty/wlp/usr/servers/defaultServer/logs/console.log**
 file. You can find the complete server logs in the **target/liberty/wlp/usr/servers/defaultServer/logs**
 directory. The **console.log** and **messages.log** files are the primary log files that contain
-console output of the running application and the server. More logs are created when runtime errors
+console output of the running application and the server. More logs are created when runtime errors 
 occur or whenever tracing is enabled. You can find the error logs in the
 **ffdc** directory and the tracing logs in the **trace.log** file.
 
@@ -710,7 +710,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 ```
 
 
-To access the application, go to the http://localhost:9080/system/properties URL.
+To access the application, go to the http://localhost:9080/system/properties URL. 
 
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
@@ -783,7 +783,7 @@ URL. Notice that context root is now **/dev**.
 
 When you are finished, exit dev mode by pressing **CTRL+C** in the
 command-line session that the container was started from, or by typing `q` and
-then pressing the **enter/return** key. Either of these options stops and
+then pressing the **enter/return** key. Either of these options stops and 
 removes the container. To check that the container was stopped, run the **docker ps** command.
 
 
@@ -800,8 +800,8 @@ extracted onto an Open Liberty installation.
 
 Instead of creating a server package, you can generate a runnable JAR file that contains
 the application along with a server runtime. This JAR file can then be run anywhere and deploy
-your application and server at the same time. To generate a runnable JAR file, override the
-**include** property:
+your application and server at the same time. To generate a runnable JAR file, override the 
+**include** property: 
 ```
 mvn liberty:package -Dinclude=runnable
 ```
