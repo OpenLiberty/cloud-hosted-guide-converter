@@ -763,6 +763,7 @@ Replace the server configuration file.
 {: codeblock}
 
 
+
 Update the **mpData.js** file to change the **url** in the **getSystemPropertiesRequest** method to reflect the new context root.
 
 
