@@ -763,6 +763,23 @@ Replace the server configuration file.
 {: codeblock}
 
 
+Update the **mpData.js** file to change the **url** in the **getSystemPropertiesRequest** method to reflect the new context root.
+
+
+Update the mpData.js file.
+
+> From the menu of the IDE, select 
+> **File** > **Open** > guide-getting-started/start/src/main/webapp/js/mpData.js
+
+```
+function getSystemPropertiesRequest() {
+    var propToDisplay = ["java.vendor", "java.version", "user.name", "os.name", "wlp.install.dir", "wlp.server.name" ];
+    var url = "http://localhost:9080/dev/system/properties";
+    var req = new XMLHttpRequest();
+    var table = document.getElementById("systemPropertiesTable");
+    ...
+```
+
 After you make the file changes, Open Liberty automatically reloads its
 configuration. You can access the application at the
 
