@@ -672,7 +672,6 @@ docker rmi openliberty-getting-started:1.0-SNAPSHOT
 
 # **Developing the application in a Docker container**
 
-
 The Open Liberty Maven plug-in includes a **devc** goal that simplifies developing
 your application in a Docker container by starting dev mode with container
 support. This goal builds a Docker image, mounts the required directories, binds
