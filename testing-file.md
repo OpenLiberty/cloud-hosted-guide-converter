@@ -750,7 +750,6 @@ Replace the server configuration file.
     <variable name="default.https.port" defaultValue="9443"/>
 
     <webApplication location="guide-getting-started.war" contextRoot="/dev" />
-    
     <mpMetrics authentication="false"/>
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
