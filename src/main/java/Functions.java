@@ -271,18 +271,20 @@ public class Functions {
     public static void insertCopyButton(ArrayList<String> listOfLines, int i) {
         ArrayList<String> check = new ArrayList<>();
         int y = 0;
-        boolean addedCodeblock = false; // prevent duplicate to add codeblock within 15 lines
+        boolean addCodeblock = true; // prevent duplicate to add codeblock within 15 lines
         for (int x = 0; x <= 15; x++) {
             y = i + x;
             if (y < listOfLines.size()) {
                 check.add(listOfLines.get(y));
                 if (check.get(x).startsWith("```")) {
                     if (listOfLines.get(y + 1).isBlank()) {
-                        if (!addedCodeblock) {
+                        if (addCodeblock) {
                             listOfLines.set(y + 1, "{: codeblock}\n\n\n");
-                            addedCodeblock = true;
+                            addCodeblock = false;
                         }
                     }
+                } else if (check.get(x).contains("no_copy")) {
+                    addCodeblock = false;
                 }
             }
         }
