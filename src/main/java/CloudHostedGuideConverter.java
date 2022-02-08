@@ -22,113 +22,104 @@ public class CloudHostedGuideConverter {
 
         String guideName = args[0];
         String branch = args[1];
-        getMD(guideName, branch);
+        convertToMD(guideName, branch);
         System.out.println("Guide converted");
         System.out.println("Find markdown in " + guideName + ".md");
 
     }
 
     // Reads the adoc from github, and writes it to an arraylist
-    public static void getMD(String guideName, String branch) throws IOException {
-        Scanner s = null;
-        FileInputStream ip = null;
-        FileInputStream ips = null;
+    public static void convertToMD(String guideName, String branch) throws IOException {
+        Scanner scanner = null;
+        FileInputStream lrpfis = null;
+        FileInputStream rpfis = null;
 
         try {
             //read adoc file from the open liberty guide
             File guide = new File(guideName + "/README.adoc");
-//            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/README.adoc");
-            s = new Scanner(guide);
-//          ArrayList for whole text file
-            ArrayList<String> listOfLines = new ArrayList<>();
+            scanner = new Scanner(guide);
+            // ArrayList to hold the whole converted markdown format content
+            ArrayList<String> mdContent = new ArrayList<>();
 
-            String GuideTitle = null;
-            String GuideDescription = null;
+            String guideTitle = null;
+            String guideDescription = null;
 
-            Properties prop = new Properties();
-            Properties props = new Properties();
+            Properties loopReplacementsProps = new Properties();
+            Properties replacementsProps = new Properties();
 
-            ip = new FileInputStream("loopReplacements.properties");
-            ips = new FileInputStream("replacements.properties");
+            lrpfis = new FileInputStream("loopReplacements.properties");
+            rpfis = new FileInputStream("replacements.properties");
 
-            prop.load(ip);
-            props.load(ips);
+            loopReplacementsProps.load(lrpfis);
+            replacementsProps.load(rpfis);
 
+            // write each line into the file
+            while (scanner.hasNextLine()) {
+                String inputLine = scanner.nextLine() + "\n";
 
-//          write each line into the file
-            while (s.hasNextLine()) {
-                String inputLine = s.nextLine() + "\n";
-
+                // process the guide title and description
                 if (inputLine.startsWith("= ")) {
-                    GuideTitle = inputLine;
-                        if (!s.nextLine().isEmpty() || !s.nextLine().isBlank()) {
-                            s.nextLine();
-                            s.nextLine();
-                            GuideDescription = s.nextLine();
-                            GuideDescription = GuideDescription.substring(GuideDescription.lastIndexOf(":") + 1, GuideDescription.length());
-                        }
-                        continue;
+                    guideTitle = inputLine;
+                    if (!scanner.nextLine().isEmpty() || !scanner.nextLine().isBlank()) {
+                        scanner.nextLine();
+                        scanner.nextLine();
+                        guideDescription = scanner.nextLine();
+                        guideDescription = guideDescription.substring(guideDescription.lastIndexOf(":") + 1, guideDescription.length());
                     }
-
-                if (inputLine.equals(GuideDescription)) {
-                    inputLine = "";
+                    continue;
                 }
 
+                // skip the Windows and Mac specific content
                 if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
-
-                    while (!s.nextLine().startsWith("[.tab_content.linux_section]")) {
+                    while (!scanner.nextLine().startsWith("[.tab_content.linux_section]")) {
                         continue;
                     }
                 }
 
-
+                // skip the Windows specific content
                 if (inputLine.startsWith("[.tab_content.windows_section]")) {
-                    while (!s.nextLine().startsWith("[.tab_content.mac_section")) {
+                    while (!scanner.nextLine().startsWith("[.tab_content.mac_section")) {
                         continue;
                     }
                 }
 
-
+                // skip the static guide content that marked by ifndef::cloud-hosted
                 if (inputLine.startsWith("ifndef::cloud-hosted[]")) {
-                    while (!s.nextLine().startsWith("endif::[]")) {
+                    while (!scanner.nextLine().startsWith("endif::[]")) {
                         continue;
                     }
                 }
 
-                listOfLines.add(inputLine);
+                mdContent.add(inputLine);
             }
 
-
-            Functions.addPriorStep1(listOfLines, 0, guideName, GuideTitle, GuideDescription);
             // Runs the src.main.java.Functions.class
-            Functions.ConditionsMethod(listOfLines, guideName, branch, prop, props);
-//            Functions.Next(listOfLines);
-            Functions.end(listOfLines, guideName, GuideTitle);
+            Functions.addPriorStep1(mdContent, 0, guideName, guideTitle, guideDescription);
+            Functions.ConditionsMethod(mdContent, guideName, branch, loopReplacementsProps, replacementsProps);
+            Functions.end(mdContent, guideName, guideTitle);
 
-            //String builder to format the arraylist
+            // Convert the listOfLines to StringBuilder
             StringBuilder builder = new StringBuilder();
-            for (String value : listOfLines) {
+            for (String value : mdContent) {
                 builder.append(value);
             }
 
-            String text = builder.toString();
-
-            writeToFile(text, guideName);
+            // Write the converted content to the file
+            writeToFile(builder.toString(), guideName);
 
         } catch (IOException ex) {
             System.out.println(ex);
         } finally {
-            if (s != null) {
-                s.close();
-                ip.close();
-                ips.close();
+            if (scanner != null) {
+                scanner.close();
+                lrpfis.close();
+                rpfis.close();
             }
         }
     }
 
     // append to md file
-    public static void writeToFile(String str, String guideName)
-            throws IOException {
+    public static void writeToFile(String str, String guideName) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(guideName + ".md"));
         writer.append("\n" + str);
         writer.close();

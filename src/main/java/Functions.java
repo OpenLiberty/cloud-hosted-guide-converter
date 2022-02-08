@@ -10,14 +10,12 @@
  *******************************************************************************/
 
 import java.io.IOException;
-import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Arrays;
 
 class LinkSets {
     String linkName;

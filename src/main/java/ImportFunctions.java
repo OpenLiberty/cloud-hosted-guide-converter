@@ -21,15 +21,14 @@ public class ImportFunctions {
     // inserts gitclone.aoc from https://github.com/OpenLiberty/guides-common
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
+        File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+        Scanner scanner = null;
         try {
-            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
-//            URL url = new URL(CommonURL);
-//            Scanner s = new Scanner(url.openStream());
-            Scanner s = new Scanner(common);
+            scanner = new Scanner(common);
             String inputLine = null;
             int counter = 0;
-            while (s.hasNextLine()) {
-                inputLine = s.nextLine() + "\n";
+            while (scanner.hasNextLine()) {
+                inputLine = scanner.nextLine() + "\n";
                 if (inputLine.startsWith("----")) {
                     counter++;
                 }
@@ -45,10 +44,11 @@ public class ImportFunctions {
             }
             temp.subList(0, 7).clear();
             listOfLines.addAll(i + 1, temp);
-
-            s.close();
         } catch (IOException ex) {
             System.out.println(ex);
+        } finally {
+        	if (scanner != null)
+        		scanner.close();
         }
     }
 
@@ -66,19 +66,15 @@ public class ImportFunctions {
 //            Scanner s = new Scanner(url.openStream());
             Scanner s = new Scanner(common);
             String inputLine = null;
-            int counter = 0;
 
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-
-                boolean remove = false;
 
                 if (inputLine.startsWith("////")) {
                     continue;
                 }
 
                 if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
-                    remove = true;
                     while (!s.nextLine().startsWith("[.tab")) {
                         continue;
                     }
