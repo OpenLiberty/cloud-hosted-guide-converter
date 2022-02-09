@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 IBM Corporation and others.
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public class CloudHostedGuideConverter {
             scanner = new Scanner(guide);
             // ArrayList to hold the whole converted markdown format content
             ArrayList<String> mdContent = new ArrayList<>();
+            
+            int m = Functions.addSNLMetadata(mdContent, guideName);
 
             String guideTitle = null;
             String guideDescription = null;
@@ -94,13 +96,15 @@ public class CloudHostedGuideConverter {
             }
 
             // Runs the src.main.java.Functions.class
-            Functions.addPriorStep1(mdContent, 0, guideName, guideTitle, guideDescription);
+            Functions.addPriorStep1(mdContent, m, guideName, guideTitle, guideDescription);
             Functions.ConditionsMethod(mdContent, guideName, branch, loopReplacementsProps, replacementsProps);
             Functions.end(mdContent, guideName, guideTitle);
 
             // Convert the listOfLines to StringBuilder
             StringBuilder builder = new StringBuilder();
             for (String value : mdContent) {
+            	if (value.contains("{: codeblock}"))
+            		continue;
                 builder.append(value);
             }
 
@@ -121,7 +125,7 @@ public class CloudHostedGuideConverter {
     // append to md file
     public static void writeToFile(String str, String guideName) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(guideName + ".md"));
-        writer.append("\n" + str);
+        writer.append(str + "\n");
         writer.close();
     }
 }

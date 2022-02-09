@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 IBM Corporation and others.
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -129,11 +130,14 @@ public class Functions {
                     if (!m10.group().contains("codeblock")) {
                         for (int s = -10; s < 7; s++) {
                             if (listOfLines.get(i + s).contains("NO_COPY")) {
+System.out.println("**** 133:" + listOfLines.get(i + s));
                                 listOfLines.set(i + s, "");
                                 return;
                             }
                             return;
                         }
+                        // To be removed:
+                        /*
                         if (!listOfLines.get(i + 2).startsWith("mvn")) {
                             for (int l = i; l < listOfLines.size(); l++) {
                                 if (listOfLines.get(l).contains("----")) {
@@ -141,6 +145,7 @@ public class Functions {
                                 }
                             }
                         }
+                        */
                     }
                 }
             }
@@ -265,7 +270,9 @@ public class Functions {
         }
     }
 
+    // To be removed
     // This is a function that inserts {: cdodeblock} after a codeblock
+    /*
     public static void insertCopyButton(ArrayList<String> listOfLines, int i) {
         ArrayList<String> check = new ArrayList<>();
         int y = 0;
@@ -287,7 +294,8 @@ public class Functions {
             }
         }
     }
-
+    */
+    
     // This removes any windows commands that are use in the guides. This is because we use a pre installed environment given to the users online. This environment is a linux OS so there for windwows commands are not required.
     public static void removeWindowsCommand(ArrayList<String> listOfLines, int i) {
         int counters = 0;
@@ -565,6 +573,24 @@ public class Functions {
             System.out.println(ex);
         }
     }
+    
+	public static int addSNLMetadata(ArrayList<String> listOfLines, String guideName) {
+		ArrayList<String> temp = new ArrayList<>();
+		Properties vhsdProperties = new Properties();
+		try {
+			vhsdProperties.load(new FileInputStream("version-history-start-date.properties"));
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		temp.add("---\n");
+		temp.add("markdown-version: v1\n");
+		temp.add("title: instructions\n");
+		temp.add("branch: lab-204-instruction\n");
+		temp.add("version-history-start-date: " + vhsdProperties.getProperty(guideName, "2022-02-09T14:19:17.000Z") + "\n");
+		temp.add("---\n");
+		listOfLines.addAll(temp);
+		return temp.size();
+	}
 
     public static void addPriorStep1(ArrayList<String> listOfLines, int i, String guideName, String
             GuideTitle, String GuideDescription) {
@@ -624,7 +650,7 @@ public class Functions {
 
         System.out.println(FeedbackLink);
 
-        listOfLines.add("\n<br/>\n## **Clean up your environment**\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n{: codeblock}\n\n" +
+        listOfLines.add("\n<br/>\n## **Clean up your environment**\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```}\n\n" +
                 "<br/>\n## **What did you think of this guide?**\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
                 "<br/>\n## **What could make this guide better?**\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
@@ -726,7 +752,7 @@ public class Functions {
         if (str == null) {
             str = "finish/" + listOfLines.get(i).replaceAll("`", "");
         }
-        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n{: codeblock}\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "\n\n\n");
+        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
         return position;
@@ -756,17 +782,17 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + appendJQ(link) + "\n```\n\n\n"));
                     ifAdminLink(listOfLines, listOfLines.size(), link);
                 } else if (localhostSplit.length >= 2) {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n"));
                 } else {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n{: codeblock}\n\n\n");
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n");
                 }
             }
         }
@@ -848,7 +874,19 @@ public class Functions {
             Scanner s = new Scanner(url.openStream());
             String inputLine = null;
             code.add("\n");
-            code.add("```\n");
+            if (path.endsWith(".java")) {
+                code.add("```java\n");
+            } else if((path.endsWith(".js"))) {
+                code.add("```javascript\n");
+            } else if((path.endsWith(".json"))) {
+                code.add("```json\n");
+            } else if((path.endsWith(".xml"))) {
+                code.add("```xml\n");
+            } else if((path.endsWith(".yaml"))) {
+                code.add("```yaml\n");
+            } else {
+                code.add("```\n");
+            }
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
 
@@ -912,7 +950,7 @@ public class Functions {
                 }
             }
 
-            code.add("```\n{: codeblock}\n\n\n");
+            code.add("```\n\n\n");
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
 
@@ -1068,10 +1106,13 @@ public class Functions {
                 }
 
 
+                // To be removed
                 //For parts of text that need to be copied
+                /*
                 if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
                     insertCopyButton(listOfLines, i);
                 }
+                */
 
                 //User is instructed to replace a file
                 if (listOfLines.get(i).startsWith("#Replace") || listOfLines.get(i).startsWith("#Create") || listOfLines.get(i).startsWith("#Update")) {
@@ -1324,12 +1365,15 @@ public class Functions {
                     }
                 }
 
+                // To be removed
+                /*
                 if (listOfLines.get(i).startsWith("docker")) {
                     if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                         listOfLines.add(i + 2, "");
                         listOfLines.set(i + 2, "{: codeblock}\n\n\n");
                     }
                 }
+                */
 
                 String pattern7 = "(?m)^(.\s)$";
                 String pattern8 = "(?m)^(.)$";
@@ -1352,6 +1396,8 @@ public class Functions {
                     }
                 }
 
+                // To be removed
+                /*
                 if (listOfLines.get(i).startsWith("mvn")) {
                     if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
                         if (!listOfLines.get(i + 3).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
@@ -1360,6 +1406,7 @@ public class Functions {
                         }
                     }
                 }
+                */
 
                 addCodeblockAfterMVN(listOfLines, i);
 
@@ -1378,20 +1425,43 @@ public class Functions {
 
                 if (listOfLines.get(i).startsWith("#")) {
                     if (!listOfLines.get(i).contains("**")) {
-                        String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
-                        String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
-                        heading = HSize + " **" + heading + "**\n";
-                        if (listOfLines.get(i).contains("Welcome to the")) {
-                            heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).lastIndexOf("!") + 1);
-                            String desc = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("!") + 1);
-                            heading = HSize + " **" + heading + "**" + desc;
-                        }
-                        listOfLines.set(i, heading);
+                    	if (listOfLines.get(i).startsWith("# ")) {
+                    		String heading = listOfLines.get(i);
+                    		heading = heading.replace("# ", "::page{title=\"");
+                            heading = heading.replace("\n",  "\"}\n");
+                            listOfLines.set(i, heading);
+                    	} else {
+                            String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
+                            String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
+                            heading = HSize + " **" + heading + "**\n";
+                            listOfLines.set(i, heading);
+                    	}
                     }
                 }
 
                 if (listOfLines.get(i).startsWith("NO_COPY")) {
                     listOfLines.set(i, "");
+// To be removed when SNL fix no copy button block
+/*
+                    // Reformat the no copy code block
+                    boolean change = false;
+                    for (int j = i + 1; j < i + 20; j++) {
+                    	if (!change && listOfLines.get(j).startsWith("----")) {
+                    		change = true;
+                    		listOfLines.set(j, ">\n");
+                    		continue;
+                    	}
+                    	if (change) {
+                        	if (listOfLines.get(j).startsWith("----")) {
+                        		change = false;
+                        		listOfLines.set(j, ">\n");
+                        		break;
+                        	}
+                    		String changed = ">" + listOfLines.get(j);
+                    		listOfLines.set(j, changed);
+                    	}
+                    }
+ */
                 }
 
                 if (listOfLines.get(i).startsWith("##")) {
@@ -1399,6 +1469,7 @@ public class Functions {
                 }
 
                 if (listOfLines.get(i).contains(": codeblock")) {
+                	System.out.println("****:" + listOfLines.get(i));
                     String pattern6 = "(?m)^: codeblock$";
 
                     Pattern r6 = Pattern.compile(pattern6);
@@ -1413,6 +1484,7 @@ public class Functions {
                     }
                 }
                 if (listOfLines.get(i).startsWith("NO_COPY")) {
+System.out.println("**** 1456:" + listOfLines.get(i));
                     listOfLines.set(i, "");
                 }
             }
