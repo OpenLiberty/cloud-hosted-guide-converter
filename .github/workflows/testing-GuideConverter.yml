@@ -11,7 +11,7 @@ jobs:
     steps:
 
       # Any prerequisite steps
-      - uses: actions/checkout@prod
+      - uses: actions/checkout@main
         
       - name: Checkout guide-getting-started
         uses: actions/checkout@v2
