@@ -184,7 +184,7 @@ public class Functions {
             String relatedGuidesName = e.substring(1, e.length() - 1);
             String getTitle = null;
             try {
-                URL url = new URL("https://raw.githubusercontent.com/openliberty/guide-" + relatedGuidesName + "/master/README.adoc");
+                URL url = new URL("https://raw.githubusercontent.com/openliberty/guide-" + relatedGuidesName + "/prod/README.adoc");
                 Scanner s = new Scanner(url.openStream());
                 String inputLine = null;
                 while (s.hasNextLine()) {
@@ -1123,7 +1123,7 @@ public class Functions {
 
                 if (listOfLines.get(i).startsWith("image::")) {
 
-                    String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/master/assets";
+                    String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/prod/assets";
 
                     String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
 
