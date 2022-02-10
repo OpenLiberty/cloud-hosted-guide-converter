@@ -37,6 +37,8 @@ public class TestMain {
         List<String> b = FileUtils.readLines(newGuide);
 
         for (int i = 0; i < a.size(); ++i) {
+        	System.out.println(a.get(i).trim());
+        	System.out.println(b.get(i).trim());
             assertEquals("The files differ at line " + i + "!", a.get(i).trim(), b.get(i).trim());
         }
         assertEquals("The files sizes differ!", a.size(), b.size());
