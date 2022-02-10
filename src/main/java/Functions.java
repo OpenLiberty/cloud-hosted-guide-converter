@@ -130,7 +130,6 @@ public class Functions {
                     if (!m10.group().contains("codeblock")) {
                         for (int s = -10; s < 7; s++) {
                             if (listOfLines.get(i + s).contains("NO_COPY")) {
-System.out.println("**** 133:" + listOfLines.get(i + s));
                                 listOfLines.set(i + s, "");
                                 return;
                             }
@@ -244,7 +243,7 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n<br/>\n## **Where to next?**\n\n" + text;
+        String whereToNext = "\n\n### Where to next?\n\n" + text;
 
         return whereToNext;
 
@@ -636,8 +635,9 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
 
     // This function adds in the last steps of a guide.
     public static void finish(ArrayList<String> listOfLines, String lastLine, String guideName, int i) {
-        String Summery = "# **Summary**\n\n## **Nice Work!**\n\n" + lastLine;
-        listOfLines.set(i, Summery);
+        //String summary = "::page{title=\"Summary\"}\n\n## **Nice Work!**\n\n" + lastLine;
+        String summary = "# **Summary**\n\n### Nice Work!\n\n" + lastLine;
+        listOfLines.set(i, summary);
     }
 
     public static void end(ArrayList<String> listOfLines, String guideName, String GuideTitle) {
@@ -650,11 +650,11 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
 
         System.out.println(FeedbackLink);
 
-        listOfLines.add("\n<br/>\n## **Clean up your environment**\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```}\n\n" +
-                "<br/>\n## **What did you think of this guide?**\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
-                "<br/>\n## **What could make this guide better?**\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
+        listOfLines.add("\n### Clean up your environment\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the **" + guideName + "** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n\n" +
+                "### What did you think of this guide?\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
+                "### What could make this guide better?\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
-                "<br/>\n## **Log out of the session**\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
+                "### Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
     //configures instructions to replace file
@@ -675,7 +675,7 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
 
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> From the menu of the IDE, select \n" + "> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> From the menu of the IDE, select\n" + "> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
@@ -702,7 +702,7 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
         }
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> From the menu of the IDE, select \n" + "> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> From the menu of the IDE, select\n" + "> **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
@@ -728,7 +728,7 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
         }
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("`", "**"));
-        listOfLines.set(i, "\n> From the menu of the IDE, select \n" + "> **File** > **Open** > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
+        listOfLines.set(i, "\n> From the menu of the IDE, select\n" + "> **File** > **Open** > " + guideName + "/finish/" + listOfLines.get(i).replaceAll("\\*\\*", "") + "\n\n\n");
         listOfLines.set(i, listOfLines.get(i).replaceAll("touch ", ""));
         codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
         position = "main";
@@ -792,7 +792,7 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n");
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n");
                 }
             }
         }
@@ -1436,6 +1436,10 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
                             heading = HSize + " **" + heading + "**\n";
                             listOfLines.set(i, heading);
                     	}
+                    } else if (listOfLines.get(i).contains("# **Summary**")) {
+                    	String heading = listOfLines.get(i);
+                    	heading = heading.replace("# **Summary**", "::page{title=\"Summary\"}");
+                    	listOfLines.set(i, heading);
                     }
                 }
 
@@ -1464,12 +1468,14 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
  */
                 }
 
+                // To be removed
+                /*
                 if (listOfLines.get(i).startsWith("##")) {
                     listOfLines.set(i, "<br/>\n" + listOfLines.get(i));
                 }
+                */
 
                 if (listOfLines.get(i).contains(": codeblock")) {
-                	System.out.println("****:" + listOfLines.get(i));
                     String pattern6 = "(?m)^: codeblock$";
 
                     Pattern r6 = Pattern.compile(pattern6);
@@ -1484,7 +1490,6 @@ System.out.println("**** 133:" + listOfLines.get(i + s));
                     }
                 }
                 if (listOfLines.get(i).startsWith("NO_COPY")) {
-System.out.println("**** 1456:" + listOfLines.get(i));
                     listOfLines.set(i, "");
                 }
             }

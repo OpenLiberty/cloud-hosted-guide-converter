@@ -165,10 +165,13 @@ public class ImportFunctions {
                 inputLine = s.nextLine() + "\n";
                 if(inputLine.startsWith("# Welcome to the cloud-hosted guide!")) {
                 	inputLine = inputLine.replaceAll("cloud-hosted guide!", GuideTitle.trim() + " guide!");
+                    temp.add(inputLine);
+                    temp.add("\n");
+                    temp.add(GuideDescription);
+                    temp.add("\n");
+                } else {
+                    temp.add(inputLine);
                 }
-                temp.add(inputLine);
-                temp.add("\n");
-                temp.add(GuideDescription.trim());
             }
             temp.add("\n");
             temp.add("\n");
