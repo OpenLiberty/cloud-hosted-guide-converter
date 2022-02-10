@@ -11,7 +11,7 @@ jobs:
     steps:
 
       # Any prerequisite steps
-      - uses: actions/checkout@master
+      - uses: actions/checkout@prod
         
       - name: Checkout guide-getting-started
         uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: OpenLiberty/guides-common
-          path: Guides-common
+          path: guides-common
 
       - uses: actions/setup-java@v1
         with:
