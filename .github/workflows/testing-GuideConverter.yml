@@ -39,3 +39,11 @@ jobs:
 
       - name: Testing with Maven
         run: mvn -Dtest=TestMain test
+
+      - name: Post tests
+        if: always()
+        run: |
+          echo ===testing-clone-method.md===
+          cat testing-clone-method.md
+          echo ===clone.md===
+          cat clone.md
