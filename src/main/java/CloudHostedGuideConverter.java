@@ -22,14 +22,15 @@ public class CloudHostedGuideConverter {
 
         String guideName = args[0];
         String branch = args[1];
-        convertToMD(guideName, branch);
+        String gitLab = args.length > 2 ? args[2] : "";
+        convertToMD(guideName, branch, gitLab);
         System.out.println("Guide converted");
         System.out.println("Find markdown in " + guideName + ".md");
 
     }
 
     // Reads the adoc from github, and writes it to an arraylist
-    public static void convertToMD(String guideName, String branch) throws IOException {
+    public static void convertToMD(String guideName, String branch, String gitLab) throws IOException {
         Scanner scanner = null;
         FileInputStream lrpfis = null;
         FileInputStream rpfis = null;
@@ -41,7 +42,7 @@ public class CloudHostedGuideConverter {
             // ArrayList to hold the whole converted markdown format content
             ArrayList<String> mdContent = new ArrayList<>();
             
-            int m = Functions.addSNLMetadata(mdContent, guideName);
+            int m = Functions.addSNLMetadata(mdContent, guideName, gitLab);
 
             String guideTitle = null;
             String guideDescription = null;
