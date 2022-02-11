@@ -1430,12 +1430,16 @@ public class Functions {
                     		heading = heading.replace("# ", "::page{title=\"");
                             heading = heading.replace("\n",  "\"}\n");
                             listOfLines.set(i, heading);
-                    	} else {
+                    	} 
+                    	// To be removed
+                    	/*
+                    	else {
                             String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
                             String heading = listOfLines.get(i).substring(listOfLines.get(i).lastIndexOf("#") + 2, listOfLines.get(i).length() - 1);
                             heading = HSize + " **" + heading + "**\n";
                             listOfLines.set(i, heading);
                     	}
+                    	*/
                     } else if (listOfLines.get(i).contains("# **Summary**")) {
                     	String heading = listOfLines.get(i);
                     	heading = heading.replace("# **Summary**", "::page{title=\"Summary\"}");
