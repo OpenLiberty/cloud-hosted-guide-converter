@@ -532,8 +532,7 @@ After you change the file, Open Liberty automatically reloads its configuration.
 
 Now, when you visit the ***/health*** endpoint, additional traces are logged in the ***trace.log*** file.
 
-When you are done checking out the service, exit dev mode by pressing ***CTRL+C*** in the command-line session
-where you ran the server, or by typing ***q*** and then pressing the ***enter/return*** key.
+When you are done checking out the service, exit dev mode by pressing ***CTRL+C*** in the command-line session where you ran the server, or by typing ***q*** and then pressing the ***enter/return*** key.
 
 
 ::page{title="Running the application in a Docker container"}
