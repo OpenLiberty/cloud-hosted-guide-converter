@@ -1311,6 +1311,8 @@ public class Functions {
                     }
                 }
 
+                // To be removed
+                /*
                 String pattern3 = "\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*";
 
                 Pattern r3 = Pattern.compile(pattern3);
@@ -1329,6 +1331,7 @@ public class Functions {
                         }
                     }
                 }
+                */
 
                 String pattern11 = "\\*\\*<(.*?)>\\*\\*|\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*";
 
