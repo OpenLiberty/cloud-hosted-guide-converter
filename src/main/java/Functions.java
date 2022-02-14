@@ -866,21 +866,22 @@ public class Functions {
     //inserts code snippet (Finds the right code snippet and inserts it into the text
     public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
                                                 int i, String path, ArrayList<String> hideList) {
+    	String p = path.trim();
         try {
             ArrayList<String> code = new ArrayList<String>();
-            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + path);
+            URL url = new URL("https://raw.githubusercontent.com/openliberty/" + guideName + "/" + branch + "/" + p);
             Scanner s = new Scanner(url.openStream());
             String inputLine = null;
             code.add("\n");
-            if (path.endsWith(".java")) {
+            if (p.endsWith(".java")) {
                 code.add("```java\n");
-            } else if((path.endsWith(".js"))) {
+            } else if((p.endsWith(".js"))) {
                 code.add("```javascript\n");
-            } else if((path.endsWith(".json"))) {
+            } else if((p.endsWith(".json"))) {
                 code.add("```json\n");
-            } else if((path.endsWith(".xml"))) {
+            } else if((p.endsWith(".xml"))) {
                 code.add("```xml\n");
-            } else if((path.endsWith(".yaml"))) {
+            } else if((p.endsWith(".yaml"))) {
                 code.add("```yaml\n");
             } else {
                 code.add("```\n");
