@@ -135,7 +135,7 @@ public class Functions {
                             }
                             return;
                         }
-                        // To be removed:
+                        // To be removed: - no need to add {: cdodeblock}
                         /*
                         if (!listOfLines.get(i + 2).startsWith("mvn")) {
                             for (int l = i; l < listOfLines.size(); l++) {
@@ -267,7 +267,7 @@ public class Functions {
         }
     }
 
-    // To be removed
+    // To be removed - no need to add {: cdodeblock}
     // This is a function that inserts {: cdodeblock} after a codeblock
     /*
     public static void insertCopyButton(ArrayList<String> listOfLines, int i) {
@@ -1109,7 +1109,7 @@ public class Functions {
                 }
 
 
-                // To be removed
+                // To be removed - no need to add {: cdodeblock}
                 //For parts of text that need to be copied
                 /*
                 if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
@@ -1311,7 +1311,7 @@ public class Functions {
                     }
                 }
 
-                // To be removed
+                // To be removed - no need to use backtick for string contain underscore character
                 /*
                 String pattern3 = "\\*\\*((?:(?!\\*\\*)[^_])*)_(.*?)\\*\\*";
 
@@ -1371,7 +1371,7 @@ public class Functions {
                     }
                 }
 
-                // To be removed
+                // To be removed - no need to add {: codeblock}
                 /*
                 if (listOfLines.get(i).startsWith("docker")) {
                     if (!listOfLines.get(i + 1).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
@@ -1402,7 +1402,7 @@ public class Functions {
                     }
                 }
 
-                // To be removed
+                // To be removed - no need to add {: codeblock}
                 /*
                 if (listOfLines.get(i).startsWith("mvn")) {
                     if (!listOfLines.get(i + 2).startsWith("{: codeblock}") && listOfLines.get(i + 2).isBlank()) {
@@ -1437,7 +1437,7 @@ public class Functions {
                             heading = heading.replace("\n",  "\"}\n");
                             listOfLines.set(i, heading);
                     	} 
-                    	// To be removed
+                    	// To be removed - no need to bold the section title
                     	/*
                     	else {
                             String HSize = listOfLines.get(i).substring(0, listOfLines.get(i).lastIndexOf("#") + 1);
