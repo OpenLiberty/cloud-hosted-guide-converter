@@ -49,13 +49,13 @@ select **Terminal** > **New Terminal** from the menu of the IDE.
 
 Run the following command to navigate to the **/home/project** directory:
 
-```
+```bash
 cd /home/project
 ```
 
 The fastest way to work through this guide is to clone the [Git repository](https://github.com/openliberty/guide-getting-started.git) and use the projects that are provided inside:
 
-```
+```bash
 git clone https://github.com/openliberty/guide-getting-started.git
 cd guide-getting-started
 ```
@@ -83,7 +83,7 @@ To begin, navigate to the ***start*** directory. Build the ***system*** microser
 that is provided and deploy it to Open Liberty by running the Maven
 ***liberty:run*** goal:
 
-```
+```bash
 cd start
 mvn liberty:run
 ```
@@ -117,7 +117,7 @@ To access the ***system*** microservice, see the http://localhost:9080/system/pr
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/system/properties | jq
 ```
 
@@ -135,7 +135,7 @@ When you need to stop the server, press ***CTRL+C*** in the command-line session
 you ran the server, or run the ***liberty:stop*** goal from the ***start*** directory in
 another command-line session:
 
-```
+```bash
 mvn liberty:stop
 ```
 
@@ -161,7 +161,7 @@ including application source code or configuration. The Open Liberty server auto
 
 Stop the Open Liberty server if it is running, and start it in dev mode by running the ***liberty:dev*** goal in the ***start*** directory:
 
-```
+```bash
 mvn liberty:dev
 ```
 
@@ -173,7 +173,7 @@ As before, you can see that the application is running by going to the http://lo
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/system/properties | jq
 ```
 
@@ -188,7 +188,7 @@ If you try to access this endpoint now at the http://localhost:9080/health/ URL,
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl http://localhost:9080/health/
 ```
 
@@ -201,9 +201,10 @@ To add the MicroProfile Health feature to the server, include the ***mpHealth***
 
 Replace the server configuration file.
 
-> From the menu of the IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml
+> To open the server.xml file in your IDE, select
+> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
+::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
 
 
@@ -257,7 +258,7 @@ Try to access the ***/health*** endpoint again by visiting the http://localhost:
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/health | jq
 ```
 
@@ -293,13 +294,15 @@ A liveness check allows third-party services to determine if the microservice is
 Create the ***SystemReadinessCheck*** class.
 
 > Run the following touch command in your terminal
-```
+```bash
 touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java
 ```
 
 
-> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java
+> Then, to open the SystemReadinessCheck.java file in your IDE, select
+> **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java, or click the following button
 
+::openFile{path="/home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java"}
 
 
 
@@ -346,13 +349,15 @@ The ***SystemReadinessCheck*** class verifies that the
 Create the ***SystemLivenessCheck*** class.
 
 > Run the following touch command in your terminal
-```
+```bash
 touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java
 ```
 
 
-> Then from the menu of the IDE, select **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java
+> Then, to open the SystemLivenessCheck.java file in your IDE, select
+> **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java, or click the following button
 
+::openFile{path="/home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java"}
 
 
 
@@ -410,7 +415,7 @@ Access the ***/health*** endpoint again by going to the http://localhost:9080/he
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/health | jq
 ```
 
@@ -444,7 +449,7 @@ You can also access the ***/health/ready*** endpoint by going to the http://loca
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/health/ready | jq
 ```
 
@@ -455,7 +460,7 @@ Similarly, access the ***/health/live*** endpoint by going to the http://localho
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/health/live | jq
 ```
 
@@ -493,9 +498,10 @@ Try enabling detailed logging of the MicroProfile Health feature by adding the
 
 Replace the server configuration file.
 
-> From the menu of the IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml
+> To open the server.xml file in your IDE, select
+> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
+::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
 
 
@@ -550,27 +556,27 @@ image that contains the Java runtime and a preconfigured Open Liberty server.
 
 Run the ***mvn package*** command from the ***start*** directory so that the ***.war*** file resides in the ***target*** directory.
 
-```
+```bash
 mvn package
 ```
 
 Run the following command to download or update to the latest Open Liberty Docker image:
 
-```
+```bash
 docker pull icr.io/appcafe/open-liberty:full-java11-openj9-ubi
 ```
 
 To build and containerize the application, run the
 following Docker build command in the ***start*** directory:
 
-```
+```bash
 docker build -t openliberty-getting-started:1.0-SNAPSHOT .
 ```
 
 The Docker ***openliberty-getting-started:1.0-SNAPSHOT*** image is also built from the ***Dockerfile***.
 To verify that the image is built, run the ***docker images*** command to list all local Docker images:
 
-```
+```bash
 docker images
 ```
 
@@ -582,7 +588,7 @@ openliberty-getting-started    1.0-SNAPSHOT    85085141269b    21 hours ago    4
 ```
 
 Next, run the image as a container:
-```
+```bash
 docker run -d --name gettingstarted-app -p 9080:9080 openliberty-getting-started:1.0-SNAPSHOT
 ```
 
@@ -597,7 +603,7 @@ There is a bit going on here, so here's a breakdown of the command:
 The final argument in the ***docker run*** command is the Docker image name.
 
 Next, run the ***docker ps*** command to verify that your container started:
-```
+```bash
 docker ps
 ```
 
@@ -614,19 +620,19 @@ To access the application, go to the http://localhost:9080/system/properties URL
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/system/properties | jq
 ```
 
 
 
 To stop and remove the container, run the following commands:
-```
+```bash
 docker stop gettingstarted-app && docker rm gettingstarted-app
 ```
 
 To remove the image, run the following command:
-```
+```bash
 docker rmi openliberty-getting-started:1.0-SNAPSHOT
 ```
 
@@ -655,7 +661,7 @@ When you see the following message, Open Liberty is ready to run in dev mode:
 ```
 
 Open another command-line session and run the ***docker ps*** command to verify that your container started:
-```
+```bash
 docker ps
 ```
 
@@ -672,7 +678,7 @@ To access the application, go to the http://localhost:9080/system/properties URL
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/system/properties | jq
 ```
 
@@ -686,9 +692,10 @@ Update the ***server.xml*** file to change the context root from ***/*** to ***/
 
 Replace the server configuration file.
 
-> From the menu of the IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml
+> To open the server.xml file in your IDE, select
+> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
+::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
 
 
@@ -745,7 +752,7 @@ http://localhost:9080/dev/system/properties
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/dev/system/properties | jq
 ```
 
@@ -772,7 +779,7 @@ Instead of creating a server package, you can generate a runnable JAR file that 
 the application along with a server runtime. This JAR file can then be run anywhere and deploy
 your application and server at the same time. To generate a runnable JAR file, override the 
 ***include*** property: 
-```
+```bash
 mvn liberty:package -Dinclude=runnable
 ```
 
@@ -788,7 +795,7 @@ generated JAR file is only about 50 MB.
 To run the JAR file, first stop the server if it's running. Then, navigate to the ***target***
 directory and run the ***java -jar*** command:
 
-```
+```bash
 java -jar guide-getting-started.jar
 ```
 
@@ -798,7 +805,7 @@ When the server starts, go to the http://localhost:9080/dev/system/properties UR
 
 _To see the output for this URL in the IDE, run the following command at a terminal:_
 
-```
+```bash
 curl -s http://localhost:9080/dev/system/properties | jq
 ```
 
@@ -826,7 +833,7 @@ Clean up your online environment so that it is ready to be used with the next gu
 
 Delete the ***guide-getting-started*** project by running the following commands:
 
-```
+```bash
 cd /home/project
 rm -fr guide-getting-started
 ```

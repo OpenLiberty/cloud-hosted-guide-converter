@@ -9,6 +9,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -448,7 +449,7 @@ public class Functions {
                 }
             }
 
-            update(listOfLines, guideName, branch, g, position, hideList);
+            openFile("Update", "start", listOfLines, guideName, branch, g, position, hideList);
 
         } else if (atIndex.startsWith("#Replace")) {
 
@@ -494,7 +495,7 @@ public class Functions {
                 }
             }
 
-            replace(listOfLines, guideName, branch, g, position, hideList);
+            openFile("Replace", "start", listOfLines, guideName, branch, g, position, hideList);
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
@@ -540,7 +541,7 @@ public class Functions {
                 }
             }
 
-            updateFinish(listOfLines, guideName, branch, g, position, hideList);
+            openFile("Update", "finish", listOfLines, guideName, branch, g, position, hideList);
         }
 
     }
@@ -648,13 +649,58 @@ public class Functions {
 
         System.out.println(FeedbackLink);
 
-        listOfLines.add("\n### Clean up your environment\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the ***" + guideName + "*** project by running the following commands:\n\n```\ncd /home/project\nrm -fr " + guideName + "\n```\n\n" +
+        listOfLines.add("\n### Clean up your environment\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the ***" + guideName + "*** project by running the following commands:\n\n```bash\ncd /home/project\nrm -fr " + guideName + "\n```\n\n" +
                 "### What did you think of this guide?\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
                 "### What could make this guide better?\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
                 "### Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** > **Logout** from the Skills Network menu.");
     }
 
+    private static String getFilePath(ArrayList<String> listOfLines, int i) {
+        String filePath = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
+            	filePath = listOfLines.get(x);
+                filePath = filePath.substring(9, filePath.length() - 3);
+            }
+        }
+        return filePath == null ? "unknown" : listOfLines.get(i).replaceAll("`", "").trim();
+    }
+    
+    private static String getIncludeFile(ArrayList<String> listOfLines, int i) {
+        String filePath = null;
+        for (int x = i; x <= i + 10; x++) {
+            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
+            	filePath = listOfLines.get(x);
+                filePath = filePath.substring(9, filePath.length() - 3);
+                return filePath.trim();
+            }
+        }
+        return "unknown";
+    }
+    
+    private static String openFile(String guideName, String filePath, String fromDir) {
+    	File f = new File(filePath);
+		return "\n> To open the " + f .getName() + " file in your IDE, select\n" + 
+                "> **File** > **Open** > " + guideName + "/" + fromDir + "/" + filePath.replaceAll("\\*\\*", "") +
+                ", or click the following button\n\n" + 
+                "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
+                "\n\n\n";
+    }
+    
+    //configures instructions to open file for replace and update
+    public static String openFile(String instruction, String fromDir, ArrayList<String> listOfLines, String guideName, String branch, int i, String
+            position, ArrayList<String> hideList) {
+        String filePath = getFilePath(listOfLines, i);
+        String includeFile = getIncludeFile(listOfLines, i);
+        lowercaseKeyword(instruction, listOfLines, i);
+        listOfLines.set(i, openFile(guideName, filePath, fromDir));
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList);
+        position = "main";
+        return position;
+    }
+
+    /* To be removed
     //configures instructions to replace file
     public static String replace(ArrayList<String> listOfLines, String guideName, String branch, int i, String
             position, ArrayList<String> hideList) {
@@ -732,26 +778,27 @@ public class Functions {
         position = "main";
         return position;
     }
+    */
 
     //configures instructions to create file
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String
             position, ArrayList<String> hideList) {
-        String str = null;
-        for (int x = i; x <= i + 10; x++) {
-            if (listOfLines.get(x).startsWith("include") && !listOfLines.get(x).startsWith("include::{common-includes}")) {
-
-                str = listOfLines.get(x);
-                str = str.substring(9, str.length() - 3);
-            }
-        }
+ 
+        String filePath = getFilePath(listOfLines, i);
+        String includeFile = getIncludeFile(listOfLines, i);
+        File f = new File(filePath);
 
         lowercaseKeyword("Create", listOfLines, i);
 
-        if (str == null) {
-            str = "finish/" + listOfLines.get(i).replaceAll("`", "");
-        }
-        listOfLines.set(i, "\n> Run the following touch command in your terminal\n" + "```\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" + "\n> Then from the menu of the IDE, select **File** > **Open** > " + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, str, hideList);
+        listOfLines.set(i,
+            "\n> Run the following touch command in your terminal\n" + 
+            "```bash\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" +
+            "\n> Then, to open the " + f.getName() + " file in your IDE, select" +
+            "\n> **File** > **Open** > " + guideName + "/start/" + filePath + 
+            ", or click the following button\n\n" + 
+            "::openFile{path=\"/home/project/" + guideName + "/start/" + filePath + "\"}" +
+            "\n\n\n");
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList);
         position = "main";
         return position;
     }
@@ -780,17 +827,17 @@ public class Functions {
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl -k -u admin " + appendJQ(link) + "\n```\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl -k -u admin " + appendJQ(link) + "\n```\n\n\n"));
                     ifAdminLink(listOfLines, listOfLines.size(), link);
                 } else if (localhostSplit.length >= 2) {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl " + appendJQ(link) + "\n```\n\n\n"));
                 } else {
-                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n\n"));
+                    listOfLines.set(i, "\n" + fullText + ("\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl " + appendJQ(link) + "\n```\n\n\n"));
                 }
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```\ncurl " + appendJQ(link) + "\n```\n\n");
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl " + appendJQ(link) + "\n```\n\n");
                 }
             }
         }
@@ -1110,13 +1157,15 @@ public class Functions {
                 }
 
 
-                // To be removed - no need to add {: cdodeblock}
                 //For parts of text that need to be copied
-                /*
                 if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
-                    insertCopyButton(listOfLines, i);
+                    // To be removed - no need to add {: cdodeblock}
+                    //insertCopyButton(listOfLines, i);
+                	if (listOfLines.get(i+1).startsWith("```")) {
+                		listOfLines.set(i+1, listOfLines.get(i+1).replace("```", "```bash"));
+                	}
                 }
-                */
+                
 
                 //User is instructed to replace a file
                 if (listOfLines.get(i).startsWith("#Replace") || listOfLines.get(i).startsWith("#Create") || listOfLines.get(i).startsWith("#Update")) {

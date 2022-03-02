@@ -36,7 +36,7 @@ public class ImportFunctions {
                     counter++;
                 }
                 if (counter == 1) {
-                    inputLine = inputLine.replaceAll("----", "```");
+                    inputLine = inputLine.replaceAll("----", "```bash");
                 }
                 if (counter == 2) {
                     inputLine = inputLine.replaceAll("----", "```\n");
