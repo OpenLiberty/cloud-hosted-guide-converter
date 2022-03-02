@@ -1107,8 +1107,10 @@ public class Functions {
                 	String s = listOfLines.get(i).replaceAll("`", "***");
 
                 	// special handle "***<"
-                    if (s.contains("***<")) 
-                    	s = s.replace("***<", "***\\<");
+                    if (s.contains("***") && s.contains("<")) {
+                    	s = s.replace("<", "\\<");
+                    	s = s.replace(">", "\\>");
+                    }
                     
                 	listOfLines.set(i, s);
                 }
