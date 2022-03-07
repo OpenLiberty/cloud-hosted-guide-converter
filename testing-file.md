@@ -147,7 +147,7 @@ Although you can start and stop the server in the foreground by using the Maven
 ***liberty:run*** goal, you can also start and stop the server in the background with
 the Maven ***liberty:start*** and ***liberty:stop*** goals:
 
-```
+```bash
 mvn liberty:start
 mvn liberty:stop
 ```

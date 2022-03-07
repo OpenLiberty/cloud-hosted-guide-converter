@@ -1167,6 +1167,8 @@ public class Functions {
                     //insertCopyButton(listOfLines, i);
                 	if (listOfLines.get(i+1).startsWith("```")) {
                 		listOfLines.set(i+1, listOfLines.get(i+1).replace("```", "```bash"));
+                	} else if (listOfLines.get(i+1).startsWith("----")) {
+                		listOfLines.set(i+1, listOfLines.get(i+1).replace("----", "```bash"));
                 	}
                 }
                 
