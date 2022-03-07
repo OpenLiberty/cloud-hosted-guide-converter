@@ -1160,7 +1160,9 @@ public class Functions {
 
 
                 //For parts of text that need to be copied
-                if (listOfLines.get(i).startsWith("[role='command']") || listOfLines.get(i).startsWith("[role=command]")) {
+                if (listOfLines.get(i).startsWith("[role='command']") || 
+                    listOfLines.get(i).startsWith("[role=\"command\"") || 
+                    listOfLines.get(i).startsWith("[role=command]")) {
                     // To be removed - no need to add {: cdodeblock}
                     //insertCopyButton(listOfLines, i);
                 	if (listOfLines.get(i+1).startsWith("```")) {
