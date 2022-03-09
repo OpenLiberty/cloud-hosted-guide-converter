@@ -1389,6 +1389,8 @@ public class Functions {
                 }
                 */
 
+                // To be removed - no need to use backtick for string contain < or > characters
+                /*
                 String pattern11 = "\\*\\*<(.*?)>\\*\\*|\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*";
 
                 Pattern r11 = Pattern.compile(pattern11);
@@ -1405,6 +1407,7 @@ public class Functions {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("\\*\\*\\[(.*?)<(.*?)>(.*?)\\]\\*\\*", s));
                     }
                 }
+                */
 
                 String pattern12 = "\\*\\*`((?:(?!\\*\\*))*)(.*?)(?!`)\\*\\*\\s";
 
