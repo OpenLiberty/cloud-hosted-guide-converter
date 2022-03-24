@@ -429,10 +429,7 @@ This time you see the overall status of your server and the aggregated data of t
          "status":"UP"
       },
       {  
-         "data":{
-            "memory used":40434888,
-            "memory max":4294967296
-         },
+         "data":{},
          "name":"SystemResource Liveness Check",
          "status":"UP"
       }
