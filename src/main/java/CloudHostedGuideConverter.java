@@ -22,7 +22,7 @@ public class CloudHostedGuideConverter {
 
         String guideName = args[0];
         String branch = args[1];
-        String gitLab = args.length > 2 ? args[2] : "";
+        String gitLab = args.length > 2 ? args[2] : "cloud-hosted-" + guideName;
         convertToMD(guideName, branch, gitLab);
         System.out.println("Guide converted");
         System.out.println("Find markdown in " + guideName + ".md");
