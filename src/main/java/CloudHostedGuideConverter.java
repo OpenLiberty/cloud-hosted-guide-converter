@@ -23,7 +23,7 @@ public class CloudHostedGuideConverter {
         String guideName = args[0];
         String branch = args[1];
         String gitLab = args.length > 2 ? args[2] : "cloud-hosted-" + guideName;
-        System.out.println("Converting " + guideName + "on branch " + branch + "to lab " + gitLab);
+        System.out.println("Converting " + guideName + " on branch " + branch + " to lab " + gitLab);
         convertToMD(guideName, branch, gitLab);
         System.out.println("Guide converted");
         System.out.println("Find markdown in " + guideName + ".md");
