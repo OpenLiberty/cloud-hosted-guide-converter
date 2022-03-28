@@ -1490,7 +1490,10 @@ public class Functions {
 
                 if (listOfLines.get(i).startsWith("#")) {
                     if (!listOfLines.get(i).contains("**")) {
-                    	if (listOfLines.get(i).startsWith("# ")) {
+                    	if (listOfLines.get(i).startsWith("# ") &&
+                    		!listOfLines.get(i).startsWith("# TYPE ") &&  // for mp-metric guide
+                    		!listOfLines.get(i).startsWith("# HELP ")     // for mp-metric guide
+                    	   ) {
                     		String heading = listOfLines.get(i);
                     		heading = heading.replace("# ", "::page{title=\"");
                             heading = heading.replace("\n",  "\"}\n");
