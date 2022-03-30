@@ -930,6 +930,8 @@ public class Functions {
                 code.add("```xml\n");
             } else if((p.endsWith(".yaml"))) {
                 code.add("```yaml\n");
+            } else if((p.endsWith(".html"))) {
+                code.add("```html\n");
             } else {
                 code.add("```\n");
             }
