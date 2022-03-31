@@ -26,7 +26,7 @@ public class TestMain {
     @Test
     public void testCompareGuide() throws Exception {
 
-        String[] guide = {"guide-getting-started", "master"};
+        String[] guide = {"guide-getting-started", "prod"};
 
         CloudHostedGuideConverter.main(guide);
 
@@ -264,32 +264,27 @@ public class TestMain {
     public void testClone() throws IOException {
         try {
 
-            File newGuide = new File("testing-clone-method.md");
-            File testingGuide = new File("clone.md");
+            File testingGuide = new File("testing-clone-method.md");
+            File newGuide = new File("clone.md");
 
             String CommonURL = "include::{common-includes}/gitclone.adoc[]";
 
             String GuidesCommon = CommonURL.substring(27, CommonURL.length() - 2);
 
             ArrayList<String> listOfLines = new ArrayList<>();
-
             listOfLines.add("");
-
             ImportFunctions.clone(listOfLines, "guide-getting-started", 0, GuidesCommon);
 
             StringBuilder builder = new StringBuilder();
             for (String value : listOfLines) {
                 builder.append(value);
             }
+            writeToFile(builder.toString(), "clone.md");
 
-            String text = builder.toString();
-
-            writeToFile(text, "testing-clone-method");
-
-            assertEquals("The files differ!",
-                    FileUtils.readFileToString(newGuide, "utf-8"),
-                    FileUtils.readFileToString(testingGuide, "utf-8"));
-
+            assertEquals("The expected file " + testingGuide.getAbsolutePath() + 
+            		" differ than the file " + newGuide.getAbsolutePath(),
+                    FileUtils.readFileToString(testingGuide, "utf-8"),
+                    FileUtils.readFileToString(newGuide, "utf-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }

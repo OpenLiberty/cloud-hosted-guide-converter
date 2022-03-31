@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 IBM Corporation and others.
+ * Copyright (c) 2020, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,23 +21,25 @@ public class ImportFunctions {
     // inserts gitclone.aoc from https://github.com/OpenLiberty/guides-common
     public static void clone(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
+        File common = new File("guides-common/cloud-hosted/" + CommonURL);
+        Scanner scanner = null;
         try {
-            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
-//            URL url = new URL(CommonURL);
-//            Scanner s = new Scanner(url.openStream());
-            Scanner s = new Scanner(common);
+            scanner = new Scanner(common);
             String inputLine = null;
             int counter = 0;
-            while (s.hasNextLine()) {
-                inputLine = s.nextLine() + "\n";
+            while (scanner.hasNextLine()) {
+                inputLine = scanner.nextLine() + "\n";
+                if (inputLine.contains("{: codeblock}")) {
+                	continue;
+                }
                 if (inputLine.startsWith("----")) {
                     counter++;
                 }
                 if (counter == 1) {
-                    inputLine = inputLine.replaceAll("----", "```");
+                    inputLine = inputLine.replaceAll("----", "```bash");
                 }
                 if (counter == 2) {
-                    inputLine = inputLine.replaceAll("----", "```\n{: codeblock}\n");
+                    inputLine = inputLine.replaceAll("----", "```\n");
                     counter = 0;
                 }
                 inputLine = inputLine.replace("guide-{projectid}", guideName);
@@ -45,10 +47,11 @@ public class ImportFunctions {
             }
             temp.subList(0, 7).clear();
             listOfLines.addAll(i + 1, temp);
-
-            s.close();
         } catch (IOException ex) {
             System.out.println(ex);
+        } finally {
+        	if (scanner != null)
+        		scanner.close();
         }
     }
 
@@ -66,19 +69,15 @@ public class ImportFunctions {
 //            Scanner s = new Scanner(url.openStream());
             Scanner s = new Scanner(common);
             String inputLine = null;
-            int counter = 0;
 
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-
-                boolean remove = false;
 
                 if (inputLine.startsWith("////")) {
                     continue;
                 }
 
                 if (inputLine.startsWith("[.tab_content.windows_section.mac_section]")) {
-                    remove = true;
                     while (!s.nextLine().startsWith("[.tab")) {
                         continue;
                     }
@@ -113,7 +112,7 @@ public class ImportFunctions {
     public static void OtherGuidesCommon(ArrayList<String> listOfLines, String guideName, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            File common = new File("Guides-common/" + CommonURL);
+            File common = new File("guides-common/" + CommonURL);
 //            URL url = new URL(CommonURL);
 //            Scanner s = new Scanner(url.openStream());
             Scanner s = new Scanner(common);
@@ -134,7 +133,7 @@ public class ImportFunctions {
     public static void newTerminal(ArrayList<String> listOfLines, int i, String CommonURL) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+            File common = new File("guides-common/cloud-hosted/" + CommonURL);
             int x = i;
             Scanner s = new Scanner(common);
             String inputLine = null;
@@ -156,7 +155,7 @@ public class ImportFunctions {
     public static void beforeStart(ArrayList<String> listOfLines, int i, String CommonURL, String guideName, String GuideTitle , String GuideDescription) {
         ArrayList<String> temp = new ArrayList<>();
         try {
-            File common = new File("Guides-common/cloud-hosted/" + CommonURL);
+            File common = new File("guides-common/cloud-hosted/" + CommonURL);
             int x = i;
             Scanner s = new Scanner(common);
             String inputLine = null;
@@ -164,11 +163,15 @@ public class ImportFunctions {
             GuideTitle = GuideTitle.substring(2, GuideTitle.length());
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-
                 if(inputLine.startsWith("# Welcome to the cloud-hosted guide!")) {
-                    inputLine = inputLine.replaceAll("cloud-hosted guide!", GuideTitle.trim() + " guide!\n\n" + GuideDescription.trim());
+                	inputLine = inputLine.replaceAll("cloud-hosted guide!", GuideTitle.trim() + " guide!");
+                    temp.add(inputLine);
+                    temp.add("\n");
+                    temp.add(GuideDescription);
+                    temp.add("\n");
+                } else {
+                    temp.add(inputLine);
                 }
-                temp.add(inputLine);
             }
             temp.add("\n");
             temp.add("\n");
