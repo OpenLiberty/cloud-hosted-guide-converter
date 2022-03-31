@@ -953,7 +953,6 @@ public class Functions {
 
                 if (hideList != null) {
                     for (String e : newList) {
-
                         if (inputLine.contains("tag::" + e)) {
                             while (!s.nextLine().contains("end::" + e)) {
                                 continue;
@@ -974,6 +973,13 @@ public class Functions {
                 }
 
                 if (inputLine.contains("# end::")) {
+                    inputLine = "";
+                }
+                
+                if (inputLine.contains("<!-- tag::")) {
+                    inputLine = "";
+                }
+                if (inputLine.contains("<!-- end::")) {
                     inputLine = "";
                 }
 
