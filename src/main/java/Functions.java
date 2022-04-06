@@ -548,7 +548,8 @@ public class Functions {
 
     // Removes the "Additional pre-reqs" section
     public static void removeAdditionalpres(ArrayList<String> listOfLines, int i) {
-        while (!listOfLines.get(i).startsWith("[role=")) {
+    	listOfLines.remove(i);
+        while (!listOfLines.get(i).startsWith("[role=") && !listOfLines.get(i).startsWith("# ")) {
             listOfLines.remove(i);
         }
     }
