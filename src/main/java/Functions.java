@@ -1191,7 +1191,7 @@ public class Functions {
 
                 if (listOfLines.get(i).startsWith("image::")) {
 
-                    String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/" + branch + "/assets";
+                    String imageRepoLink = "https://raw.githubusercontent.com/OpenLiberty/" + guideName + "/" + (guideName.startsWith("draft") ? "draft" : "prod") + "/assets";
 
                     String imageName = listOfLines.get(i).substring(listOfLines.get(i).indexOf("::") + 2, listOfLines.get(i).indexOf("["));
 
