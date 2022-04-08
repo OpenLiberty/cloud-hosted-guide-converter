@@ -59,6 +59,7 @@ public class Functions {
 
     public static final String codes = "----";
     private static ArrayList<String> linksForNextGuides;
+    private static Properties guidesProperties = null;
 
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
@@ -361,6 +362,17 @@ public class Functions {
             listOfLines.set(i + 2, "");
         }
 
+		String fromDir = "start";
+        if (guidesProperties == null) {
+    		guidesProperties = new Properties();
+    		try {
+    			guidesProperties.load(new FileInputStream("guides.properties"));
+    		} catch (Exception ex) {
+    			System.out.println(ex);
+    		}
+        }
+		fromDir = guidesProperties.getProperty(guideName + ".start-dir","start");
+		
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
 
@@ -402,7 +414,7 @@ public class Functions {
                 }
             }
 
-            touch(listOfLines, guideName, branch, g, position, hideList);
+            touch(listOfLines, guideName, branch, fromDir, g, position, hideList);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
 
@@ -449,7 +461,7 @@ public class Functions {
                 }
             }
 
-            openFile("Update", "start", listOfLines, guideName, branch, g, position, hideList);
+            openFile("Update", fromDir, listOfLines, guideName, branch, g, position, hideList);
 
         } else if (atIndex.startsWith("#Replace")) {
 
@@ -495,7 +507,7 @@ public class Functions {
                 }
             }
 
-            openFile("Replace", "start", listOfLines, guideName, branch, g, position, hideList);
+            openFile("Replace", fromDir, listOfLines, guideName, branch, g, position, hideList);
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
@@ -782,7 +794,7 @@ public class Functions {
     */
 
     //configures instructions to create file
-    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, int i, String
+    public static String touch(ArrayList<String> listOfLines, String guideName, String branch, String fromDir, int i, String
             position, ArrayList<String> hideList) {
  
         String filePath = getFilePath(listOfLines, i);
@@ -793,11 +805,11 @@ public class Functions {
 
         listOfLines.set(i,
             "\n> Run the following touch command in your terminal\n" + 
-            "```bash\ntouch /home/project/" + guideName + "/start/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" +
+            "```bash\ntouch /home/project/" + guideName + "/" + fromDir + "/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" +
             "\n> Then, to open the " + f.getName() + " file in your IDE, select" +
-            "\n> **File** > **Open** > " + guideName + "/start/" + filePath + 
+            "\n> **File** > **Open** > " + guideName + "/" + fromDir + "/" + filePath + 
             ", or click the following button\n\n" + 
-            "::openFile{path=\"/home/project/" + guideName + "/start/" + filePath + "\"}" +
+            "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
             "\n\n\n");
         codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList);
         position = "main";
