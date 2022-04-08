@@ -59,6 +59,7 @@ public class Functions {
 
     public static final String codes = "----";
     private static ArrayList<String> linksForNextGuides;
+    private static Properties guidesProperties = null;
 
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
@@ -361,14 +362,16 @@ public class Functions {
             listOfLines.set(i + 2, "");
         }
 
-		Properties guidesProperties = new Properties();
 		String fromDir = "start";
-		try {
-			guidesProperties.load(new FileInputStream("guides.properties"));
-			fromDir = guidesProperties.getProperty(guideName + ".start-dir","start");
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
+        if (guidesProperties == null) {
+    		guidesProperties = new Properties();
+    		try {
+    			guidesProperties.load(new FileInputStream("guides.properties"));
+    		} catch (Exception ex) {
+    			System.out.println(ex);
+    		}
+        }
+		fromDir = guidesProperties.getProperty(guideName + ".start-dir","start");
 		
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
