@@ -596,8 +596,16 @@ public class Functions {
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
 		temp.add("title: instructions\n");
-		temp.add("branch: " + vhsdProperties.getProperty(gitLab + ".branch","lab-204-instruction") + "\n");
-		temp.add("version-history-start-date: " + vhsdProperties.getProperty(gitLab + ".start-date", "2022-02-09T14:19:17.000Z") + "\n");
+		String gitlabBranch = vhsdProperties.getProperty(gitLab + ".branch");
+		if (gitlabBranch == null) {
+			gitlabBranch =  vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".branch","lab-204-instruction");
+		}
+		temp.add("branch: " + gitlabBranch + "\n");
+		String gitlabStartDate = vhsdProperties.getProperty(gitLab + ".start-date");
+		if (gitlabStartDate == null) {
+			gitlabStartDate = vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".start-date", "2022-02-09T14:19:17.000Z");
+		}
+		temp.add("version-history-start-date: " + gitlabStartDate + "\n");
 		temp.add("---\n");
 		listOfLines.addAll(temp);
 		return temp.size();
