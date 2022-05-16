@@ -60,6 +60,7 @@ public class Functions {
     public static final String codes = "----";
     private static ArrayList<String> linksForNextGuides;
     private static Properties guidesProperties = null;
+    private static boolean addedPasteCmd = false;
 
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
@@ -716,7 +717,7 @@ public class Functions {
         String includeFile = getIncludeFile(listOfLines, i);
         lowercaseKeyword(instruction, listOfLines, i);
         listOfLines.set(i, openFile(guideName, filePath, fromDir));
-        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList);
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList, "replace");
         position = "main";
         return position;
     }
@@ -819,7 +820,7 @@ public class Functions {
             ", or click the following button\n\n" + 
             "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
             "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList);
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList, "add");
         position = "main";
         return position;
     }
@@ -933,7 +934,7 @@ public class Functions {
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
     public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
-                                                int i, String path, ArrayList<String> hideList) {
+                                                int i, String path, ArrayList<String> hideList, String pasteFor) {
     	String p = path.trim();
         try {
             ArrayList<String> code = new ArrayList<String>();
@@ -1026,6 +1027,12 @@ public class Functions {
             }
 
             code.add("```\n\n\n");
+            if (!addedPasteCmd) {
+            	code.add("Click the :fa-copy: **copy** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to " +
+    					 pasteFor + " the code to the file.\n\n");
+            	addedPasteCmd = true;
+    		}
+
             listOfLines.addAll(i, code);
         } catch (IOException ex) {
             System.out.println(ex);
@@ -1133,6 +1140,7 @@ public class Functions {
                 Matcher m5 = r5.matcher(listOfLines.get(i));
 
                 if (m2.find() && !m5.find()) {
+
                 	String s = listOfLines.get(i).replaceAll("`", "***");
 
                 	// special handle "***<"
@@ -1140,6 +1148,20 @@ public class Functions {
                     	s = s.replace("<", "\\<");
                     	s = s.replace(">", "\\>");
                     }
+                	
+                    // special handle "Ctrl"
+                	if (s.contains("***Ctrl+C***"))
+                		s = s.replace("***Ctrl+C***", "`Ctrl+C`");
+
+                	if (s.contains("***CTRL+C***"))
+                		s = s.replace("***CTRL+C***", "`Ctrl+C`");
+
+                	if (s.contains("***Ctrl+V***"))
+                		s = s.replace("***Ctrl+V***", "`Ctrl+V`");
+
+                	if (s.contains("***Command+V***"))
+                		s = s.replace("***Command+C***", "`Command+C`");
+
                     
                 	listOfLines.set(i, s);
                 }
@@ -1205,7 +1227,6 @@ public class Functions {
                 //User is instructed to replace a file
                 if (listOfLines.get(i).startsWith("#Replace") || listOfLines.get(i).startsWith("#Create") || listOfLines.get(i).startsWith("#Update")) {
                     final String atIndex = listOfLines.get(i);
-
                     codeInsert(atIndex, listOfLines, guideName, branch, i, position);
                 }
 
