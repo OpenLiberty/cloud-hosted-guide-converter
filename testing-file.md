@@ -24,7 +24,7 @@ Open Liberty is an open application framework designed for the cloud. It's small
 
 Maven is an automation build tool that provides an efficient way to develop Java applications. Using Maven, you will build a simple microservice, called ***system***, that collects basic system properties from your laptop and displays them on an endpoint that you can access in your web browser. 
 
-You'll also explore how to package your application with Open Liberty so that it can be deployed anywhere in one go. You will then make Liberty configuration and code changes and see howthey are immediately picked up by a running instance.
+You'll also explore how to package your application with Open Liberty so that it can be deployed anywhere in one go. You will then make Liberty configuration and code changes and see how they are immediately picked up by a running instance.
 
 Finally, you will package the application along with the server configuration into a Docker image and run that image as a container.
 
@@ -202,7 +202,7 @@ Replace the server configuration file.
 ```
 
 
-Click the :fa-copy: **copy** button to copy the code and press `Ctrl+V` or ***Command+V*** in the IDE to replace the code to the file.
+Click the :fa-copy: **copy** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to replace the code to the file.
 
 
 After you make the file changes, Open Liberty automatically reloads its configuration. When enabled, the ***mpHealth*** feature automatically adds a ***/health*** endpoint to the application. You can see the server being updated in the server log displayed in your command-line session:
