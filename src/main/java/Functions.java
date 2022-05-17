@@ -1160,7 +1160,7 @@ public class Functions {
                 		s = s.replace("***Ctrl+V***", "`Ctrl+V`");
 
                 	if (s.contains("***Command+V***"))
-                		s = s.replace("***Command+C***", "`Command+C`");
+                		s = s.replace("***Command+V***", "`Command+V`");
 
                     
                 	listOfLines.set(i, s);
