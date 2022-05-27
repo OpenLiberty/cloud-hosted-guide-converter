@@ -596,7 +596,15 @@ public class Functions {
 		}
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
-		temp.add("title: instructions\n");
+		String gitlabToolType = vhsdProperties.getProperty(gitLab + ".tool-type");
+		if (gitlabToolType != null) {
+			temp.add("tool-type: " + gitlabToolType + "\n");
+		}
+		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
+		if (gitlabToolType == null) {
+			gitlabTitle = "instructions";
+		}
+		temp.add("title: " + gitlabTitle + "\n");
 		String gitlabBranch = vhsdProperties.getProperty(gitLab + ".branch");
 		if (gitlabBranch == null) {
 			gitlabBranch =  vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".branch","lab-204-instruction");
@@ -1012,6 +1020,7 @@ public class Functions {
                 }
             }
 
+            /* TODO: remove the following code
             for (int x = 0; x < code.size(); x++) {
                 String pattern5 = "(.*?)<!--(.*?)-->";
                 String pattern6 = "//(.*?)::";
@@ -1022,6 +1031,16 @@ public class Functions {
                 Matcher m5 = r5.matcher(code.get(x));
                 Matcher m6 = r6.matcher(code.get(x));
                 if (m5.find() || m6.find()) {
+                    code.remove(x);
+                }
+            }
+            */
+            
+            for (int x = 0; x < code.size(); x++) {
+                String pattern6 = "//(.*?)::";
+                Pattern r6 = Pattern.compile(pattern6);
+                Matcher m6 = r6.matcher(code.get(x));
+                if (m6.find()) {
                     code.remove(x);
                 }
             }
