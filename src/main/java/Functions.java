@@ -354,8 +354,6 @@ public class Functions {
         listOfLines.set(i, listOfLines.get(i).replaceAll("#", ""));
         String hideTags[] = new String[0];
 
-        ArrayList<String> hideList = new ArrayList<>();
-
         if (listOfLines.get(i - 1).startsWith("```") || listOfLines.get(i - 1).startsWith("----")) {
             listOfLines.set(i - 1, "");
         }
@@ -384,38 +382,32 @@ public class Functions {
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
+                    break;
                 }
             }
 
-            for (int x = i; x < listOfLines.size(); x++) {
+            for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-
-                    for (String e : hideTags) {
-                        hideList.add(e);
-                    }
+                    break;
                 }
             }
 
             for (int x = i; x < listOfLines.size(); x++) {
-
                 String pattern20 = fileName;
-
                 Pattern r20 = Pattern.compile(pattern20);
-
                 Matcher m20 = r20.matcher(listOfLines.get(x));
-
-
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
+                            break;
                         }
                     }
                 }
             }
 
-            touch(listOfLines, guideName, branch, fromDir, g, position, hideList);
+            touch(listOfLines, guideName, branch, fromDir, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
 
@@ -426,43 +418,33 @@ public class Functions {
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
+                    break;
                 }
             }
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-
-                    for (String e : hideTags) {
-                        hideList.add(e);
-                    }
+                    break;
                 }
             }
 
 
             for (int x = i; x < listOfLines.size(); x++) {
-
                 String pattern20 = fileName;
-
                 Pattern r20 = Pattern.compile(pattern20);
-
                 Matcher m20 = r20.matcher(listOfLines.get(x));
-
-
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-
-                            for (String e : hideTags) {
-                                hideList.add(e);
-                            }
+                            break;
                         }
                     }
                 }
             }
 
-            openFile("Update", fromDir, listOfLines, guideName, branch, g, position, hideList);
+            openFile("Update", fromDir, listOfLines, guideName, branch, g, position, hideTags);
 
         } else if (atIndex.startsWith("#Replace")) {
 
@@ -473,42 +455,31 @@ public class Functions {
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
+                    break;
                 }
             }
-
-            for (int x = i; x < listOfLines.size(); x++) {
+            for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-
-                    for (String e : hideTags) {
-                        hideList.add(e);
-                    }
+                    break;
                 }
             }
 
             for (int x = i; x < listOfLines.size(); x++) {
-
                 String pattern20 = fileName;
-
                 Pattern r20 = Pattern.compile(pattern20);
-
                 Matcher m20 = r20.matcher(listOfLines.get(x));
-
-
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-
-                            for (String e : hideTags) {
-                                hideList.add(e);
-                            }
+                            break;
                         }
                     }
                 }
             }
-
-            openFile("Replace", fromDir, listOfLines, guideName, branch, g, position, hideList);
+            
+            openFile("Replace", fromDir, listOfLines, guideName, branch, g, position, hideTags);
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
@@ -519,42 +490,32 @@ public class Functions {
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
+                    break;
                 }
             }
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-
-                    for (String e : hideTags) {
-                        hideList.add(e);
-                    }
+                    break;
                 }
             }
 
             for (int x = i; x < listOfLines.size(); x++) {
-
                 String pattern20 = fileName;
-
                 Pattern r20 = Pattern.compile(pattern20);
-
                 Matcher m20 = r20.matcher(listOfLines.get(x));
-
-
                 if (m20.find()) {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-
-                            for (String e : hideTags) {
-                                hideList.add(e);
-                            }
+                            break;
                         }
                     }
                 }
             }
 
-            openFile("Update", "finish", listOfLines, guideName, branch, g, position, hideList);
+            openFile("Update", "finish", listOfLines, guideName, branch, g, position, hideTags);
         }
 
     }
@@ -720,12 +681,12 @@ public class Functions {
     
     //configures instructions to open file for replace and update
     public static String openFile(String instruction, String fromDir, ArrayList<String> listOfLines, String guideName, String branch, int i, String
-            position, ArrayList<String> hideList) {
+            position, String[] hideTags) {
         String filePath = getFilePath(listOfLines, i);
         String includeFile = getIncludeFile(listOfLines, i);
         lowercaseKeyword(instruction, listOfLines, i);
         listOfLines.set(i, openFile(guideName, filePath, fromDir));
-        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList, "replace");
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideTags, "replace");
         position = "main";
         return position;
     }
@@ -812,7 +773,7 @@ public class Functions {
 
     //configures instructions to create file
     public static String touch(ArrayList<String> listOfLines, String guideName, String branch, String fromDir, int i, String
-            position, ArrayList<String> hideList) {
+            position, String[] hideTags) {
  
         String filePath = getFilePath(listOfLines, i);
         String includeFile = getIncludeFile(listOfLines, i);
@@ -828,7 +789,7 @@ public class Functions {
             ", or click the following button\n\n" + 
             "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
             "\n\n\n");
-        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideList, "add");
+        codeSnippet(listOfLines, guideName, branch, i + 2, includeFile, hideTags, "add");
         position = "main";
         return position;
     }
@@ -942,7 +903,7 @@ public class Functions {
 
     //inserts code snippet (Finds the right code snippet and inserts it into the text
     public static ArrayList<String> codeSnippet(ArrayList<String> listOfLines, String guideName, String branch,
-                                                int i, String path, ArrayList<String> hideList, String pasteFor) {
+                                                int i, String path, String[] hideTags, String pasteFor) {
     	String p = path.trim();
         try {
             ArrayList<String> code = new ArrayList<String>();
@@ -965,13 +926,13 @@ public class Functions {
             } else {
                 code.add("```\n");
             }
+
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-
                 ArrayList<String> newList = new ArrayList<>();
 
                 // Traverse through the first list
-                for (String element : hideList) {
+                for (String element : hideTags) {
 
                     // If this element is not present in newList
                     // then add it
@@ -981,7 +942,7 @@ public class Functions {
                     }
                 }
 
-                if (hideList != null) {
+                if (hideTags != null) {
                     for (String e : newList) {
                         if (inputLine.contains("tag::" + e)) {
                             while (!s.nextLine().contains("end::" + e)) {
