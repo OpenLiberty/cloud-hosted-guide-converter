@@ -455,13 +455,13 @@ public class Functions {
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
-                    break;
+                    //break;
                 }
             }
             for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-                    break;
+                    //break;
                 }
             }
 
@@ -473,7 +473,7 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            break;
+                            //break;
                         }
                     }
                 }
@@ -937,7 +937,6 @@ public class Functions {
                     // If this element is not present in newList
                     // then add it
                     if (!newList.contains(element)) {
-
                         newList.add(element);
                     }
                 }
