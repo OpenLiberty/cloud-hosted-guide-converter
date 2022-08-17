@@ -375,7 +375,7 @@ public class Functions {
         int g = i + 1;
         if (atIndex.startsWith("#Create")) {
 
-            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            // String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
 
             int nextSectionHeading = 0;
 
@@ -393,6 +393,8 @@ public class Functions {
                 }
             }
 
+            // To be removed - hide_tags should be handled by the above for loop
+            /*
             for (int x = i; x < listOfLines.size(); x++) {
                 String pattern20 = fileName;
                 Pattern r20 = Pattern.compile(pattern20);
@@ -401,21 +403,20 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            break;
                         }
                     }
                 }
             }
+            */
 
             touch(listOfLines, guideName, branch, fromDir, g, position, hideTags);
         } else if (atIndex.startsWith("#Update") && position != "finishUpdate") {
 
-
-            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            // String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
 
             int nextSectionHeading = 0;
 
-            for (int x = i; x < listOfLines.size(); x++) {
+            for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
                     break;
@@ -429,7 +430,8 @@ public class Functions {
                 }
             }
 
-
+            // To be removed - hide_tags should be handled by the above for loop
+            /*
             for (int x = i; x < listOfLines.size(); x++) {
                 String pattern20 = fileName;
                 Pattern r20 = Pattern.compile(pattern20);
@@ -438,33 +440,35 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            break;
                         }
                     }
                 }
             }
+            */
 
             openFile("Update", fromDir, listOfLines, guideName, branch, g, position, hideTags);
 
         } else if (atIndex.startsWith("#Replace")) {
 
-            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            // String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
 
             int nextSectionHeading = 0;
 
             for (int x = i; x < listOfLines.size(); x++) {
                 if (listOfLines.get(x).startsWith("#")) {
                     nextSectionHeading = x;
-                    //break;
+                    break;
                 }
             }
             for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
-                    //break;
+                    break;
                 }
             }
 
+            // To be removed - hide_tags should be handled by the above for loop
+            /*
             for (int x = i; x < listOfLines.size(); x++) {
                 String pattern20 = fileName;
                 Pattern r20 = Pattern.compile(pattern20);
@@ -473,17 +477,17 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            //break;
                         }
                     }
                 }
             }
+            */
             
             openFile("Replace", fromDir, listOfLines, guideName, branch, g, position, hideTags);
 
         } else if (atIndex.startsWith("#Update") && position == "finishUpdate") {
 
-            String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
+            // String fileName = listOfLines.get(i + 1).substring(1, listOfLines.get(i + 1).length() - 2);
 
             int nextSectionHeading = 0;
 
@@ -494,13 +498,15 @@ public class Functions {
                 }
             }
 
-            for (int x = i; x < listOfLines.size(); x++) {
+            for (int x = i; x < nextSectionHeading; x++) {
                 if (listOfLines.get(x).startsWith("[source") && listOfLines.get(x).contains("hide_tags")) {
                     hideTags = (listOfLines.get(x).substring(listOfLines.get(x).indexOf("hide_tags") + 10, listOfLines.get(x).length() - 3)).split(",");
                     break;
                 }
             }
 
+            // To be removed - hide_tags should be handled by the above for loop
+            /*
             for (int x = i; x < listOfLines.size(); x++) {
                 String pattern20 = fileName;
                 Pattern r20 = Pattern.compile(pattern20);
@@ -509,11 +515,11 @@ public class Functions {
                     if (x < nextSectionHeading) {
                         if (listOfLines.get(x - 2).contains("hide_tags")) {
                             hideTags = (listOfLines.get(x - 2).substring(listOfLines.get(x - 2).indexOf("hide_tags") + 10, listOfLines.get(x - 2).length() - 3)).split(",");
-                            break;
                         }
                     }
                 }
             }
+            */
 
             openFile("Update", "finish", listOfLines, guideName, branch, g, position, hideTags);
         }
