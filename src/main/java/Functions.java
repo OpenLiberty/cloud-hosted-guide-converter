@@ -563,12 +563,8 @@ public class Functions {
 		}
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
-		String gitlabToolType = vhsdProperties.getProperty(gitLab + ".tool-type");
-		if (gitlabToolType != null) {
-			temp.add("tool-type: " + gitlabToolType + "\n");
-		}
 		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
-		if (gitlabToolType == null) {
+		if (gitlabTitle == null) {
 			gitlabTitle = "instructions";
 		}
 		temp.add("title: " + gitlabTitle + "\n");
@@ -582,6 +578,10 @@ public class Functions {
 			gitlabStartDate = vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".start-date", "2022-02-09T14:19:17.000Z");
 		}
 		temp.add("version-history-start-date: " + gitlabStartDate + "\n");
+		String gitlabToolType = vhsdProperties.getProperty(gitLab + ".tool-type");
+		if (gitlabToolType != null) {
+			temp.add("tool-type: " + gitlabToolType + "\n");
+		}
 		temp.add("---\n");
 		listOfLines.addAll(temp);
 		return temp.size();
