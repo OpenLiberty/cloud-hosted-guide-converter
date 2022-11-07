@@ -244,7 +244,7 @@ public class Functions {
 
         String text = builder.toString();
 
-        String whereToNext = "\n\n### Where to next?\n\n" + text;
+        String whereToNext = "\n\n### Where to next step?\n\n" + text;
 
         return whereToNext;
 
