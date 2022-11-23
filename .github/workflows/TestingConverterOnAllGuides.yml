@@ -32,5 +32,10 @@ jobs:
         workflow: ManuallyConverterAllGuides
         repo: OpenLiberty/cloud-hosted-guides
         token: ${{ secrets.GUIDECONVERSIONTOOL_PASSWORD }}
-        inputs: '{ "branch": "staging", "GuideConverterBranch": "${{ github.event.pull_request.head.ref }}" }'
+        inputs: '{ "branch": "staging", "GuideConverterBranch": "${{ github.event.pull_request.head.ref }}", "PRNumber": "${{ github.event.number }}"}'
         ref: "refs/heads/prod"
+
+    - name: Print the output
+      run:           
+          echo "${{ github.event.pull_request.head.ref }}"
+          echo "${{ github.event.number }}"
