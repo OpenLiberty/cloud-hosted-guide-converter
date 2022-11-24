@@ -64,7 +64,7 @@ public class Functions {
 
     // Replaces the dashes which stand for a codeblock in adoc with backticks which are codeblocks in md
     public static void replaceCodeBlocks(ArrayList<String> listOfLines, int i) {
-        listOfLines.get(i).replaceAll("----", "````");
+        listOfLines.get(i).replaceAll("----", "```");
     }
 
     // This function uses a for loop to remove pre-set lines/words from the guide
@@ -561,6 +561,7 @@ public class Functions {
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
+        temp.add("HELLLOOOO");
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
 		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
