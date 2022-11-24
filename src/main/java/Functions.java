@@ -561,7 +561,6 @@ public class Functions {
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
-        temp.add("HELLLOOOO");
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
 		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
