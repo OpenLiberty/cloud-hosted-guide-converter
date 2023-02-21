@@ -1294,7 +1294,7 @@ public class Functions {
                             if (h1 > 0) {
                                 h2 = s.indexOf(" ", h1+l);
                                 if (h2 < 0) {
-                                    s = s.substring(0,h1) + "***" + s.substring(h1) + "***";
+                                    s = s.substring(0,h1) + "***" + s.substring(h1,s.length()-1) + "***\n";
                                 } else {
                                     s = s.substring(0,h1) + "***" + s.substring(h1,h2) + "***" + s.substring(h2);
                                 }
