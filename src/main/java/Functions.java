@@ -814,6 +814,7 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
+            // cloudLink makes the localhost links not accessible
             String cloudLink = "***" + link.replace("://", "\\\\://") + "***";
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
@@ -1266,6 +1267,7 @@ public class Functions {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
                 }
 
+                // make the localhost links not accessible
                 if (listOfLines.get(i).contains(" http://localhost:") ||
                     listOfLines.get(i).contains(" https://localhost:")
                    ) {
