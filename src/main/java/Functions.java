@@ -814,7 +814,7 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
-            String cloudLink = "***" + link.replace("http:", "http\\\\:") + "***";
+            String cloudLink = "***" + link.replace("://", "\\\\://") + "***";
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 String fullText = listOfLines.get(i);
@@ -1266,21 +1266,33 @@ public class Functions {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
                 }
 
-                if (listOfLines.get(i).contains(" http://localhost:")) {
+                if (listOfLines.get(i).contains(" http://localhost:") ||
+                    listOfLines.get(i).contains(" https://localhost:")
+                   ) {
                     String s = listOfLines.get(i);
                     if (!s.contains("curl") && !s.contains("- url:") && 
                     	!s.contains("^]") && !s.contains("9292") &&
                     	!s.startsWith("[")
                        ) {
                         int h1 = s.indexOf("http://localhost:");
-                        int h2 = s.indexOf(" ", h1+17);
+                        int l = "http://localhost:".length();
+                        if (h1 < 0) {
+                            h1 = s.indexOf("https://localhost:");
+                            l++;
+                        }
+                        int h2 = s.indexOf(" ", h1+l);
                         if (h2 < 0) {
-                                s = s.substring(0,h1) + "***" + s.substring(h1,s.length()-1) + "***\n";
+                            s = s.substring(0,h1) + "***" + s.substring(h1,s.length()-1) + "***\n";
                         } else {
                             s = s.substring(0,h1) + "***" + s.substring(h1,h2) + "***" + s.substring(h2);
                             h1 = s.indexOf("http://localhost:", h2);
+                            l = "http://localhost:".length();
+                            if (h1 < 0) {
+                                h1 = s.indexOf("https://localhost:", h2);
+                                l++;
+                            }
                             if (h1 > 0) {
-                                h2 = s.indexOf(" ", h1+17);
+                                h2 = s.indexOf(" ", h1+l);
                                 if (h2 < 0) {
                                     s = s.substring(0,h1) + "***" + s.substring(h1) + "***";
                                 } else {
@@ -1288,11 +1300,10 @@ public class Functions {
                                 }
                             }
                         }
-                        s = s.replaceAll("http://localhost", "http\\\\://localhost");
+                        s = s.replaceAll("://localhost", "\\\\://localhost");
                         listOfLines.set(i, s);
                     }
                 }
-
 
                 if (listOfLines.get(i).indexOf("^]") > 1) {
                     int counters = 0;
