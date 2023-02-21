@@ -1268,7 +1268,10 @@ public class Functions {
 
                 if (listOfLines.get(i).contains(" http://localhost:")) {
                     String s = listOfLines.get(i);
-                    if (!s.contains("curl") && !s.contains("- url:") && !s.contains("^]")) {
+                    if (!s.contains("curl") && !s.contains("- url:") && 
+                    	!s.contains("^]") && !s.contains("9292") &&
+                    	!s.startsWith("[")
+                       ) {
                         int h1 = s.indexOf("http://localhost:");
                         int h2 = s.indexOf(" ", h1+17);
                         if (h2 < 0) {
