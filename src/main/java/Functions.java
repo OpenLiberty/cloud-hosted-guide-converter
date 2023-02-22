@@ -91,11 +91,8 @@ public class Functions {
 
         for (int x = 0; x < listOfLines.size(); x++) {
             if (listOfLines.get(x).contains(LinkSets.linkName)) {
-
                 String fullLine = listOfLines.get(x).replaceAll("\\{" + LinkSets.linkName + "\\}", LinkSets.link);
                 fullLine = fullLine.replaceAll("\n", "");
-
-
                 listOfLines.set(x, fullLine);
             }
         }
@@ -817,10 +814,12 @@ public class Functions {
         findLink = linkParts[0].split(" ");
         link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
+            // cloudLink makes the localhost links not accessible
+            String cloudLink = "***" + link.replace("://", "\\\\://") + "***";
             if (listOfLines.get(i).contains(".")) {
                 localhostSplit = listOfLines.get(i).split("\\.");
                 String fullText = listOfLines.get(i);
-                fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]", link);
+                fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]", cloudLink);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
                 if (listOfLines.get(i).contains("admin")) {
                     localhostSplit[0] = localhostSplit[0].replaceAll("\\[(.*?)\\^\\]", "");
@@ -834,7 +833,8 @@ public class Functions {
                 return;
             } else {
                 if (!listOfLines.get(i).contains("curl")) {
-                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", link) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl " + appendJQ(link) + "\n```\n\n");
+                    listOfLines.set(i, "\n" + listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", cloudLink) + "\n\n_To see the output for this URL in the IDE, run the following command at a terminal:_\n\n```bash\ncurl " + appendJQ(link) + "\n```\n\n");
+                    return;
                 }
             }
         }
@@ -1265,6 +1265,46 @@ public class Functions {
 
                 if (listOfLines.get(i).contains("\\http")) {
                     listOfLines.set(i, listOfLines.get(i).replaceAll("\\\\", ""));
+                }
+
+                // make the localhost links not accessible
+                if (listOfLines.get(i).contains(" http://localhost:") ||
+                    listOfLines.get(i).contains(" https://localhost:")
+                   ) {
+                    String s = listOfLines.get(i);
+                    if (!s.contains("curl") && !s.contains("- url:") && 
+                    	!s.contains("^]") && !s.contains("9292") &&
+                    	!s.startsWith("[")
+                       ) {
+                        int h1 = s.indexOf("http://localhost:");
+                        int l = "http://localhost:".length();
+                        if (h1 < 0) {
+                            h1 = s.indexOf("https://localhost:");
+                            l++;
+                        }
+                        int h2 = s.indexOf(" ", h1+l);
+                        if (h2 < 0) {
+                            s = s.substring(0,h1) + "***" + s.substring(h1,s.length()-1) + "***\n";
+                        } else {
+                            s = s.substring(0,h1) + "***" + s.substring(h1,h2) + "***" + s.substring(h2);
+                            h1 = s.indexOf("http://localhost:", h2);
+                            l = "http://localhost:".length();
+                            if (h1 < 0) {
+                                h1 = s.indexOf("https://localhost:", h2);
+                                l++;
+                            }
+                            if (h1 > 0) {
+                                h2 = s.indexOf(" ", h1+l);
+                                if (h2 < 0) {
+                                    s = s.substring(0,h1) + "***" + s.substring(h1,s.length()-1) + "***\n";
+                                } else {
+                                    s = s.substring(0,h1) + "***" + s.substring(h1,h2) + "***" + s.substring(h2);
+                                }
+                            }
+                        }
+                        s = s.replaceAll("://localhost", "\\\\://localhost");
+                        listOfLines.set(i, s);
+                    }
                 }
 
                 if (listOfLines.get(i).indexOf("^]") > 1) {
