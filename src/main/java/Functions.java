@@ -841,9 +841,11 @@ public class Functions {
                 String formattedLink = "[" + description + "](" + link + ")";
                 int s = listOfLines.get(i).indexOf("http", r);
                 int e = listOfLines.get(i).indexOf("]", r);
-                String replaceStr = listOfLines.get(i).substring(s,e+1);
-                listOfLines.set(i, listOfLines.get(i).replace(replaceStr, formattedLink));
-                r += formattedLink.length();
+                if (e > s) {
+                    String replaceStr = listOfLines.get(i).substring(s,e+1);
+                    listOfLines.set(i, listOfLines.get(i).replace(replaceStr, formattedLink));
+                    r = s + formattedLink.length();
+                }
             }
         }
     }
