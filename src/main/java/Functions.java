@@ -797,27 +797,20 @@ public class Functions {
         return position;
     }
 
-    //configures link
+    // configures link
     public static void link(ArrayList<String> listOfLines, int i) {
-        String linkParts[] = new String[2];
-        String findLink[];
-        String link;
-        String description;
-        String formattedLink;
-        String localhostSplit[];
-        String findDescription[];
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\{", ""));
         listOfLines.set(i, listOfLines.get(i).replaceAll("\\}", ""));
-        linkParts = listOfLines.get(i).split("\\[");
-        findDescription = linkParts[1].split("\\^");
-        description = findDescription[0];
-        findLink = linkParts[0].split(" ");
-        link = findLink[findLink.length - 1];
+        String[] linkParts = listOfLines.get(i).split("\\[");
+        String[] findLink = linkParts[0].split(" ");
+        String link = findLink[findLink.length - 1];
         if (link.contains("localhost")) {
             // cloudLink makes the localhost links not accessible
             String cloudLink = "***" + link.replace("://", "\\\\://") + "***";
+            String findDescription[] = linkParts[1].split("\\^");
+            String description = findDescription[0];
             if (listOfLines.get(i).contains(".")) {
-                localhostSplit = listOfLines.get(i).split("\\.");
+            	String localhostSplit[] = listOfLines.get(i).split("\\.");
                 String fullText = listOfLines.get(i);
                 fullText = fullText.replaceAll(link + "\\[(.*?)\\^\\]", cloudLink);
                 listOfLines.set(i, listOfLines.get(i).replaceAll(link + "\\[" + description + "\\^\\]", ""));
@@ -839,8 +832,19 @@ public class Functions {
             }
         }
         if (listOfLines.get(i).contains("http")) {
-            formattedLink = "[" + description + "](" + link + ")";
-            listOfLines.set(i, listOfLines.get(i).replaceAll("http(.*?)\\^\\]", formattedLink));
+            int r = 0;
+            for (int l = 1; l < linkParts.length; l++) {
+                String[] findDescription = linkParts[l].split("\\^");
+                String description = findDescription[0];
+                findLink = linkParts[l-1].split(" ");
+                link = findLink[findLink.length - 1];
+                String formattedLink = "[" + description + "](" + link + ")";
+                int s = listOfLines.get(i).indexOf("http", r);
+                int e = listOfLines.get(i).indexOf("]", r);
+                String replaceStr = listOfLines.get(i).substring(s,e+1);
+                listOfLines.set(i, listOfLines.get(i).replace(replaceStr, formattedLink));
+                r += formattedLink.length();
+            }
         }
     }
 
