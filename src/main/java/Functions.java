@@ -576,6 +576,9 @@ public class Functions {
 		}
 		temp.add("version-history-start-date: " + gitlabStartDate + "\n");
 		String gitlabToolType = vhsdProperties.getProperty(gitLab + ".tool-type");
+		if (gitlabToolType == null) {
+			gitlabToolType = vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".tool-type", "theia");
+		}
 		if (gitlabToolType != null) {
 			temp.add("tool-type: " + gitlabToolType + "\n");
 		}
