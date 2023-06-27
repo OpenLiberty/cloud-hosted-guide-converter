@@ -1389,9 +1389,6 @@ public class Functions {
 
                 if (listOfLines.get(i).contains("^]")) {
                     link(listOfLines, i);
-                    if (listOfLines.get(i).contains("localhost")) {
-                        counter++;
-                    }
                     if (listOfLines.get(i).startsWith("-")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                     }
@@ -1399,18 +1396,21 @@ public class Functions {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                     }
 
-                    if (counter == 1) {
-                        flag = true;
-                    }
+                    if (listOfLines.get(i).contains("localhost")) {
+                        counter++;
+                        if (counter == 1) {
+                            flag = true;
+                        }
 
-                    if (flag == true) {
-                        String GuidesCommon = "new-terminal.md";
+                        if (flag == true) {
+                            String GuidesCommon = "new-terminal.md";
 
-                        listOfLines.add(i, "");
-                        listOfLines.add(i, "");
-                        ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
-//                        listOfLines.add(i + 12, "");
-                        flag = false;
+                            listOfLines.add(i, "");
+                            listOfLines.add(i, "");
+                            ImportFunctions.newTerminal(listOfLines, i - 1, GuidesCommon);
+//                            listOfLines.add(i + 12, "");
+                            flag = false;
+                        }                    	
                     }
                 }
 
