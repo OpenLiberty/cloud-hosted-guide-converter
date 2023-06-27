@@ -68,7 +68,6 @@ public class CloudHostedGuideConverter {
                         scanner.nextLine();
                         scanner.nextLine();
                         guideDescription = scanner.nextLine();
-                        guideDescription = guideDescription.substring(guideDescription.lastIndexOf(":") + 1, guideDescription.length());
                     }
                     continue;
                 }
