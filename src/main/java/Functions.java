@@ -1156,7 +1156,9 @@ public class Functions {
                 	if (s.contains("***Command+V***"))
                 		s = s.replace("***Command+V***", "`Command+V`");
 
-                    
+                	if (s.contains("(*******)"))
+                		s = s.replace("(*******)", "(`*`)");
+                	
                 	listOfLines.set(i, s);
                 }
 
