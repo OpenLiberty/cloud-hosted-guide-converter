@@ -1156,7 +1156,9 @@ public class Functions {
                 	if (s.contains("***Command+V***"))
                 		s = s.replace("***Command+V***", "`Command+V`");
 
-                    
+                	if (s.contains("(*******)"))
+                		s = s.replace("(*******)", "(`*`)");
+                	
                 	listOfLines.set(i, s);
                 }
 
@@ -1441,9 +1443,12 @@ public class Functions {
                     mains(listOfLines, prop, props);
                 }
 
+                // To be removed - no need to skip Add the statement
+                /*
                 if (listOfLines.get(i).startsWith("Add the")) {
                     listOfLines.set(i, "");
                 }
+                */
 
                 if (listOfLines.get(i).startsWith("- ")) {
                     if (listOfLines.get(i + 1).isBlank()) {
