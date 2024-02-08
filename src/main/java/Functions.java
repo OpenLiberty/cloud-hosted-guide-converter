@@ -561,10 +561,13 @@ public class Functions {
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
 		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
-		if (gitlabTitle == null) {
-			gitlabTitle = "instructions";
+                if (gitlabTitle == null) {
+		    temp.add("title: instructions\n");
+                } else {
+                    if (!gitlabTitle.equals("SKIP")) {
+		        temp.add("title: " + gitlabTitle + "\n");
+                    }
 		}
-		temp.add("title: " + gitlabTitle + "\n");
 		String gitlabBranch = vhsdProperties.getProperty(gitLab + ".branch");
 		if (gitlabBranch == null) {
 			gitlabBranch =  vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".branch","lab-204-instruction");
