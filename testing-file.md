@@ -1,8 +1,5 @@
 ---
 markdown-version: v1
-title: instructions
-branch: lab-480-instruction
-version-history-start-date: 2020-04-22 12:57:16 UTC
 tool-type: theia
 ---
 ::page{title="Welcome to the Getting started with Open Liberty guide!"}
@@ -30,6 +27,7 @@ You'll also explore how to package your application with Open Liberty so that it
 Finally, you will package the application along with Liberty's configuration into a Docker image and run that image as a container.
 
 
+
 ::page{title="Getting started"}
 
 To open a new command-line session,
@@ -53,6 +51,7 @@ The ***start*** directory contains the starting project that you will build upon
 
 The ***finish*** directory contains the finished project that you will build.
 
+You have cloned a Maven project. To learn how to create a Liberty Maven project from scratch and edit your application using the Liberty Tools, see [Developing a cloud-native Java application with Liberty Tools in IntelliJ IDEA](https://openliberty.io/blog/2024/05/31/liberty-project-starter-guide-IntelliJ.html).
 
 In this IBM Cloud environment, you need to change the user home to ***/home/project*** by running the following command:
 ```bash
@@ -186,21 +185,21 @@ Replace the Liberty ***server.xml*** configuration file.
         <feature>jsonp-2.1</feature>
         <feature>jsonb-3.0</feature>
         <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.0</feature>
+        <feature>mpMetrics-5.1</feature>
         <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.0</feature>
+        <feature>mpConfig-3.1</feature>
     </featureManager>
 
-    <variable name="default.http.port" defaultValue="9080"/>
-    <variable name="default.https.port" defaultValue="9443"/>
+    <variable name="http.port" defaultValue="9080"/>
+    <variable name="https.port" defaultValue="9443"/>
 
     <webApplication location="guide-getting-started.war" contextRoot="/" />
     
     <mpMetrics authentication="false"/>
 
 
-    <httpEndpoint host="*" httpPort="${default.http.port}" 
-        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+    <httpEndpoint host="*" httpPort="${http.port}" 
+        httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
 </server>
@@ -462,13 +461,13 @@ Replace the Liberty ***server.xml*** configuration file.
         <feature>jsonp-2.1</feature>
         <feature>jsonb-3.0</feature>
         <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.0</feature>
+        <feature>mpMetrics-5.1</feature>
         <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.0</feature>
+        <feature>mpConfig-3.1</feature>
     </featureManager>
 
-    <variable name="default.http.port" defaultValue="9080"/>
-    <variable name="default.https.port" defaultValue="9443"/>
+    <variable name="http.port" defaultValue="9080"/>
+    <variable name="https.port" defaultValue="9443"/>
 
     <webApplication location="guide-getting-started.war" contextRoot="/" />
     
@@ -476,8 +475,8 @@ Replace the Liberty ***server.xml*** configuration file.
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
-    <httpEndpoint host="*" httpPort="${default.http.port}" 
-        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+    <httpEndpoint host="*" httpPort="${http.port}" 
+        httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
 </server>
@@ -494,9 +493,6 @@ When you are done checking out the service, exit dev mode by pressing `Ctrl+C` i
 
 ::page{title="Running the application in a Docker container"}
 
-To run the application in a container, Docker needs to be installed. For installation instructions, see the [Official Docker Docs](https://docs.docker.com/install/).
-
-Make sure to start your Docker daemon before you proceed.
 
 To containerize the application, you need a ***Dockerfile***. This file contains a collection of instructions that define how a Docker image is built, what files are packaged into it, what commands run when the image runs as a container, and other information. You can find a complete ***Dockerfile*** in the ***start*** directory. This ***Dockerfile*** copies the ***.war*** file into a Docker image that contains the Java runtime and a preconfigured Open Liberty runtime.
 
@@ -640,21 +636,21 @@ Replace the Liberty ***server.xml*** configuration file.
         <feature>jsonp-2.1</feature>
         <feature>jsonb-3.0</feature>
         <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.0</feature>
+        <feature>mpMetrics-5.1</feature>
         <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.0</feature>
+        <feature>mpConfig-3.1</feature>
     </featureManager>
 
-    <variable name="default.http.port" defaultValue="9080"/>
-    <variable name="default.https.port" defaultValue="9443"/>
+    <variable name="http.port" defaultValue="9080"/>
+    <variable name="https.port" defaultValue="9443"/>
 
     <webApplication location="guide-getting-started.war" contextRoot="/dev" />
     <mpMetrics authentication="false"/>
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
-    <httpEndpoint host="*" httpPort="${default.http.port}" 
-        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+    <httpEndpoint host="*" httpPort="${http.port}" 
+        httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
 </server>
@@ -718,8 +714,8 @@ Replace the pom.xml file.
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Liberty configuration -->
-        <liberty.var.default.http.port>9080</liberty.var.default.http.port>
-        <liberty.var.default.https.port>9443</liberty.var.default.https.port>
+        <liberty.var.http.port>9080</liberty.var.http.port>
+        <liberty.var.https.port>9443</liberty.var.https.port>
     </properties>
 
     <dependencies>
@@ -733,7 +729,7 @@ Replace the pom.xml file.
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>6.0</version>
+            <version>6.1</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -741,19 +737,19 @@ Replace the pom.xml file.
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
+            <version>5.10.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>6.2.3.Final</version>
+            <version>6.2.9.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-json-binding-provider</artifactId>
-            <version>6.2.3.Final</version>
+            <version>6.2.9.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -771,26 +767,26 @@ Replace the pom.xml file.
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.8.2</version>
+                <version>3.10.3</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>3.4.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.3.0</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <http.port>${liberty.var.default.http.port}</http.port>
+                        <http.port>${liberty.var.http.port}</http.port>
                         <context.root>/dev</context.root>
                     </systemPropertyVariables>
                 </configuration>
