@@ -560,13 +560,14 @@ public class Functions {
 		}
 		temp.add("---\n");
 		temp.add("markdown-version: v1\n");
+		/*
 		String gitlabTitle = vhsdProperties.getProperty(gitLab + ".title");
-                if (gitlabTitle == null) {
-		    temp.add("title: instructions\n");
-                } else {
-                    if (!gitlabTitle.equals("SKIP")) {
-		        temp.add("title: " + gitlabTitle + "\n");
-                    }
+        if (gitlabTitle == null) {
+           	temp.add("title: instructions\n");
+        } else {
+            if (!gitlabTitle.equals("SKIP")) {
+               	temp.add("title: " + gitlabTitle + "\n");
+            }
 		}
 		String gitlabBranch = vhsdProperties.getProperty(gitLab + ".branch");
 		if (gitlabBranch == null) {
@@ -578,6 +579,7 @@ public class Functions {
 			gitlabStartDate = vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".start-date", "2022-02-09T14:19:17.000Z");
 		}
 		temp.add("version-history-start-date: " + gitlabStartDate + "\n");
+		*/
 		String gitlabToolType = vhsdProperties.getProperty(gitLab + ".tool-type");
 		if (gitlabToolType == null) {
 			gitlabToolType = vhsdProperties.getProperty(gitLab.replaceAll("draft-", "") + ".tool-type", "theia");
