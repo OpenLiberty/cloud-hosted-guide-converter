@@ -217,7 +217,7 @@ After you make the file changes, Open Liberty automatically reloads its configur
 [INFO] [AUDIT] CWWKZ0009I: The application io.openliberty.guides.getting-started has stopped successfully.
 [INFO] [AUDIT] CWWKG0017I: The server configuration was successfully updated in 0.284 seconds.
 [INFO] [AUDIT] CWWKT0016I: Web application available (default_host): http://foo:9080/health/
-[INFO] [AUDIT] CWWKF0012I: The server installed the following features: [mpHealth-3.0].
+[INFO] [AUDIT] CWWKF0012I: The server installed the following features: [mpHealth-4.0].
 [INFO] [AUDIT] CWWKF0008I: Feature update completed in 0.285 seconds.
 [INFO] [AUDIT] CWWKT0016I: Web application available (default_host): http://foo:9080/
 [INFO] [AUDIT] CWWKZ0003I: The application io.openliberty.guides.getting-started updated in 0.173 seconds.
@@ -520,7 +520,7 @@ Your image should appear in the list of all Docker images:
 
 ```
 REPOSITORY                     TAG             IMAGE ID        CREATED         SIZE
-openliberty-getting-started    1.0-SNAPSHOT    85085141269b    21 hours ago    487MB
+openliberty-getting-started    1.0-SNAPSHOT    88173351adfa    2 minutes ago   780MB
 ```
 
 Next, run the image as a container:
@@ -737,19 +737,19 @@ Replace the pom.xml file.
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.3</version>
+            <version>5.11.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>6.2.9.Final</version>
+            <version>6.2.10.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-json-binding-provider</artifactId>
-            <version>6.2.9.Final</version>
+            <version>6.2.10.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -777,13 +777,13 @@ Replace the pom.xml file.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
                 <configuration>
                     <systemPropertyVariables>
                         <http.port>${liberty.var.http.port}</http.port>
