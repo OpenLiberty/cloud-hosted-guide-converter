@@ -81,11 +81,18 @@ public class CloudHostedGuideConverter {
 
                 // skip the Windows specific content
                 if (inputLine.startsWith("[.tab_content.windows_section]")) {
-                    while (!scanner.nextLine().startsWith("[.tab_content.mac_section")) {
+                    while (!scanner.nextLine().startsWith("[.tab_content.linux_section")) {
                         continue;
                     }
                 }
 
+                // skip the Mac specific content
+                if (inputLine.startsWith("[.tab_content.mac_section]")) {
+                    while (!scanner.nextLine().startsWith("[.tab_content.linux_section]")) {
+                        continue;
+                    }
+                }
+                
                 // skip the static guide content that marked by ifndef::cloud-hosted
                 if (inputLine.startsWith("ifndef::cloud-hosted[]")) {
                     while (!scanner.nextLine().startsWith("endif::[]")) {
