@@ -652,7 +652,7 @@ public class Functions {
         System.out.println(FeedbackLink);
 
         listOfLines.add("\n### Clean up your environment\n\n\nClean up your online environment so that it is ready to be used with the next guide:\n\nDelete the ***" + guideName + "*** project by running the following commands:\n\n```bash\ncd /home/project\nrm -fr " + guideName + "\n```\n\n" +
-                "### What did you think of this guide?\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")" + "\n\nOr, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.\n\n" +
+                "### What did you think of this guide?\n\nWe want to hear from you. To provide feedback, click the following link.\n\n" + "* [Give us feedback](" +  FeedbackLink + ")\n\n" +
                 "### What could make this guide better?\n\nYou can also provide feedback or contribute to this guide from GitHub.\n* [Raise an issue to share feedback.](https://github.com/OpenLiberty/" + guideName + "/issues)\n" + "* [Create a pull request to contribute to this guide.](https://github.com/OpenLiberty/" + guideName + "/pulls)\n\n" +
                 Next(listOfLines) + "\n\n" +
                 "### Log out of the session\n\nLog out of the cloud-hosted guides by selecting **Account** :fa-user: > **Logout** from the Skills Network left-sided menu.");
@@ -684,7 +684,7 @@ public class Functions {
     private static String openFile(String guideName, String filePath, String fromDir) {
     	File f = new File(filePath);
 		return "\n> To open the " + f .getName() + " file in your IDE, select\n" + 
-                "> **File** > **Open** > " + guideName + "/" + fromDir + "/" + filePath.replaceAll("\\*\\*", "") +
+                "> ***File*** > ***Open*** > " + guideName + "/" + fromDir + "/" + filePath.replaceAll("\\*\\*", "") +
                 ", or click the following button\n\n" + 
                 "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
                 "\n\n\n";
@@ -796,7 +796,7 @@ public class Functions {
             "\n> Run the following touch command in your terminal\n" + 
             "```bash\ntouch /home/project/" + guideName + "/" + fromDir + "/" + listOfLines.get(i).replaceAll("`", "") + "```\n\n" +
             "\n> Then, to open the " + f.getName() + " file in your IDE, select" +
-            "\n> **File** > **Open** > " + guideName + "/" + fromDir + "/" + filePath + 
+            "\n> ***File*** > ***Open*** > " + guideName + "/" + fromDir + "/" + filePath + 
             ", or click the following button\n\n" + 
             "::openFile{path=\"/home/project/" + guideName + "/" + fromDir + "/" + filePath + "\"}" +
             "\n\n\n");
@@ -1027,7 +1027,7 @@ public class Functions {
 
             code.add("```\n\n\n");
             if (!addedPasteCmd) {
-            	code.add("Click the :fa-copy: **copy** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to " +
+                code.add("Click the :fa-copy: ***Copy*** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to " +
     					 pasteFor + " the code to the file.\n\n");
             	addedPasteCmd = true;
     		}
