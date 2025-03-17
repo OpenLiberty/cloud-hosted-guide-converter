@@ -31,9 +31,9 @@ Finally, you will package the application along with Liberty's configuration int
 ::page{title="Getting started"}
 
 To open a new command-line session,
-select **Terminal** > **New Terminal** from the menu of the IDE.
+select ***Terminal*** > ***New Terminal*** from the menu of the IDE.
 
-Run the following command to navigate to the **/home/project** directory:
+Run the following command to navigate to the ***/home/project*** directory:
 
 ```bash
 cd /home/project
@@ -88,7 +88,7 @@ When the Liberty instance begins starting up, various messages display in your c
 
 
 
-Open another command-line session by selecting **Terminal** > **New Terminal** from the menu of the IDE.
+Open another command-line session by selecting ***Terminal*** > ***New Terminal*** from the menu of the IDE.
 
 
 To access the ***system*** microservice, see the ***http\://localhost:9080/system/properties*** URL, and you see a list of the various system properties of your JVM:
@@ -172,7 +172,7 @@ To add the MicroProfile Health feature to the Liberty instance, include the ***m
 Replace the Liberty ***server.xml*** configuration file.
 
 > To open the server.xml file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
@@ -181,13 +181,15 @@ Replace the Liberty ***server.xml*** configuration file.
 ```xml
 <server description="Sample Liberty server">
     <featureManager>
-        <feature>restfulWS-3.1</feature>
-        <feature>jsonp-2.1</feature>
-        <feature>jsonb-3.0</feature>
-        <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.1</feature>
-        <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.1</feature>
+        <platform>jakartaee-10.0</platform>
+        <platform>microprofile-7.0</platform>
+        <feature>restfulWS</feature>
+        <feature>jsonp</feature>
+        <feature>jsonb</feature>
+        <feature>cdi</feature>
+        <feature>mpHealth</feature>
+        <feature>mpConfig</feature>
+        <feature>mpMetrics</feature>
     </featureManager>
 
     <variable name="http.port" defaultValue="9080"/>
@@ -198,7 +200,7 @@ Replace the Liberty ***server.xml*** configuration file.
     <mpMetrics authentication="false"/>
 
 
-    <httpEndpoint host="*" httpPort="${http.port}" 
+    <httpEndpoint host="*" httpPort="${http.port}"
         httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
@@ -206,7 +208,7 @@ Replace the Liberty ***server.xml*** configuration file.
 ```
 
 
-Click the :fa-copy: **copy** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to replace the code to the file.
+Click the :fa-copy: ***Copy*** button to copy the code and press `Ctrl+V` or `Command+V` in the IDE to replace the code to the file.
 
 
 After you make the file changes, Open Liberty automatically reloads its configuration. When enabled, the ***mpHealth*** feature automatically adds a ***/health*** endpoint to the application. You can see the instance being updated in the Liberty log displayed in your command-line session:
@@ -266,7 +268,7 @@ touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sam
 
 
 > Then, to open the SystemReadinessCheck.java file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemReadinessCheck.java"}
 
@@ -321,7 +323,7 @@ touch /home/project/guide-getting-started/start/src/main/java/io/openliberty/sam
 
 
 > Then, to open the SystemLivenessCheck.java file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/java/io/openliberty/sample/system/SystemLivenessCheck.java"}
 
@@ -448,7 +450,7 @@ Try enabling detailed logging of the MicroProfile Health feature by adding the *
 Replace the Liberty ***server.xml*** configuration file.
 
 > To open the server.xml file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
@@ -457,13 +459,15 @@ Replace the Liberty ***server.xml*** configuration file.
 ```xml
 <server description="Sample Liberty server">
     <featureManager>
-        <feature>restfulWS-3.1</feature>
-        <feature>jsonp-2.1</feature>
-        <feature>jsonb-3.0</feature>
-        <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.1</feature>
-        <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.1</feature>
+        <platform>jakartaee-10.0</platform>
+        <platform>microprofile-7.0</platform>
+        <feature>restfulWS</feature>
+        <feature>jsonp</feature>
+        <feature>jsonb</feature>
+        <feature>cdi</feature>
+        <feature>mpHealth</feature>
+        <feature>mpConfig</feature>
+        <feature>mpMetrics</feature>
     </featureManager>
 
     <variable name="http.port" defaultValue="9080"/>
@@ -475,7 +479,7 @@ Replace the Liberty ***server.xml*** configuration file.
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
-    <httpEndpoint host="*" httpPort="${http.port}" 
+    <httpEndpoint host="*" httpPort="${http.port}"
         httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
@@ -487,6 +491,10 @@ Replace the Liberty ***server.xml*** configuration file.
 After you change the file, Open Liberty automatically reloads its configuration.
 
 Now, when you visit the ***/health*** endpoint, additional traces are logged in the ***trace.log*** file.
+
+```bash
+ls /home/project/guide-getting-started/start/target/liberty/wlp/usr/servers/defaultServer/logs
+```
 
 When you are done checking out the service, exit dev mode by pressing `Ctrl+C` in the command-line session where you ran Liberty.
 
@@ -623,7 +631,7 @@ Update the ***server.xml*** file to change the context root from ***/*** to ***/
 Replace the Liberty ***server.xml*** configuration file.
 
 > To open the server.xml file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/liberty/config/server.xml, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/liberty/config/server.xml"}
 
@@ -632,13 +640,15 @@ Replace the Liberty ***server.xml*** configuration file.
 ```xml
 <server description="Sample Liberty server">
     <featureManager>
-        <feature>restfulWS-3.1</feature>
-        <feature>jsonp-2.1</feature>
-        <feature>jsonb-3.0</feature>
-        <feature>cdi-4.0</feature>
-        <feature>mpMetrics-5.1</feature>
-        <feature>mpHealth-4.0</feature>
-        <feature>mpConfig-3.1</feature>
+        <platform>jakartaee-10.0</platform>
+        <platform>microprofile-7.0</platform>
+        <feature>restfulWS</feature>
+        <feature>jsonp</feature>
+        <feature>jsonb</feature>
+        <feature>cdi</feature>
+        <feature>mpHealth</feature>
+        <feature>mpConfig</feature>
+        <feature>mpMetrics</feature>
     </featureManager>
 
     <variable name="http.port" defaultValue="9080"/>
@@ -649,7 +659,7 @@ Replace the Liberty ***server.xml*** configuration file.
 
     <logging traceSpecification="com.ibm.ws.microprofile.health.*=all" />
 
-    <httpEndpoint host="*" httpPort="${http.port}" 
+    <httpEndpoint host="*" httpPort="${http.port}"
         httpsPort="${https.port}" id="defaultHttpEndpoint"/>
 
     <variable name="io_openliberty_guides_system_inMaintenance" value="false"/>
@@ -672,7 +682,7 @@ Update the ***mpData.js*** file to change the ***url*** in the ***getSystemPrope
 Update the mpData.js file.
 
 > From the menu of the IDE, select 
-> **File** > **Open** > guide-getting-started/start/src/main/webapp/js/mpData.js, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/src/main/webapp/js/mpData.js, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/src/main/webapp/js/mpData.js"}
 
@@ -690,7 +700,7 @@ Update the ***pom.xml*** file to change the context root from ***/*** to ***/dev
 Replace the pom.xml file.
 
 > To open the pom.xml file in your IDE, select
-> **File** > **Open** > guide-getting-started/start/pom.xml, or click the following button
+> ***File*** > ***Open*** > guide-getting-started/start/pom.xml, or click the following button
 
 ::openFile{path="/home/project/guide-getting-started/start/pom.xml"}
 
@@ -729,7 +739,7 @@ Replace the pom.xml file.
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>6.1</version>
+            <version>7.0</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -737,19 +747,19 @@ Replace the pom.xml file.
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.1</version>
+            <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>6.2.10.Final</version>
+            <version>6.2.11.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-json-binding-provider</artifactId>
-            <version>6.2.10.Final</version>
+            <version>6.2.11.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -767,7 +777,7 @@ Replace the pom.xml file.
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.10.3</version>
+                <version>3.11.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -777,13 +787,13 @@ Replace the pom.xml file.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.2</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.2</version>
                 <configuration>
                     <systemPropertyVariables>
                         <http.port>${liberty.var.http.port}</http.port>
@@ -880,8 +890,6 @@ rm -fr guide-getting-started
 We want to hear from you. To provide feedback, click the following link.
 
 * [Give us feedback](https://openliberty.skillsnetwork.site/thanks-for-completing-our-content?guide-name=Getting%20started%20with%20Open%20Liberty&guide-id=cloud-hosted-guide-getting-started)
-
-Or, click the **Support/Feedback** button in the IDE and select the **Give feedback** option. Fill in the fields, choose the **General** category, and click the **Post Idea** button.
 
 ### What could make this guide better?
 
