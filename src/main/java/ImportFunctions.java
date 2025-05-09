@@ -119,8 +119,13 @@ public class ImportFunctions {
             String inputLine = null;
             while (s.hasNextLine()) {
                 inputLine = s.nextLine() + "\n";
-
-                temp.add(inputLine);
+                if (inputLine.startsWith("include::{common-includes}/os-tabs.adoc[]")) {
+                    while (!s.nextLine().startsWith("[.tab_content.linux_section]")) {
+                        continue;
+                    }
+                } else {
+                    temp.add(inputLine);
+                }
             }
             listOfLines.addAll(i + 1, temp);
             s.close();
