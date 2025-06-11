@@ -1330,7 +1330,9 @@ public class Functions {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
                     }
                     if (listOfLines.get(i).startsWith("* ")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                        System.out.println(listOfLines.get(i));
+                        // listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                        System.out.println(listOfLines.get(i));
                     }
                     if (!listOfLines.get(i).contains("localhost")) {
                         for (int x = 0; x < listOfLines.get(i).length(); x++) {
@@ -1400,7 +1402,9 @@ public class Functions {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                     }
                     if (listOfLines.get(i).startsWith("*")) {
-                        listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                        System.out.println(listOfLines.get(i));
+                        //listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
+                        System.out.println(listOfLines.get(i));
                     }
 
                     if (listOfLines.get(i).contains("localhost")) {
