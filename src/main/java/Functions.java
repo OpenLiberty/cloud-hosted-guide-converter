@@ -1329,9 +1329,11 @@ public class Functions {
                     if (listOfLines.get(i).startsWith("- ")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("- ", ""));
                     }
+                    /* No idea why trim the leading * previously
                     if (listOfLines.get(i).startsWith("* ")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                     }
+                    */
                     if (!listOfLines.get(i).contains("localhost")) {
                         for (int x = 0; x < listOfLines.get(i).length(); x++) {
                             if (listOfLines.get(i).charAt(x) == letter) {
@@ -1399,10 +1401,11 @@ public class Functions {
                     if (listOfLines.get(i).startsWith("-")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("-", ""));
                     }
+                    /* No idea why trim the leading * previously
                     if (listOfLines.get(i).startsWith("*")) {
                         listOfLines.set(i, listOfLines.get(i).replaceAll("^[\\*]", ""));
                     }
-
+                    */
                     if (listOfLines.get(i).contains("localhost")) {
                         counter++;
                         if (counter == 1) {
